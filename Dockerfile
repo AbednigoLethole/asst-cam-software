@@ -13,5 +13,5 @@ WORKDIR /app
 # Copying asst code into the container
 COPY . /app
 
-# Install Python dependencies
-#RUN pip3 install -r requirements.txt  # If you have a requirements file
+# Installing Python dependencies
+RUN pip3 install -r requirements.txt  
