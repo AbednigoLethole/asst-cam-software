@@ -51,11 +51,19 @@ private:
     void CalculateAziDesiredPosition(double nextTimestamp, double currentTimestamp)
     {
         double timeDiff = nextTimestamp - currentTimestamp;
-        double speed = (requestedPosition.azimuth - actualPosition.azimuth) / timeDiff;
-        std::cout << CYAN << "[+] Speed: " << speed << " time diff: " << timeDiff << RESET_COLOR << "\n";
+        desiredPosition.timeStamp = nextTimestamp;
+        if (requestedPosition.timeStamp > nextTimestamp)
+        {
+            desiredPosition.azimuth = desiredPosition.azimuth + desiredSpeed.azimuth * (timeDiff);
+        }
+        else
+        {
+            desiredPosition.azimuth = requestedPosition.azimuth;
+        }
+        std::cout << CYAN << "Desired azim = " << desiredPosition.azimuth << RESET_COLOR << "\n";
+        double speed = (desiredPosition.azimuth - actualPosition.azimuth) / timeDiff;
         double output = aziPidController.Calculate(speed, requestedSpeed.azimuth); 
         LimitAziSpeed(timeDiff, output);
-        desiredPosition.azimuth = actualPosition.azimuth + requestedSpeed.azimuth * timeDiff;
 
         std::cout << YELLOW << "AZI: " << actualPosition.azimuth << " " << desiredPosition.azimuth << " " << output << RESET_COLOR << "\n";
     }
@@ -89,10 +97,19 @@ private:
     void CalculateEleDesiredPosition(double nextTimestamp, double currentTimestamp)
     {
         double timeDiff = nextTimestamp - currentTimestamp;
-        double speed = (requestedPosition.elevation - actualPosition.elevation) / timeDiff;
-        double output = aziPidController.Calculate(speed, requestedSpeed.elevation); 
+        desiredPosition.timeStamp = nextTimestamp;
+        if (requestedPosition.timeStamp > nextTimestamp)
+        {
+            desiredPosition.elevation = desiredPosition.elevation + desiredSpeed.elevation * (timeDiff);
+        }
+        else
+        {
+            desiredPosition.elevation = requestedPosition.elevation;
+        }
+        std::cout << CYAN << "Desired azim = " << desiredPosition.elevation << RESET_COLOR << "\n";
+        double speed = (desiredPosition.elevation - actualPosition.elevation) / timeDiff;
+        double output = elePidController.Calculate(speed, requestedSpeed.elevation); 
         LimitEleSpeed(timeDiff, output);
-        desiredPosition.elevation = actualPosition.elevation + requestedSpeed.elevation * timeDiff;
 
         std::cout << BOLDYELLOW <<  "ELE: " << actualPosition.elevation << " " << desiredPosition.elevation << " " << output << RESET_COLOR << "\n";
     }
@@ -158,6 +175,7 @@ private:
 
     Speed currentSpeed;
     Speed requestedSpeed;
+    Speed desiredSpeed;
 
     PidController aziPidController;
     PidController elePidController;

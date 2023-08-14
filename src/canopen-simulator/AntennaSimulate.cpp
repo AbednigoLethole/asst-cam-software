@@ -7,15 +7,17 @@ AntennaSimulate::AntennaSimulate(long periodMs)
 {
     ctlPeriod = (double ) periodMs / 1000.0;
     
-    aziPidController.SetValues(ctlPeriod, 6.50, 0.03, 0.8);
+//    aziPidController.SetValues(ctlPeriod, 6.50, 0.03, 0.8);
+    aziPidController.SetValues(ctlPeriod, 0.90, 0.05, 0.01);
     aziPidController.SetMax(-maxSpeed, maxSpeed);
-    elePidController.SetValues(ctlPeriod, 6.5, 0.03, 0.8);
+//    elePidController.SetValues(ctlPeriod, 6.5, 0.03, 0.8);
+    elePidController.SetValues(ctlPeriod, 0.9, 0.05, 0.01);
     elePidController.SetMax(-maxSpeed, maxSpeed);
 
     // Get current timestamp
     double timestamp = GetCurrentTimestamp();
 
-    actualPosition = {timestamp, 90.0, 45.0};
+    actualPosition = {timestamp, 0.0, 90.0};
     desiredPosition     =   actualPosition;
     requestedPosition   =   actualPosition;
 
@@ -23,6 +25,7 @@ AntennaSimulate::AntennaSimulate(long periodMs)
     requestedSpeed      =   currentSpeed;
 
     outFile.open("Position.csv");
+    outFile << "Timestamp (s), Azimuth (deg), Elevation (deg)" << "\n";
 }
 
 AntennaSimulate::~AntennaSimulate()
@@ -32,7 +35,7 @@ AntennaSimulate::~AntennaSimulate()
 
 void AntennaSimulate::ControlSpeed()
 {
-     // Get current timestamp
+    // Get current timestamp
     double timestamp = GetCurrentTimestamp();
 
     double nextTimestamp = timestamp + ctlPeriod;
@@ -42,6 +45,7 @@ void AntennaSimulate::ControlSpeed()
         // Calculate desired position
         CalculateAziDesiredPosition(nextTimestamp, timestamp);
         desiredPosition.timeStamp = nextTimestamp;
+//        LimitPosition(desiredPosition.azimuth, minAzimuth, maxAzimuth);
     }
     else
     {
@@ -53,11 +57,11 @@ void AntennaSimulate::ControlSpeed()
         // Calculate desired position
         CalculateEleDesiredPosition(nextTimestamp, timestamp);
         desiredPosition.timeStamp = nextTimestamp;
+  //      LimitPosition(desiredPosition.elevation, minElevation, maxElevation);
     }
     else
     {
         requestedSpeed.elevation = 0.0;
-        //elevationDone = true;
     }
 
     // Check for new requests
@@ -69,30 +73,35 @@ void AntennaSimulate::ControlSpeed()
         {
             return;
         }
+        // Store previous request
+        Position prevRequestedPosition = requestedPosition;
         // Get request
         requestedPosition = positionRequests.front();
         // Remove 
         positionRequests.pop();
-        // Reset PID controllers
-        aziPidController.Reset();
-        elePidController.Reset();
-
-        cout << CYAN << "[+] New request: " << requestedPosition.azimuth << ", " << requestedPosition.elevation << "\n"; 
-        
         // Check timestamp
         double nextTimestamp = timestamp + ctlPeriod;
         if (nextTimestamp > requestedPosition.timeStamp)
         {
-            cout << RED << "[-] time in the past!" << endl;
-            requestedPosition.azimuth = actualPosition.azimuth;
-            requestedPosition.elevation = actualPosition.elevation;
+            cout << RED << fixed << "[-] time in the past: " << nextTimestamp - requestedPosition.timeStamp << endl;
+
+            requestedPosition = prevRequestedPosition;
+            // Check again
             // Check again for requests
             if ((fabs(requestedPosition.azimuth - actualPosition.azimuth) < positionError) &&
-               (fabs(requestedPosition.elevation - actualPosition.elevation) < positionError))
-            {
-               return ControlSpeed();
+                (fabs(requestedPosition.elevation - actualPosition.elevation) < positionError))
+            {            
+                return ControlSpeed();
             }
         }
+        desiredPosition = actualPosition;
+        // Reset PID controllers
+        aziPidController.Reset();
+        elePidController.Reset();
+        desiredSpeed.azimuth = (requestedPosition.azimuth - actualPosition.azimuth) / (requestedPosition.timeStamp - timestamp);
+        desiredSpeed.elevation = (requestedPosition.elevation - actualPosition.elevation) / (requestedPosition.timeStamp - timestamp);
+
+        cout << CYAN << fixed << "[+] " << timestamp << " New request: " << requestedPosition.timeStamp << " =>  " <<  requestedPosition.azimuth << ", " << requestedPosition.elevation << "\n";         
     }
 }
 

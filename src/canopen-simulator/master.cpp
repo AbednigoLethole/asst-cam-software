@@ -85,7 +85,7 @@ class MyDriver : public canopen::FiberDriver {
       // Pointing request 
       // Get current timestamp
       auto ts = std::chrono::system_clock::now();
-      long timestampMs = std::chrono::duration_cast<std::chrono::milliseconds>(ts.time_since_epoch()).count() + 5000;
+      long timestampMs = std::chrono::duration_cast<std::chrono::milliseconds>(ts.time_since_epoch()).count() + 120000;
       double timestamp = (double) timestampMs / 1000.0f;
       Wait(AsyncWrite<double>(0x2000, 1, std::move(timestamp)));
       double azimuth = 45.0;
