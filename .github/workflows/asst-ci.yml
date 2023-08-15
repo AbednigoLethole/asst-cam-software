@@ -16,5 +16,32 @@ jobs:
 
       - name: Build the ASTT Docker Image
         run: docker build -t astt-cam-software .
+
+  python-lint:
+    runs-on: ubuntu 20.04
+    needs: build-image
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Install using the requirement
+
+    - name: Checks if the code is of good quality using isort
+      run: isort --check-only --profile black --line-length 70 -w 70 src/
+
+    - name: Checks if the code is of good quality using black
+      run: black --exclude .+\.ipynb --check --line-length 70 --line-length 70 src/
+
+    - name: Checks if the code is of good quality using flake8
+      run: flake8 --show-source --statistics --max-line-length 70 --max-line-length=70 src/ 
     
         
