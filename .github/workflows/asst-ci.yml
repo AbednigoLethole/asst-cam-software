@@ -1,0 +1,18 @@
+name: ASTT pipeline
+
+# Triggers the pipeline on every push.
+on:
+  push:
+
+jobs:
+  build image:
+    runs-on: ubuntu 20.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build the ASTT Docker Image
+        run: docker build -t astt-cam-software .
+    
+        
