@@ -1,2 +1,6 @@
+black
 canopen
 ipython
+isort
+flake8
+pylint
