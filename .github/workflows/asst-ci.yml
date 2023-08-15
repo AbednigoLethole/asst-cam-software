@@ -3,6 +3,8 @@ name: ASTT pipeline
 # Triggers the pipeline on every push.
 on:
   push:
+    branches:
+      - '*' 
 
 jobs:
   build image:
