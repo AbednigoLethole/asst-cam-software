@@ -58,4 +58,24 @@ jobs:
         python-version: '3.8'
     - name: Run Tests
       run: echo "Will test once the tests are available"
+
+  docs-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: builds the docs
+      run: echo "Will build the docs"
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Publish artifact
+      run: echo "Will publish the asst software."
     
