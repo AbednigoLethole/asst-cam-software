@@ -1,7 +1,0 @@
-#/bin/sh
-
-g++ -std=c++14 -Wall -Wextra -pedantic -g -O2 \
-    $(pkg-config --cflags liblely-coapp) \
-    master.cpp \
-    -o master \
-    $(pkg-config --libs liblely-coapp)
