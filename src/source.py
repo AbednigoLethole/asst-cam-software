@@ -1,4 +1,3 @@
-# import canopen
 import time
 from astropy.coordinates import EarthLocation, AltAz, get_sun
 from astropy import units as u
@@ -10,16 +9,10 @@ from astropy.time import *
 # lat = 50.0 * u.deg
 # lon = 30.0 * u.deg
 # alt = 70.0 * u.m
-# Hardcoded satillite1's co ordinates
-sat1_lat = 0.00 * u.deg 
-sat1_lon = 68.50 * u.deg
-sat1_alt = 35781530 * u.m 
 
 # ASTT location hardcoded but 
 # TODO: Use ASTT GPS Reciever Component Manager.
-# astt_coords = EarthLocation(lat, lon, alt)
-
-# Timestamp 
+# Timestamp
 utcoffset = -2 * u.hour  # SAST Daylight Time
 time = Time('2023-8-26 09:25:00') - utcoffset
 
@@ -58,10 +51,13 @@ class Satellite1:
 
 
 class Satellite2:
-        def __init__(self) -> None:
-            pass
-        def get_az_el_sat2(self, timestamp, lat, alt, lon):
-            return (az, el)
+    def __init__(self, lat, lon, alt):
+        self.lat = lat
+        self.lon = lon
+        self.alt = alt
+
+    def get_az_el_sat2(self, timestamp):
+        return (az, el)
 
 
 if __name__ == '__main__':
