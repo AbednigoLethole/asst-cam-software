@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime, timezone
 
 from astropy import units as u
@@ -76,7 +77,8 @@ class Satellite2:
 
 
 if __name__ == "__main__":
-    sun = Sun(-33.9326033333, 18.47222, 3.6)
-    sun.get_sun_az_el()
+    print(sys.path)
+    # sun = Sun(-33.9326033333, 18.47222, 3.6)
+    # sun.get_sun_az_el()
     # intelsat20 = Satellite1(-33.9326033333, 18.47222, 3.6)
     # intelsat20.get_sat1_az_el()
