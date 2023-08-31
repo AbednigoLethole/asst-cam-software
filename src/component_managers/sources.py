@@ -59,6 +59,7 @@ class Satellite1:
         """
         pass
 
+
 class Satellite2:
     def __init__(self, lat, lon, alt):
         self.lat = lat
