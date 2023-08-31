@@ -57,14 +57,7 @@ class Satellite1:
           A tuple that contains the Azimuth and Elevation
           in degrees.
         """
-        astt_coords = EarthLocation(self.lat, self.lon, self.alt)
-        alt_az = AltAz(obstime=None, location=astt_coords)
-        sat1_coords = get_sun(track_time).transform_to(alt_az)
-        az = sat1_coords.az.to(u.degree).value
-        el = sat1_coords.alt.to(u.degree).value
-        print("sat1_Az: ", str(az), "sat1_El :", str(el))
-        return (az, el)
-
+        pass
 
 class Satellite2:
     def __init__(self, lat, lon, alt):
