@@ -4,17 +4,18 @@ import time
 import canopen
 
 
-class PLCComponentManager:
+class ASTTComponentManager:
     def __init__(self):
+        """Init method for the CM ."""
         self.dishmode = None
         self.network0 = canopen.Network()
 
     def connect_to_network(self):
+        """Connects to the CAN0 ."""
         (self.network0).connect(channel="can0", bustype="socketcan")
 
     def connect_to_plc_node(self):
         """Connect to the C++  antenna simulator."""
-
         curr_dir = os.getcwd()
         eds_rel_path = "src/component_managers/cpp-slave.eds"
         eds_full_path = os.path.join(curr_dir, eds_rel_path)
@@ -27,20 +28,25 @@ class PLCComponentManager:
         return node2
 
     def set_plc_node_to_operational(self, node):
+        """Changes all the nodes state to OPERATIONAL."""
         node.nmt.state = "OPERATIONAL"
 
     def set_plc_node_to_preoperational(self, node):
+        """Changes all the nodes state to PRE-OPERATIONAL."""
         node.nmt.state = "PRE-OPERATIONAL"
 
     def get_plc_state(self, node):
+        """Returns node state."""
         return node.nmt.state
 
     def point_to_coordinates(self, node, timestamp, az, el):
+        """commands the simulator to point az/el ."""
         node.sdo[0x2000][1].raw = timestamp + 2
         node.sdo[0x2000][2].raw = az
         node.sdo[0x2000][3].raw = el
 
     def az_el_change_callback(self, incoming_object):
+        """Transmit PDO callback ."""
         for node_record in incoming_object:
             if (
                 node_record.name
@@ -55,6 +61,7 @@ class PLCComponentManager:
                 print(f"current Elevation : {node_record.raw} ")
 
     def subscribe_to_az_change(self, node):
+        """CanOpen Subscription to the Azimuth ."""
         node.tpdo.read()
         # Mapping the Azimuth to tpdo
         node.tpdo[1].clear()
@@ -73,6 +80,7 @@ class PLCComponentManager:
         node.tpdo[1].add_callback(self.az_el_change_callback)
 
     def subscribe_to_el_change(self, node):
+        """CanOpen Subscription to the Elevation ."""
         node.tpdo[2].read()
         # Mapping the Elevation to tpdo
         node.tpdo[2].clear()
@@ -88,7 +96,7 @@ class PLCComponentManager:
         node.tpdo[2].add_callback(self.az_el_change_callback)
 
     def trigger_transmission(self, node):
-        # Triggers the transmission TPDO
+        """Triggers the transmission of Az/El ."""
         node.nmt.state = "OPERATIONAL"
         (self.network0).sync.start(0.5)
         while True:
@@ -96,7 +104,8 @@ class PLCComponentManager:
 
 
 if __name__ == "__main__":
-    cm = PLCComponentManager()
+    """Run the CM."""
+    cm = ASTTComponentManager()
     cm.connect_to_network()
     node2 = cm.connect_to_plc_node()
     cm.subscribe_to_az_change(node2)
