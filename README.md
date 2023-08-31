@@ -2,13 +2,13 @@
 
 The ASTT CAM software is the control and monitoring system for the AVN Satelite Teaching Telescope. The software monitors the sensors and command the telescope to move in specified direction(Az/El).
 
-The CAM Software consist of two C++ simulators(Master Node & Slave Node) which simulate the AST Telescope. However these simulators do not simulate the complete implementation of the Telescope.
+The CAM Software consist of a C++ simulator(Slave Node) which simulate the AST Telescope. However the simulator does not simulate the complete functionality of the Telescope.
 
 ## **Installation**  
 The software currently runs on:   
-* Ubuntu 20.04
+* Ubuntu machines
 
-If you are not using Ubuntu 20.04 , download docker on your machine/computer and build the software using it.
+ To install and run the simulator, download docker on your machine/computer and build the software using it.
 
 To install and run the software using docker follow this commands:
 
@@ -16,45 +16,46 @@ To install and run the software using docker follow this commands:
 
     ```git clone https://github.com/AbednigoLethole/asst-cam-software.git```
   
-* Build the image.
+* Download the simulator from a drive, Here's a link below:
 
-    ```docker build -t <your image name> .```
+    ```https://drive.google.com/file/d/1JjoqoAQqZabTKoWz5sL3uhbDIZ5jXAc9/view?ts=64e315a7```
 
-* Run the docker container with admin rights.
+* start the virtual CAN Interface
 
-    ```docker run -it  --privileged <your image id> /bin/bash ```
+    ```sh startVirtualCANInterface.sh```
 
-* Once you get access to the container shell, Make shells executable.
+* Load the docker image from  the .tar file .
 
-    ```chmod +x installLely.sh startVirtualCANInterface.sh ```
+    ```docker load -i ubuntu_canopen.tar ```
 
-* Execute a shell to install Lely and start a virtual CAN Network.
+* Run the container shell that has the simulator with all its dependencies.
 
-    ```./installLely.sh ```
+    ```docker run -it --network=host ubuntu_canopen ```
+
+* Once the shell is open, move to directory that has the simulator.
+
+    ```cd simulator ```
     
-    ```./startVirtualCANInterface.sh ```
-    
+## **Running the C++ Antenna Simulator**  
 
-## **Running the C++ Simulators**  
+* The simulator is alrealdy compiled so use the following command to start it:
 
-* move to the simulators directory.
+    ```./slave ```
 
-    ```cd src/canopen-simulator ```
+* To restart the simulator, use the following command:
 
-* Make C++ compiling shells executable.
+    ``` reset && ./slave```
 
-    ```chmod +x compileMaster.sh compileSlave.sh ```
+## **Running the component manager**
 
-* Execute a shell to compile master node and a shell to compile the slave node.
+* To run the component manager install the python requirements first
 
-    ```./compileMaster.sh ```
+``` pip3 install -r requirements.txt ```
 
-    ```./compileSlave.sh ```
+* run the asst component manager
 
-* Run the master node.
+``` python3 src/component_managers/asst_comp_manager.py ```
 
-    ```./master```
 
-* Run the master node.
 
-    ```./slave```
+
