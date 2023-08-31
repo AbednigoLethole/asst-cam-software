@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Astt Cam Gui</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static/images/favicon.png" rel="icon">
+  <link href="static/images/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- static CSS Files -->
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/css/quill.snow.css" rel="stylesheet">
+  <link href="static/css/quill.bubble.css" rel="stylesheet">
+  <link href="static/css/remixicon.css" rel="stylesheet">
+  <link href="static/css/dt-style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Jul 27 2023 with Bootstrap v5.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="static/images/logo.png" alt="">
+        <span class="d-none d-lg-block">ASTT CAM</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i><span>Alarms</span><span class="badge bg-danger badge-number">4</span>
+          
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>GPS Reciver Failure</h4>
+                <p>Couldn't read the values</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Antenna not levelled</h4>
+                <p>Not on O deg Elevation</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Source Found</h4>
+                <p>2 source have been found </p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Unstow Before Tracking</h4>
+                <p>Can't track when the antenna on stow</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li>
+
+      </ul>
+    </nav>
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="index.html">
+          <i class="bi bi-grid"></i>
+          <span>Controls</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Logs</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>2020</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>2021</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>2022</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>2023</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Download Targets</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Sources</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Sun</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Setellite</span>
+            </a>
+          </li>
+          <li>
+
+        </ul>
+      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>RF</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>EM</span>
+            </a>
+          </li>
+          <li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Modes</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <!-- <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span >Bootstrap Icons</span>
+            </a>
+          </li>
+          <li>
+            <a href="icons-remix.html">
+              <i class="bi bi-circle"></i><span>Remix Icons</span>
+            </a>
+          </li>
+          <li>
+            <a href="icons-boxicons.html">
+              <i class="bi bi-circle"></i><span>Boxicons</span>
+            </a> -->
+          </li>
+        </ul>
+      </li><!-- End Icons Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>CAM Dashboard</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-8">
+                <div class="card-body">
+                  <h5 class="card-title">Controls</h5>
+                  <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
+                    <button class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
+                    <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
+                    <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
+                    <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="bi bi-app-indicator"></span> Point Source</button>
+                    <button class="btn btn-primary"> <span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                  </div> 
+                </div>
+
+              </div>
+                          <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Provide Pointing Targets (Angles)</h5>
+                      
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="row mb-3">
+                            <label for="inputText" class="col-sm-2 col-form-label">Azimith</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">Elevation</label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control">
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Point</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            <!-- Reports -->
+            <div class="mb-6">
+              <div class="card" style="display: flexbox;">
+
+                <div class="card-body">
+                  <h5 class="card-title">Az/El <span>/Angles</span></h5>
+
+                  <!-- Line Chart -->
+                  <div id="reportsChart"></div>
+
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                      new ApexCharts(document.querySelector("#reportsChart"), {
+                        series: [{
+                          name: 'Azimith',
+                          data: [31, 40, 28, 51, 42, 82, 56],
+                        }, {
+                          name: 'Elevation',
+                          data: [11, 32, 45, 32, 34, 52, 41]
+                        }],
+                        chart: {
+                          height: 350,
+                          type: 'area',
+                          toolbar: {
+                            show: false
+                          },
+                        },
+                        markers: {
+                          size: 4
+                        },
+                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                        fill: {
+                          type: "gradient",
+                          gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.3,
+                            opacityTo: 0.4,
+                            stops: [0, 90, 100]
+                          }
+                        },
+                        dataLabels: {
+                          enabled: false
+                        },
+                        stroke: {
+                          curve: 'smooth',
+                          width: 2
+                        },
+                        xaxis: {
+                          type: 'datetime',
+                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                        },
+                        tooltip: {
+                          x: {
+                            format: 'dd/MM/yy HH:mm'
+                          },
+                        }
+                      }).render();
+                    });
+                  </script>
+                  <!-- End Line Chart -->
+
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Recent Logs <span>| Today</span></h5>
+
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Source Co-ordinates</th>
+                        <th scope="col">Azimith</th>
+                        <th scope="col">Elevation</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Modes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
+                        <td>45.4 deg</td>
+                        <td>68.5 deg</td>
+                        <td>645372829494</td>
+                        <td><span class="badge bg-success">Track</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
+                        <td>45.4 deg</td>
+                        <td>68.5 deg</td>
+                        <td>645372829494</td>
+                        <td><span class="badge bg-warning">stow</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
+                        <td>45.4 deg</td>
+                        <td>68.5 deg</td>
+                        <td>645372829494</td>
+                        <td><span class="badge bg-success">Track</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
+                        <td>45.4 deg</td>
+                        <td>68.5 deg</td>
+                        <td>645372829494</td>
+                        <td><span class="badge bg-danger">Stop</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
+                        <td>45.4 deg</td>
+                        <td>68.5 deg</td>
+                        <td>645372829494</td>
+                        <td><span class="badge bg-success">Track</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+          </div>
+        </div><!-- End Left side columns -->
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <!-- <div class="copyright">
+      &copy; Copyright <strong><span>ASTT CAM</span></strong>. All Rights Reserved
+    </div> -->
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      <!-- Designed by <a href="#">SARAO CAM Team</a> -->
+    </div>
+  </footer><!-- End Footer -->
+  <!-- Vendor JS Files -->
+  <script src="static/js/apexcharts.min.js"></script>
+  <script src="static/js/bootstrap.bundle.min.js"></script>
+  <script src="static/js/chartjs/chart.umd.js"></script>
+  <script src="static/js/echarts.min.js"></script>
+  <script src="static/js/quill.min.js"></script>
+  <script src="static/js/simple-datatables.js"></script>
+  <script src="static/js/tinymce/tinymce.min.js"></script>
+  <script src="static/js/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/js/main.js"></script>
+
+</body>
+
+</html>
