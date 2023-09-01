@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>ASTT GUI</title>
+</head>
+<body>
+
+  <div class="card" style="width: 34rem;">
+    <div class="card-body">
+      <h5 class="card-title">Pointing</h5>
+      <div class="mb-4">
+        <label for="formGroupExampleInput" class="form-label">Azimith Angle</label>
+        <input type="text" class="az" id="azimith" placeholder="Example input placeholder">
+      </div>
+      <div class="mb-4">
+        <label for="formGroupExampleInput2" class="form-label">Elevation Angle</label>
+        <input type="text" class="el" id="elvation" placeholder="Another input placeholder">
+      </div>
+      <button class="btn btn-primary" onclick="pointing()">Point</button>
+    </div>
+  </div>
+
+  <span id="showV1"></span><br>
+  <span id="showV2"></span>
+  <script src="./script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
