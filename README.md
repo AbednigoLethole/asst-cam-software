@@ -54,19 +54,8 @@ To install and run the software using docker follow this commands:
 
 * run the asst component manager
 
-``` python3 src/component_managers/astt_comp_manager.py ```
+``` python3 src/component_managers/asst_comp_manager.py ```
 
 
-## **Running the ASTT GUI**
 
-* To run the GUI ensure flask is installed:
 
-``` pip3 install -r requirements.txt ```
-
-* run the flask app
-
-``` python3 src/asst_gui/app.py ```
-
-* To access the gui, copy this url and paste to your browser:
-
-```http://127.0.0.1:5000/ ```
