@@ -1,7 +1,9 @@
+import datetime
 import os
 import time
 
 import canopen
+from sources import Sun
 
 
 class ASTTComponentManager:
@@ -99,8 +101,29 @@ class ASTTComponentManager:
         """Triggers the transmission of Az/El ."""
         node.nmt.state = "OPERATIONAL"
         (self.network0).sync.start(0.5)
-        while True:
-            time.sleep(1)
+        # while True:
+        #    time.sleep(1)
+
+    def track_sun(self, node, duration_time):
+        # Converting the duretion time to seconds
+        time_conversion = duration_time * 3600
+        count = 1
+        sun = Sun(-33.9326033333, 18.47222, 3.6)
+        while count < time_conversion:
+            # ts = int(time.time()) + 2
+            track_time = datetime.datetime.now(
+                datetime.timezone.utc
+            ) + datetime.timedelta(seconds=2)
+            az, el = sun.get_sun_az_el(track_time)
+            ts = (
+                track_time
+                - datetime.datetime(
+                    1970, 1, 1, tzinfo=datetime.timezone.utc
+                )
+            ).total_seconds()
+            self.point_to_coordinates(node, ts, az=az, el=el)
+            time.sleep(5)
+            count += 1
 
 
 if __name__ == "__main__":
@@ -110,5 +133,6 @@ if __name__ == "__main__":
     node2 = cm.connect_to_plc_node()
     cm.subscribe_to_az_change(node2)
     cm.subscribe_to_el_change(node2)
-    cm.point_to_coordinates(node2, int(time.time()), 50.0, 60.0)
     cm.trigger_transmission(node2)
+    cm.track_sun(node2, 1)
+    # cm.point_to_coordinates(node2, int(time.time()), 50.0, 60.0)
