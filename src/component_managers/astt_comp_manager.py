@@ -110,7 +110,6 @@ class ASTTComponentManager:
         count = 1
         sun = Sun(-33.9326033333, 18.47222, 3.6)
         while count < time_conversion:
-            # ts = int(time.time()) + 2
             track_time = datetime.datetime.now(
                 datetime.timezone.utc
             ) + datetime.timedelta(seconds=2)
@@ -135,4 +134,3 @@ if __name__ == "__main__":
     cm.subscribe_to_el_change(node2)
     cm.trigger_transmission(node2)
     cm.track_sun(node2, 1)
-    # cm.point_to_coordinates(node2, int(time.time()), 50.0, 60.0)
