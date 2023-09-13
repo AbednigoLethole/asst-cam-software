@@ -13,7 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
 ]
 packages = [
-    { include = "astt_cam_software", from = "src" }
+    { include = "component_managers", from = "src" }
 ]
 include = [
     { path = 'tests'},
