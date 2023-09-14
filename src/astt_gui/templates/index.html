@@ -296,7 +296,7 @@
                       
                       </div>
                       <div class="modal-body">
-                        <form method="post">
+                        <form method="POST" action="/">
                           <div class="row mb-3">
                             <label for="inputText" class="col-sm-2 col-form-label">Azimith</label>
                             <div class="col-sm-10">
@@ -308,12 +308,12 @@
                             <div class="col-sm-10">
                               <input type="text" id="elevation" class="form-control" name="elevation">
                             </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <input type="submit" class="btn btn-primary" value="Point"></input>
+                            </div>
                           </div>
                         </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Point</button>
                       </div>
                     </div>
                   </div>
