@@ -3,8 +3,16 @@ name = "astt-cam-software"
 version = "0.0.1"
 license = "MIT license"
 readme = 'README.md'
-description = "A learning project for the GITs"
-authors = ["Abednigo Lethole"]
+description = "A GIT's project to build a telescope."
+authors = [
+    "Abednigo Lethole",
+    "Lebogang Lekganyane",
+    "Phelokazi Dube",
+    "Umkhulu Sirele",
+    "Surprise sithole",
+    "Prudence Baloyi",
+]
+
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
