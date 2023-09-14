@@ -1,12 +1,11 @@
 import time
+
 from flask import Flask, render_template, request
 
 from component_managers.astt_comp_manager import ASTTComponentManager
 
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
-
-
 app = Flask(__name__)
+
 
 @app.route("/", methods=["GET", "POST"])
 def start_astt_gui():
@@ -21,9 +20,10 @@ def start_astt_gui():
         az = request.form["azimuth"]
         el = request.form["elevation"]
 
-        cm.point_to_coordinates(node2,int(time.time()),float(az),float(el))
+        cm.point_to_coordinates(
+            node2, int(time.time()), float(az), float(el)
+        )
         cm.trigger_transmission(node2)
-
 
     return render_template("index.html")
 
