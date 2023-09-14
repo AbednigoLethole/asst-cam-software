@@ -300,17 +300,19 @@
                           <div class="row mb-3">
                             <label for="inputText" class="col-sm-2 col-form-label">Azimith</label>
                             <div class="col-sm-10">
-                              <input type="text"  id="azimuth" class="form-control" name ="azimuth">
+                              <input type="number" step="0.01" id="azimuth" class="form-control" name ="azimuth" required="required">
+                              <span style="font-style: italic; color: red;" id="azErrorMsg"></span>
                             </div>
                           </div>
                           <div class="row mb-3">
                             <label for="inputEmail" class="col-sm-2 col-form-label">Elevation</label>
                             <div class="col-sm-10">
-                              <input type="text" id="elevation" class="form-control" name="elevation">
+                              <input type="number" step="0.01" id="elevation" class="form-control" name="elevation" required="required">
+                              <span style="font-style: italic; color: red;" id="elErrorMsg"></span>
                             </div>
                             <div class="modal-footer">
                               <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <input type="submit" class="btn btn-primary" value="Point"></input>
+                              <input type="submit" class="btn btn-primary" id="submitBtn" value="Point"></input>
                             </div>
                           </div>
                         </form>
