@@ -56,6 +56,11 @@ To install and run the software using docker follow this commands:
 
 ``` python3 src/component_managers/asst_comp_manager.py ```
 
+## **Running the GUI**
+
+* Run the GUI
+
+``` python3 src/asst_gui/app.py ```
 
 
 
