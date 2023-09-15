@@ -14,4 +14,4 @@ WORKDIR /app
 COPY . /app
 
 # Installing Python dependencies
-RUN pip3 install -r requirements.txt  
+RUN pip3 install poetry && poetry install  

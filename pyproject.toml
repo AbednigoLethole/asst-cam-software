@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "astt-cam-software"
+version = "0.0.1"
+license = "MIT license"
+readme = 'README.md'
+description = "A GIT's project to build a telescope."
+authors = [
+    "Abednigo Lethole",
+    "Lebogang Lekganyane",
+    "Phelokazi Dube",
+    "Umkhulu Sirele",
+    "Surprise sithole",
+    "Prudence Baloyi",
+]
+
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+]
+packages = [
+    { include = "component_managers", from = "src" }
+]
+include = [
+    { path = 'tests'},
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.7"
+assertpy = "^1.1"
+
+
+[tool.poetry.dev-dependencies]
+black="*"
+canopen="*"
+ipython="*"
+isort="*"
+flake8="*"
+pylint="*"
+pynmeagps="*"
+pyserial="*"
+pytest="*"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

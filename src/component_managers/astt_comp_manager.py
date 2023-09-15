@@ -3,7 +3,8 @@ import os
 import time
 
 import canopen
-from sources import Sun
+
+from .sources import Sun
 
 
 class ASTTComponentManager:
