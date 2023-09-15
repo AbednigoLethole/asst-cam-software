@@ -48,9 +48,13 @@ To install and run the software using docker follow this commands:
 
 ## **Running the component manager**
 
-* To run the component manager install the python requirements first
+* Install Poetry
 
-``` pip3 install -r requirements.txt ```
+    ``` pip install poetry ```
+
+* Install dependencies
+
+    ``` poetry config virtualenvs.create false && poetry install  ```
 
 * run the asst component manager
 
@@ -61,6 +65,16 @@ To install and run the software using docker follow this commands:
 * Run the GUI
 
 ``` python3 src/asst_gui/app.py ```
+
+
+## **Running the tests**
+
+* Ensure the simulator is running
+
+
+* Run the test
+
+    ``` pytest tests/ -v ```
 
 
 
