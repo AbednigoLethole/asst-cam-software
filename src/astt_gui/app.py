@@ -11,7 +11,7 @@ cm = ASTTComponentManager()
 
 @app.route("/", methods=["GET"])
 def index():
-    # Start the  component manager simultaneusly with the gui
+
     return render_template("index.html")
 
 @app.route("/", methods=["POST"])
