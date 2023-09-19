@@ -9,8 +9,8 @@ class SimulatorManager:
         self.start_virtual_can = "./startVirtualCANInterface.sh"
         # self.docker_load = "docker load -i ubuntu_canopen.tar"
         self.docker_run = (
-            "docker run -it --network=host ubuntu_canopen bash -c "
-            "'cd simulator && ./slave && exec bash'"
+            "docker run -d --network=host ubuntu_canopen bash -c "
+            "'cd simulator && ./slave '"
         )
 
     def start_can_interface(self):
