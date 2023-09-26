@@ -289,12 +289,20 @@
               </div>
               <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
               <script>
+                var intializeCount = 0;
                 function performInitPost() {
-                  $.ajax({
+                  if (intializeCount==0) {
+                    $.ajax({
                       type: "POST",
                       url: "{{ url_for('start_astt_gui') }}",
                       data: {"button" : "Initialize"},
-                  })
+                    })
+                    intializeCount++;
+                    alert("Initialize command accepted!!");
+                  }
+                  else{
+                    alert("Not allowed!!\nSystem has already initialized!!");
+                  }
                 }
               </script>
                           <!-- Modal -->
