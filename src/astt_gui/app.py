@@ -24,10 +24,9 @@ def start_astt_gui():
         and request.form["button"] == "Initialize"
     ):
         user_pass = request.form["password"]
-        print(user_pass)
         # Start VCAN network & simulator
         simulator_manager = SimulatorManager()
-        simulator_manager.start_can_interface()
+        simulator_manager.start_can_interface(user_pass)
         simulator_manager.run_contaier_and_startup_simulator()
         # Await Simulator to start up
         time.sleep(3)
