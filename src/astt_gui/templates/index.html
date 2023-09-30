@@ -277,7 +277,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Controls</h5>
                   <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
-                    <button onclick="performInitPost()" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
+                    <button data-bs-toggle="modal" data-bs-target="#initModal" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
                     <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
@@ -291,14 +291,17 @@
               <script>
                 var intializeCount = 0;
                 function performInitPost() {
+                  var userPassword = document.getElementById('password').value
                   if (intializeCount==0) {
+                
                     $.ajax({
                       type: "POST",
                       url: "{{ url_for('start_astt_gui') }}",
-                      data: {"button" : "Initialize"},
+                      data: {"button" : "Initialize","password":userPassword},
                     })
+
                     intializeCount++;
-                    alert("Initialize command accepted!!");
+                    //alert("Initialize command accepted!!");
                   }
                   else{
                     alert("Not allowed!!\nSystem has already initialized!!");
@@ -338,6 +341,34 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Init Modal -->
+                <div class="modal fade" id="initModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="staticBackdropLabel">Enter Password to start the system</h5>
+                                     
+                        </div>
+                        <div class="modal-body">
+                           <form method="POST" action="/">
+                              <div class="row mb-3">
+                                 <label for="inputText" class="col-sm-2 col-form-label">Password</label>
+                                 <div class="col-sm-10">
+                                  <input type="password" id="password" class="form-control" name ="password" required="required">
+                                </div>
+                                 <div class="modal-footer">
+                                    <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <input type="submit" onclick="performInitPost()" class="btn btn-primary" id="submitBtn" value="Submit Password"></input>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            
 
             <!-- Reports -->
             <div class="mb-6">

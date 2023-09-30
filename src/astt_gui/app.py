@@ -23,6 +23,8 @@ def start_astt_gui():
         "button" in request.form
         and request.form["button"] == "Initialize"
     ):
+        user_pass = request.form["password"]
+        print(user_pass)
         # Start VCAN network & simulator
         simulator_manager = SimulatorManager()
         simulator_manager.start_can_interface()
