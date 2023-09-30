@@ -277,7 +277,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Controls</h5>
                   <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
-                    <button class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
+                    <button onclick="performInitPost()" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
                     <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
@@ -287,6 +287,24 @@
                 </div>
 
               </div>
+              <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+              <script>
+                var intializeCount = 0;
+                function performInitPost() {
+                  if (intializeCount==0) {
+                    $.ajax({
+                      type: "POST",
+                      url: "{{ url_for('start_astt_gui') }}",
+                      data: {"button" : "Initialize"},
+                    })
+                    intializeCount++;
+                    alert("Initialize command accepted!!");
+                  }
+                  else{
+                    alert("Not allowed!!\nSystem has already initialized!!");
+                  }
+                }
+              </script>
                           <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
