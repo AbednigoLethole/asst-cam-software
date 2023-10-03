@@ -25,7 +25,7 @@ class SimulatorManager:
             stderr=PIPE,
         )
         proc.communicate(password.encode())
-        print("CANopen interface has started.")
+        return proc.returncode
 
     def run_contaier_and_startup_simulator(self):
         print(green)
