@@ -296,7 +296,8 @@
                 function closeInitModal(){
                   modalPopped = false;
                   console.log(modalPopped);
-                }
+          
+                } 
 
                 function openInitModal(message){
                   var modalMessage = document.getElementById("modalMessage");
@@ -315,7 +316,7 @@
                     $.ajax({
                       type: "POST",
                       url: "{{ url_for('start_astt_gui') }}",
-                      data: {"button" : "Initialize","password":userPassword},
+                      data: {"button" : "Initialize","password" : userPassword},
                     })
 
                     intializeCount++;
@@ -326,6 +327,9 @@
                   }
                 }
               </script>
+
+
+
            
                           <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

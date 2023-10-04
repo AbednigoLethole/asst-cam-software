@@ -15,7 +15,7 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/", methods=["POST","GET"])
+@app.route("/", methods=["POST"])
 def start_astt_gui():
     # Trigger condition when Initialize button is clicked.
 
@@ -26,13 +26,15 @@ def start_astt_gui():
         user_pass = request.form["password"]
         # Start VCAN network & simulator
         simulator_manager = SimulatorManager()
-        success=simulator_manager.start_can_interface(user_pass)
+        success = simulator_manager.start_can_interface(user_pass)
 
         # Report incorrect password to user.
         if success == 0:
             simulator_manager.run_contaier_and_startup_simulator()
         if success == 1:
-            return render_template('index.html', incorrect_password=True)
+            return render_template(
+                "index.html", incorrect_password=True
+            )
         # Await Simulator to start up
         time.sleep(3)
         # Connect to VCAN and Siumlator
