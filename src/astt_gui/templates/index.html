@@ -281,8 +281,8 @@
                     <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="bi bi-app-indicator"></span> Point Source</button>
-                    <button class="btn btn-primary"> <span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
                   </div> 
                 </div>
 
@@ -305,8 +305,8 @@
                   }
                 }
               </script>
-                          <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <!--Point Modal -->
+                <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -338,7 +338,29 @@
                     </div>
                   </div>
                 </div>
-
+            
+                            <!-- Track Modal -->
+                <div class="modal fade" id="trackModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">List of sources to track</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <select class="form-select" aria-label="Default select example">
+                          <option selected>Choose source</option>
+                          <option value="1">Sun</option>
+                          <option value="2">Intel Satellite</option>
+                        </select>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Start Tracking</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             <!-- Reports -->
             <div class="mb-6">
               <div class="card" style="display: flexbox;">
