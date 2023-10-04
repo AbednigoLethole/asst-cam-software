@@ -1,7 +1,6 @@
 import json
-import random
-import time
-
+from time import time
+from random import random
 from flask import Flask, make_response, render_template, request
 
 from component_managers.astt_comp_manager import ASTTComponentManager
@@ -21,10 +20,7 @@ def index():
 def start_astt_gui():
     # Trigger condition when Initialize button is clicked.
 
-    if (
-        "button" in request.form
-        and request.form["button"] == "Initialize"
-    ):
+    if "button" in request.form and request.form["button"] == "Initialize":
         # Start VCAN network & simulator
         simulator_manager = SimulatorManager()
         simulator_manager.start_can_interface()
@@ -45,9 +41,7 @@ def start_astt_gui():
         az = request.form["azimuth"]
         el = request.form["elevation"]
         # Call a method to point to Desired AZ & EL
-        cm.point_to_coordinates(
-            node2, int(time.time()), float(az), float(el)
-        )
+        cm.point_to_coordinates(node2, int(time.time()), float(az), float(el))
         # Display current AZ and EL.
         cm.trigger_transmission(node2)
 
