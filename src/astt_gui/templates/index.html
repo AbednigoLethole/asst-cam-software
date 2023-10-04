@@ -276,7 +276,7 @@
             <div class="col-lg-8">
                 <div class="card-body">
                   <h5 class="card-title">Controls</h5>
-                  <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
+                  <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:0px">
                     <button onclick="performInitPost()" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
                     <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
@@ -347,57 +347,239 @@
                   <h5 class="card-title">Az/El <span>/Angles</span></h5>
 
                   <!-- Line Chart -->
-                  <div id="reportsChart"></div>
+                                
+
+                      <div class="jumbotron">
+
+                    </div>
+                    <br>
+                    <br>
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-5 jumbotron p-2 mx-1">
+                                <h1 class="sensor1"> Sensor : </h1>
+                            </div>
+                            <br>
+
+                            <div class="col-5 jumbotron p-2 mx-1">
+                                <h1 class="sensor2">Sensor :</h1>
+                            </div>
+                            <br>
+
+
+
+                        </div>
+                    </div>
+
+                    <style>
+
+                        .jumbotron{
+                            widows: 150px;
+                            height: 220px;
+                            justify-content: center;
+                        }
+
+                        .row{
+                            justify-content: center;
+                        }
+
+
+                    </style>
+
+                    <div class="container-fluid">
+                        <!-- Example row of columns -->
+                        <div class="row">
+                            <div class="container-fluid" id="data-azimuth">
+
+                            </div>
+                        </div>
+                    </div>
+                  <br>
+                  <br>
+                  <br>
+
+                    <div class="container-fluid">
+                        <!-- Example row of columns -->
+                        <div class="row">
+                            <div class="container-fluid" id="data-elevation">
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <script>
+                        var chartTemperatue;
+                        var chartHumidity;
+
+                        function requestData()
+                        {
+                            // Ajax call to get the Data from Flask
+                            var requests = $.get('/data');
+
+                            var tm = requests.done(function (result)
+                            {
+                                // Temperature
+                                var seriesTemperature = chartTemperatue.series[0],
+                                    shiftTemperature = seriesTemperature.data.length > 20;
+
+                                // Humidity
+                                var seriesHumidity = chartHumidity.series[0],
+                                    shiftHumidity = seriesTemperature.data.length > 20;
+
+                                // Add the Point
+                                // Time Temperature\
+                                var data1 = [];
+                                data1.push(result[0]);
+                                data1.push(result[1]);
+
+
+                                // Add the Point
+                                // Time Humidity
+                                var data2 = [];
+                                data2.push(result[0]);
+                                data2.push(result[2]);
+
+
+                                chartTemperatue.series[0].addPoint(data1, true, shiftTemperature);
+                                chartHumidity.series[0].addPoint(data2, true, shiftHumidity);
+                                $(".sensor1").text("");
+                                $(".sensor1").text("Azimuth : " +  Math.round(data1[1]) );
+
+                                $(".sensor2").text("");
+                                $(".sensor2").text("Elevation : " +  Math.round(data2[1]) );
+
+                                // call it again after one second
+                                setTimeout(requestData, 2000);
+
+                            });
+                        }
+
+                        $(document).ready(function()
+                        {
+                            // --------------Chart 1 ----------------------------
+                            chartTemperatue = new Highcharts.Chart({
+                                chart:
+                                    {
+                                    renderTo: 'data-azimuth',
+                                    defaultSeriesType: 'area',
+                                    events: {
+                                        load: requestData
+                                            }
+                                    },
+                                title:
+                                    {
+                                    text: 'Azimuth'
+                                    },
+                                xAxis: {
+                                    type: 'datetime',
+                                    tickPixelInterval: 150,
+                                    maxZoom: 20 * 1000
+                                        },
+                                yAxis: {
+                                    minPadding: 0.2,
+                                    maxPadding: 0.2,
+                                    title: {
+                                        text: 'Value',
+                                        margin: 80
+                                            }
+                                        },
+                                series: [{
+                                    color : '#c23d23',
+                                    lineColor: '#303030',
+                                    name: 'Azimuth',
+                                    data: []
+                                }]
+                            });
+                            // --------------Chart 1 Ends - -----------------
+
+                            chartHumidity = new Highcharts.Chart({
+                                chart:
+                                    {
+                                        renderTo: 'data-elevation',
+                                        defaultSeriesType: 'area',
+                                        events: {
+                                            load: requestData
+                                        }
+                                    },
+                                title:
+                                    {
+                                        text: 'Elevation'
+                                    },
+                                xAxis: {
+                                    type: 'datetime',
+                                    tickPixelInterval: 150,
+                                    maxZoom: 20 * 1000
+                                },
+                                yAxis: {
+                                    minPadding: 0.2,
+                                    maxPadding: 0.2,
+                                    title: {
+                                        text: 'Value',
+                                        margin: 80
+                                    }
+                                },
+                                series: [{
+                                    lineColor: '#1d82b8',
+                                    name: 'Elevation',
+                                    data: []
+                                }]
+                            });
+
+
+                        });
+                    </script>
+
+
 
                   <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Azimith',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Elevation',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
+                    class Image{
+
+                        constructor(imgUrl, size)
+                        {
+                            this.imgUrl=imgUrl;
+                            this.size=size;
                         }
-                      }).render();
-                    });
-                  </script>
+
+                        backgroundImage()
+                        {
+                            console.log("inside function ")
+                            // Select the Image
+                            var img = document.querySelector(".jumbotron");
+
+                            // create Css Text
+                            var text = "margin:auto;"+
+                                "background-image: url("+this.imgUrl+");" +
+                                "background-size:cover;"+
+                                "opacity:1;"+
+                                "position:relative"+
+                                "background-blend-mode: darken;"+
+                                "height: "+ this.size + "vh;";
+
+                            img.style.cssText =  text;
+                        }
+
+                        centerTitle()
+                        {
+
+                            /*
+                                Center the Title
+                            */
+                            var t1 = document.querySelector("#title");
+                            t1.classList.add("text-white");
+                            t1.classList.add("text-center");
+                            t1.classList.add("display-3");
+                        }
+                    }
+                    const imgUrl = 'https://media3.giphy.com/media/tZqBZPEPUrzuUIELIV/giphy.gif'
+                    const size = "25";
+                    var obj = new Image(imgUrl, size);
+                    obj.backgroundImage();
+                    obj.centerTitle();
+                    </script>
                   <!-- End Line Chart -->
 
                 </div>
@@ -509,8 +691,28 @@
   <script src="static/js/tinymce/tinymce.min.js"></script>
   <script src="static/js/validate.js"></script>
 
+
+    <!-- Bootstraps Java Scipts Links -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
+
+    <!-- JQuery links  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    <!--High CHART LIVE  -->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+ 
+    <!--Gauge  -->
+    <script type="text/javascript" src="http://pubnub.github.io/eon/lib/eon.js"></script>
+
 
 </body>
 
