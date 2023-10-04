@@ -113,7 +113,7 @@ class ASTTComponentManager:
         while count < time_conversion:
             track_time = datetime.datetime.now(
                 datetime.timezone.utc
-            ) + datetime.timedelta(seconds=2)
+            ) + datetime.timedelta(seconds=10)
             az, el = sun.get_sun_az_el(track_time)
             ts = (
                 track_time
@@ -122,8 +122,16 @@ class ASTTComponentManager:
                 )
             ).total_seconds()
             self.point_to_coordinates(node, ts, az=az, el=el)
+            self.trigger_transmission(node)
             time.sleep(5)
+            print("---------------------------------------")
+            print("Sun_Az :", str(az), "Sun_El :", str(el))
+            print("---------------------------------------")
             count += 1
+            
+    def track_sun_update(self, node):
+        pass
+        
 
 
 if __name__ == "__main__":

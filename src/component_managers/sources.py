@@ -9,7 +9,12 @@ from astropy.coordinates import (
 )
 from astropy.time import Time
 
+# TODO: Writing data on a csv for later usage
+# request_file = open('request_pos.csv', 'w')
+# request_file.writelines('Timestamp (s), Azimuth (deg), Elevation (deg) \n')
+
 # TODO: Use ASTT GPS Reciever Component Manager.
+
 current_time = datetime.now(timezone.utc)
 track_time = Time(current_time, scale="utc")
 
@@ -21,6 +26,10 @@ class Sun:
         self.lat = lat * u.deg
         self.lon = lon * u.deg
         self.alt = alt
+
+    def earth_coords(self):
+        earth_coords = EarthLocation(lat=self.lat, lon=self.lon, height=self.alt * u.m)
+        return earth_coords
 
     def get_sun_az_el(self, sun_time):
         """This method outputs the Sun's current Azimuth
@@ -39,9 +48,22 @@ class Sun:
         sun_coords = get_sun(astropy_time).transform_to(alt_az)
         az = sun_coords.az.to(u.degree).value
         el = sun_coords.alt.to(u.degree).value
-        print("Sun_Az :", str(az), "Sun_El :", str(el))
+        # print("Sun_Az :", str(az), "Sun_El :", str(el))
         return (az, el)
 
+    def calc_position_sun(self):
+        """Calculates Sun's Az and El and writes it to a file"""
+        # Calculate timestamp
+        FUTURE_SECONDS = 10
+        track_time = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=FUTURE_SECONDS)
+        timestamp = (track_time - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)).total_seconds()
+        tt = Time(track_time, scale='utc')
+        aa = AltAz(obstime=tt, location=self.earth_coords())
+        sun_data = get_sun(tt).transform_to(aa)
+        azi = sun_data.az.to(u.degree).value
+        ele = sun_data.alt.to(u.degree).value
+        print(f'[+] Point: {timestamp} => azimuth {azi} elevation {ele}')
+        request_file.writelines(str(timestamp) + ', ' + str(azi) + ', ' + str(ele) + '\n')
 
 class Satellite1:
     """Class of geostationary or any other satellite or source."""

@@ -1,14 +1,20 @@
+from datetime import datetime, timezone
+from astropy.time import Time
 import time
-
 from flask import Flask, render_template, request
 
 from component_managers.astt_comp_manager import ASTTComponentManager
 from component_managers.start_simulator import SimulatorManager
+from apscheduler.schedulers.background import BackgroundScheduler
+# from component_managers.sources import Sun, Satellite1
 
 app = Flask(__name__)
 cm = ASTTComponentManager()
 node2 = None
-
+current_time = datetime.now(timezone.utc)
+track_time = Time(current_time, scale="utc")
+scheduler = BackgroundScheduler()
+scheduler.start()
 
 @app.route("/", methods=["GET"])
 def index():
@@ -47,6 +53,12 @@ def start_astt_gui():
             node2, int(time.time()), float(az), float(el)
         )
         # Display current AZ and EL.
+        cm.trigger_transmission(node2)
+    if (
+        "button" in request.form
+        and request.form["button"] == "Track"
+        ):
+        cm.track_sun(node2, 0.05)
         cm.trigger_transmission(node2)
 
     return render_template("index.html")

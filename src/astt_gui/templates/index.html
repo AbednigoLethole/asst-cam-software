@@ -282,7 +282,7 @@
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                    <button onclick="call_track_sun()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
                   </div> 
                 </div>
 
@@ -305,6 +305,18 @@
                   }
                 }
               </script>
+
+              <script>
+                function call_track_sun(){
+                  {
+                    $.ajax({
+                      type: "POST",
+                      url: "{{ url_for('start_astt_gui') }}",
+                      data: {"button" : "Track"},
+                    })
+                  }
+                }
+                </script>
                           <!--Point Modal -->
                 <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
