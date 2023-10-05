@@ -275,7 +275,6 @@
           <div class="row">
             <div class="col-lg-8">
                 <div class="card-body">
-                  <h5 class="card-title">Controls</h5>
                   <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:0px">
                     <button onclick="performInitPost()" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
                     <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
@@ -378,7 +377,7 @@
 
                         .jumbotron{
                             widows: 150px;
-                            height: 220px;
+                            height: 80px;
                             justify-content: center;
                         }
 
@@ -555,6 +554,7 @@
                                 "background-image: url("+this.imgUrl+");" +
                                 "background-size:cover;"+
                                 "opacity:1;"+
+                                "object-fit:cover"+
                                 "position:relative"+
                                 "background-blend-mode: darken;"+
                                 "height: "+ this.size + "vh;";
@@ -574,7 +574,7 @@
                             t1.classList.add("display-3");
                         }
                     }
-                    const imgUrl = 'https://media3.giphy.com/media/tZqBZPEPUrzuUIELIV/giphy.gif'
+                    const imgUrl = 'https://media3.giphy.com/media/DDtGmyEh5LKVX9DGHn/giphy.gif'
                     const size = "25";
                     var obj = new Image(imgUrl, size);
                     obj.backgroundImage();
