@@ -1,6 +1,6 @@
 import time
 
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 
 from component_managers.astt_comp_manager import ASTTComponentManager
 from component_managers.start_simulator import SimulatorManager
@@ -31,19 +31,19 @@ def start_astt_gui():
         # Report incorrect password to user.
         if success == 0:
             simulator_manager.run_contaier_and_startup_simulator()
+            # Await Simulator to start up
+            time.sleep(2)
+            # Connect to VCAN and Siumlator
+            cm.connect_to_network()
+            global node2
+            node2 = cm.connect_to_plc_node()
+            # Subscribe to AZ and EL change.
+            cm.subscribe_to_az_change(node2)
+            cm.subscribe_to_el_change(node2)
+
+            return jsonify("success")
         if success == 1:
-            return render_template(
-                "index.html", incorrect_password=True
-            )
-        # Await Simulator to start up
-        time.sleep(3)
-        # Connect to VCAN and Siumlator
-        cm.connect_to_network()
-        global node2
-        node2 = cm.connect_to_plc_node()
-        # Subscribe to AZ and EL change.
-        cm.subscribe_to_az_change(node2)
-        cm.subscribe_to_el_change(node2)
+            return jsonify("Wrong password,Try again!!")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:

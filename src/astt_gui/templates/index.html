@@ -37,6 +37,7 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <body>
 
@@ -291,46 +292,70 @@
               <script>
                 var intializeCount = 0;
                 var modalPopped = false;
+                var systemIntialized = false;
+
+                function initializeComplete(message){
+                  alert(message)
+
+
+                }
 
                 // Gets triggered when an init model is closed
                 function closeInitModal(){
+                  $("#initModal").modal("hide");
                   modalPopped = false;
                   console.log(modalPopped);
           
                 } 
 
                 function openInitModal(message){
-                  var modalMessage = document.getElementById("modalMessage");
-                  modalMessage.textContent = message;
-                  $("#initModal").modal("show");
-                  modalPopped = true;
-                  console.log(modalPopped);
+                  if (systemIntialized==true){
+                    initializeComplete('System already Initialized');
+                  }
+                  else{
 
+                    var modalMessage = document.getElementById("modalMessage");
+                    modalMessage.textContent = message;
+                    $("#initModal").modal("show");
+                    modalPopped = true;
+                    console.log(modalPopped);
+                    
+                  }
                
                 }
 
-                function performInitPost() {
-                  var userPassword = document.getElementById('password').value
-                  if (intializeCount==0) {
-                
-                    $.ajax({
-                      type: "POST",
-                      url: "{{ url_for('start_astt_gui') }}",
-                      data: {"button" : "Initialize","password" : userPassword},
-                    })
+                $(document).ready(function(){  
+                  $('#Submit_Password').click(function(){  
+      
+                    var password = $('#password').val();  
+                    if(password != '') {
+                      $.ajax({  
+                        url:"{{ url_for('start_astt_gui') }}",  
+                        method:"POST",  
+                        data: {"button" : "Initialize","password" : password},
+                        success:function(data) {
+                          if (data == "success"){
+                            closeInitModal();
+                            initializeComplete('System Initialized');
+                            systemIntialized = true;
+                            console.log("Success!!");
+                          }
+                          else{
+                            console.log("Failed");
+                            openInitModal(data);
+                     
+                          }
+                  
+                        },
+                     
+                      });
+                    }
+        
+                  });    
+                });
 
-                    intializeCount++;
-                    //alert("Initialize command accepted!!");
-                  }
-                  else{
-                    alert("Not allowed!!\nSystem has already initialized!!");
-                  }
-                }
               </script>
 
-
-
-           
                           <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -382,8 +407,8 @@
                                   <p id="modalMessage"></p>
                                 </div>
                                  <div class="modal-footer">
-                                    <button type="submit" onclick="closeInitModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <input type="submit" onclick="performInitPost()" class="btn btn-primary" id="submitBtn2" value="Submit Password"></input>
+                                    <button type="button" onclick="closeInitModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" id="Submit_Password">Submit Password</button>
                                  </div>
                               </div>
                            </form>
@@ -563,6 +588,7 @@
   <script src="static/js/simple-datatables.js"></script>
   <script src="static/js/tinymce/tinymce.min.js"></script>
   <script src="static/js/validate.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
