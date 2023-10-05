@@ -1,7 +1,5 @@
 import time
-from datetime import datetime, timezone
 
-from astropy.time import Time
 from flask import Flask, render_template, request
 
 from component_managers.astt_comp_manager import ASTTComponentManager
