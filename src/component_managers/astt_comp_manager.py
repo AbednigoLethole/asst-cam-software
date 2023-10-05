@@ -4,6 +4,8 @@ import time
 
 import canopen
 
+from threading_lrc import background
+
 from .sources import Sun
 
 
@@ -107,6 +109,7 @@ class ASTTComponentManager:
         # while True:
         #    time.sleep(1)
 
+    @background
     def track_sun(self, node, duration_time):
         # Converting the duretion time to seconds
         time_conversion = duration_time * 3600
