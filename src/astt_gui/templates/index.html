@@ -37,6 +37,7 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <body>
 
@@ -277,7 +278,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Controls</h5>
                   <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
-                    <button onclick="performInitPost()" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
+                    <button onclick="openInitModal('')" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
                     <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
@@ -290,35 +291,73 @@
               <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
               <script>
                 var intializeCount = 0;
-                function performInitPost() {
-                  if (intializeCount==0) {
-                    $.ajax({
-                      type: "POST",
-                      url: "{{ url_for('start_astt_gui') }}",
-                      data: {"button" : "Initialize"},
-                    })
-                    intializeCount++;
-                    alert("Initialize command accepted!!");
+                var modalPopped = false;
+                var systemIntialized = false;
+
+                function initializeComplete(message){
+                  alert(message)
+
+
+                }
+
+                // Gets triggered when an init model is closed
+                function closeInitModal(){
+                  $("#initModal").modal("hide");
+                  modalPopped = false;
+                  console.log(modalPopped);
+          
+                } 
+
+                function openInitModal(message){
+                  if (systemIntialized==true){
+                    initializeComplete('System already Initialized');
                   }
                   else{
-                    alert("Not allowed!!\nSystem has already initialized!!");
+
+                    var modalMessage = document.getElementById("modalMessage");
+                    modalMessage.textContent = message;
+                    $("#initModal").modal("show");
+                    modalPopped = true;
+                    console.log(modalPopped);
+                    
                   }
+               
                 }
+
+                $(document).ready(function(){  
+                  $('#Submit_Password').click(function(){  
+      
+                    var password = $('#password').val();  
+                    if(password != '') {
+                      $.ajax({  
+                        url:"{{ url_for('start_astt_gui') }}",  
+                        method:"POST",  
+                        data: {"button" : "Initialize","password" : password},
+                        success:function(data) {
+                          if (data == "success"){
+                            closeInitModal();
+                            initializeComplete('System Initialized');
+                            systemIntialized = true;
+                            console.log("Success!!");
+                          }
+                          else{
+                            console.log("Failed");
+                            openInitModal(data);
+                     
+                          }
+                  
+                        },
+                     
+                      });
+                    }
+        
+                  });    
+                });
+
               </script>
 
-              <script>
-                function call_track_sun(){
-                  {
-                    $.ajax({
-                      type: "POST",
-                      url: "{{ url_for('start_astt_gui') }}",
-                      data: {"button" : "Track"},
-                    })
-                  }
-                }
-                </script>
-                          <!--Point Modal -->
-                <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -342,7 +381,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <input type="submit" class="btn btn-primary" id="submitBtn" value="Point"></input>
+                              <input type="submit" class="btn btn-primary" id="submitBtn1" value="Point"></input>
                             </div>
                           </div>
                         </form>
@@ -351,6 +390,35 @@
                   </div>
                 </div>
             
+                <!-- Init Modal -->
+                <div class="modal fade" id="initModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="staticBackdropLabel">Enter Password to start the system</h5>
+                                     
+                        </div>
+                        <div class="modal-body">
+                           <form method="POST" action="/">
+                              <div class="row mb-3">
+                                 <label for="inputText" class="col-sm-2 col-form-label">Password</label>
+                                 <div class="col-sm-10">
+                                  <input type="password" id="password" class="form-control" name ="password" required="required">
+                                  <p id="modalMessage"></p>
+                                </div>
+                                 <div class="modal-footer">
+                                    <button type="button" onclick="closeInitModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" id="Submit_Password">Submit Password</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            
+
                             <!-- Track Modal -->
                 <div class="modal fade" id="trackModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -542,6 +610,7 @@
   <script src="static/js/simple-datatables.js"></script>
   <script src="static/js/tinymce/tinymce.min.js"></script>
   <script src="static/js/validate.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
