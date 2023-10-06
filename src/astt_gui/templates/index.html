@@ -36,6 +36,16 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <!--graphs handling script-->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <link
+    href="//mincss.com/entireframework.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <link href="{{url_for('static', filename = 'css/app.css')}}" rel="stylesheet"> -->
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
@@ -63,7 +73,7 @@
       <ul class="d-flex align-items-center">
 
         <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <!-- <a class="nav-link nav-icon search-bar-toggle " href="#"> -->
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
@@ -447,62 +457,19 @@
               <div class="card" style="display: flexbox;">
 
                 <div class="card-body">
-                  <h5 class="card-title">Az/El <span>/Angles</span></h5>
-
-                  <!-- Line Chart -->
-                  <div id="reportsChart"></div>
-
-                  <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Azimith',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Elevation',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
-                        }
-                      }).render();
-                    });
-                  </script>
-                  <!-- End Line Chart -->
-
+                  <script type="text/javascript" src="{{ url_for('static', filename = 'js/app.js') }}"></script>
+                  <div class="container">
+                    <div class="hero">
+                      <h4>Real Time Sensor Display</h4>
+                      <div class="chart-container">
+                        <canvas id="myChart" width="1000" height="200"></canvas>
+                      </div>
+                      <!--Elevation Graph-->
+                      <div class="chart2-container">
+                        <canvas id="myChart2" width="1000" height="200"></canvas>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
               </div>
@@ -513,7 +480,7 @@
               <div class="card recent-sales overflow-auto">
 
                 <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <!-- <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
@@ -610,6 +577,7 @@
   <script src="static/js/quill.min.js"></script>
   <script src="static/js/simple-datatables.js"></script>
   <script src="static/js/tinymce/tinymce.min.js"></script>
+  <script src="static/js/graphs.js"></script>
 
 
   <!-- Template Main JS File -->
