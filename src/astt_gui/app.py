@@ -56,6 +56,10 @@ def start_astt_gui():
         )
         # Display current AZ and EL.
         cm.trigger_transmission(node2)
+    if "sources" in request.form and request.form["sources"] == "sun":
+        cm.track_sun(node2, 1)
+    else:
+        pass
 
     return render_template("index.html")
 

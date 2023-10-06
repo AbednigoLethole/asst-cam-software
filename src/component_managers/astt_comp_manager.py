@@ -4,6 +4,8 @@ import time
 
 import canopen
 
+from threading_lrc import background
+
 from .sources import Sun
 
 
@@ -12,6 +14,7 @@ class ASTTComponentManager:
         """Init method for the CM ."""
         self.dishmode = None
         self.network0 = canopen.Network()
+        self.transmission_triggered = False
 
     def connect_to_network(self):
         """Connects to the CAN0 ."""
@@ -55,13 +58,13 @@ class ASTTComponentManager:
                 node_record.name
                 == "Position Feedback.Azimuth(R64) of position"
             ):
-                print(f"current Azumuth : {node_record.raw} ")
+                print(f"Antenna Azumuth : {node_record.raw} ")
 
             if (
                 node_record.name
                 == "Position Feedback.Elevation(R64) of position"
             ):
-                print(f"current Elevation : {node_record.raw} ")
+                print(f"Antenna Elevation : {node_record.raw} ")
 
     def subscribe_to_az_change(self, node):
         """CanOpen Subscription to the Azimuth ."""
@@ -100,11 +103,13 @@ class ASTTComponentManager:
 
     def trigger_transmission(self, node):
         """Triggers the transmission of Az/El ."""
+        self.transmission_triggered = True
         node.nmt.state = "OPERATIONAL"
         (self.network0).sync.start(0.5)
         # while True:
         #    time.sleep(1)
 
+    @background
     def track_sun(self, node, duration_time):
         # Converting the duretion time to seconds
         time_conversion = duration_time * 3600
@@ -113,7 +118,7 @@ class ASTTComponentManager:
         while count < time_conversion:
             track_time = datetime.datetime.now(
                 datetime.timezone.utc
-            ) + datetime.timedelta(seconds=2)
+            ) + datetime.timedelta(seconds=10)
             az, el = sun.get_sun_az_el(track_time)
             ts = (
                 track_time
@@ -122,8 +127,18 @@ class ASTTComponentManager:
                 )
             ).total_seconds()
             self.point_to_coordinates(node, ts, az=az, el=el)
+            if not self.transmission_triggered:
+                self.trigger_transmission(node)
+            else:
+                pass
             time.sleep(5)
+            print("---------------------------------------")
+            print("Sun_Az :", str(az), "Sun_El :", str(el))
+            print("---------------------------------------")
             count += 1
+
+    def track_sun_update(self, node):
+        pass
 
 
 if __name__ == "__main__":
