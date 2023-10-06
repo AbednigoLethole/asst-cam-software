@@ -283,81 +283,80 @@
                     <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
                     <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
-                    <button onclick="call_track_sun()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
                   </div> 
                 </div>
-
-              </div>
-              <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-              <script>
-                var intializeCount = 0;
-                var modalPopped = false;
-                var systemIntialized = false;
-
-                function initializeComplete(message){
-                  alert(message)
-
-
-                }
-
-                // Gets triggered when an init model is closed
-                function closeInitModal(){
-                  $("#initModal").modal("hide");
-                  modalPopped = false;
-                  console.log(modalPopped);
-          
-                } 
-
-                function openInitModal(message){
-                  if (systemIntialized==true){
-                    initializeComplete('System already Initialized');
+                <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+                <script>
+                  var intializeCount = 0;
+                  var modalPopped = false;
+                  var systemIntialized = false;
+  
+                  function initializeComplete(message){
+                    alert(message)
+  
+  
                   }
-                  else{
-
-                    var modalMessage = document.getElementById("modalMessage");
-                    modalMessage.textContent = message;
-                    $("#initModal").modal("show");
-                    modalPopped = true;
+  
+                  // Gets triggered when an init model is closed
+                  function closeInitModal(){
+                    $("#initModal").modal("hide");
+                    modalPopped = false;
                     console.log(modalPopped);
-                    
-                  }
-               
-                }
-
-                $(document).ready(function(){  
-                  $('#Submit_Password').click(function(){  
-      
-                    var password = $('#password').val();  
-                    if(password != '') {
-                      $.ajax({  
-                        url:"{{ url_for('start_astt_gui') }}",  
-                        method:"POST",  
-                        data: {"button" : "Initialize","password" : password},
-                        success:function(data) {
-                          if (data == "success"){
-                            closeInitModal();
-                            initializeComplete('System Initialized');
-                            systemIntialized = true;
-                            console.log("Success!!");
-                          }
-                          else{
-                            console.log("Failed");
-                            openInitModal(data);
-                     
-                          }
-                  
-                        },
-                     
-                      });
+            
+                  } 
+  
+                  function openInitModal(message){
+                    if (systemIntialized==true){
+                      initializeComplete('System already Initialized');
                     }
+                    else{
+  
+                      var modalMessage = document.getElementById("modalMessage");
+                      modalMessage.textContent = message;
+                      $("#initModal").modal("show");
+                      modalPopped = true;
+                      console.log(modalPopped);
+                      
+                    }
+                 
+                  }
+  
+                  $(document).ready(function(){  
+                    $('#Submit_Password').click(function(){  
         
-                  });    
-                });
-
-              </script>
-
-                          <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      var password = $('#password').val();  
+                      if(password != '') {
+                        $.ajax({  
+                          url:"{{ url_for('start_astt_gui') }}",  
+                          method:"POST",  
+                          data: {"button" : "Initialize","password" : password},
+                          success:function(data) {
+                            if (data == "success"){
+                              closeInitModal();
+                              initializeComplete('System Initialized');
+                              systemIntialized = true;
+                              console.log("Success!!");
+                            }
+                            else{
+                              console.log("Failed");
+                              openInitModal(data);
+                       
+                            }
+                    
+                          },
+                       
+                        });
+                      }
+          
+                    });    
+                  });
+  
+                </script>
+  
+              </div>
+                          <!-- Point Modal -->
+                <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -428,16 +427,18 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <select class="form-select" aria-label="Default select example">
-                          <option selected>Choose source</option>
-                          <option value="1">Sun</option>
-                          <option value="2">Intel Satellite</option>
-                        </select>
+                        <form method="POST" action="/">
+                            <select class="form-select" aria-label="Default select example" id="sources" name="sources">
+                              <option selected>Choose source</option>
+                              <option value="sun">Sun</option>
+                              <option value="satellite">Intel Satellite</option>
+                            </select>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Start Tracking</button>
+                        <input type="submit" class="btn btn-primary" value="Start Tracking"></input>
                       </div>
+                        </form>
                     </div>
                   </div>
                 </div>
@@ -609,8 +610,7 @@
   <script src="static/js/quill.min.js"></script>
   <script src="static/js/simple-datatables.js"></script>
   <script src="static/js/tinymce/tinymce.min.js"></script>
-  <script src="static/js/validate.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
