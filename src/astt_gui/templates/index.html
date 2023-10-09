@@ -26,6 +26,11 @@
   <link href="static/css/remixicon.css" rel="stylesheet">
   <link href="static/css/dt-style.css" rel="stylesheet">
 
+  <!--Graphs Links-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
 
@@ -457,7 +462,7 @@
               <div class="card" style="display: flexbox;">
 
                 <div class="card-body">
-                  <script type="text/javascript" src="{{ url_for('static', filename = 'js/app.js') }}"></script>
+                  <script type="text/javascript" src="{{ url_for('static', filename = 'js/graphs.js') }}"></script>
                   <div class="container">
                     <div class="hero">
                       <h4>Real Time Sensor Display</h4>
