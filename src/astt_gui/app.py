@@ -10,6 +10,7 @@ from component_managers.start_simulator import SimulatorManager
 
 thread = None
 thread_lock = Lock()
+thread2 = None
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "STT"
@@ -98,7 +99,16 @@ def start_astt_gui():
                 )
 
     if "sources" in request.form and request.form["sources"] == "sun":
+        global thread2
+        with thread_lock:
+            if thread is None:
+                print("Hi")
+                thread2 = socketio.start_background_task(
+                    background_thread, node2
+                )
+                print("Hey")
         cm.track_sun(node2, 1)
+
     else:
         pass
 
