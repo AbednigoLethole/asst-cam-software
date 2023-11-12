@@ -11,7 +11,7 @@ RUN apt-get install software-properties-common -y
 # Getting Lely canopen 
 RUN add-apt-repository ppa:lely/ppa -y
 
-# Updating package list and installing Python 3.10
+#installing Python 3.10 and other dependencies
 RUN apt-get install -y python3.10 python3-pip iproute2 can-utils pkg-config software-properties-common liblely-coapp-dev liblely-co-tools python3-dcf-tools
 
 # Setting the working directory
@@ -21,4 +21,5 @@ WORKDIR /app
 COPY . /app
 
 # Installing Python dependencies
-RUN pip3 install poetry && poetry install  
+RUN pip3 install poetry 
+RUN poetry config virtualenvs.create false && poetry install
