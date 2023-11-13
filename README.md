@@ -15,26 +15,26 @@ To install and run the software using docker follow this commands:
 * Clone this repository into your local computer.
 
     ```git clone https://github.com/AbednigoLethole/asst-cam-software.git```
-  
-* Download the simulator from a drive, Here's a link below:
-
-    ```https://drive.google.com/file/d/1JjoqoAQqZabTKoWz5sL3uhbDIZ5jXAc9/view?ts=64e315a7```
 
 * start the virtual CAN Interface
 
     ```sh startVirtualCANInterface.sh```
 
-* Load the docker image from  the .tar file .
+* Build the docker image locally.
 
-    ```docker load -i ubuntu_canopen.tar ```
+    ```docker build -t astt-cam-software . ```
 
 * Run the container shell that has the simulator with all its dependencies.
 
-    ```docker run -it --network=host ubuntu_canopen ```
+    ```docker run -it --network=host astt-cam-software ```
 
 * Once the shell is open, move to directory that has the simulator.
 
-    ```cd simulator ```
+    ```cd src/antenna_simulator ```
+
+* Then compile the simulator.
+
+    ```sh compileSlave ```
     
 ## **Running the C++ Antenna Simulator**  
 
@@ -54,7 +54,7 @@ To install and run the software using docker follow this commands:
 
 * Install dependencies
 
-    ``` poetry config virtualenvs.create false && poetry install  ```
+    ``` poetry config virtualenvs.create false && poetry install ```
 
 * run the asst component manager
 
