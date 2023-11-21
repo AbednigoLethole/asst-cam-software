@@ -10,8 +10,8 @@ jobs:
   build-image:
     runs-on: ubuntu-20.04
     env:
-      ASTT_USR: ${{vars.ASTT_USR}}
-      ASTT_PASS: ${{vars.ASTT_PASS}}
+      ASTT_USR: ${{ secrets.ASTT_USR }}
+      ASTT_PASS: ${{ secrets.ASTT_PASS }}
 
     steps:
       - name: Checkout Repository
@@ -20,9 +20,13 @@ jobs:
       - name: Build the ASTT Docker Image
         run: docker build -t astt-cam-software .  
 
-      - name: Login to the ASTT docker registry
-        run: docker login ghcr.io -u ${{vars.ASTT_USR}} -p ${{vars.ASTT_PASS}}
-
+      - name: Login to GitHub Container Registry
+        run: |
+          echo "${ASTT_PASS}" | docker login ghcr.io -u "${ASTT_USR}" --password-stdin
+        env:
+          ASTT_USR: ${{ secrets.ASTT_USR }}
+          ASTT_PASS: ${{ secrets.ASTT_PASS }}
+          
   python-lint:
     runs-on: ubuntu-20.04
     needs: build-image
