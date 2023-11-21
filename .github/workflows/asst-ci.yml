@@ -24,7 +24,10 @@ jobs:
         run: export ASTT_U=$ASTT_USR   
 
       - name: Login to the ASTT docker registry
-        run: echo ${{ secrets.ASTT_PASS }} | docker login ghcr.io -u ${{ secrets.ASTT_USR }} --password-stdin 
+        run: | 
+          export ASTT_PASS=$ASTT_PASS
+          export ASTT_USR=$ASTT_USR
+          echo $ASTT_PASS | docker login ghcr.io -u $ASTT_USR --password-stdin 
 
   python-lint:
     runs-on: ubuntu-20.04
