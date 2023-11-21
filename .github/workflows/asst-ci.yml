@@ -18,13 +18,13 @@ jobs:
         run: docker build -t astt-cam-software .
 
       - name: Export environmental variable
-        run: export CR_PAT=$ASTT_PASS
+        run: export ASTT_PASS=$ASTT_PASS
       
       - name: Export ASTT user
         run: export ASTT_U=$ASTT_USR   
 
       - name: Login to the ASTT docker registry
-        run: echo $CR_PAT | docker login ghcr.io -u $ASTT_U --password-stdin 
+        run: echo ${{ secret.ASTT_PASS }} | docker login ghcr.io -u ${{ secret.ASTT_USR }} --password-stdin 
 
   python-lint:
     runs-on: ubuntu-20.04
