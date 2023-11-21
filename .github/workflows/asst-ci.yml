@@ -22,11 +22,11 @@ jobs:
 
       - name: Login to GitHub Container Registry
         run: |
-          echo "${ASTT_PASS}" | docker login ghcr.io -u "${ASTT_USR}" --password-stdin
+          echo "${ASTT_PASS}" | docker login ghcr.io --username "${ASTT_USR}" --password-stdin
         env:
           ASTT_USR: ${{ secrets.ASTT_USR }}
           ASTT_PASS: ${{ secrets.ASTT_PASS }}
-          
+
   python-lint:
     runs-on: ubuntu-20.04
     needs: build-image
