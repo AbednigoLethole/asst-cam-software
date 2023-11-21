@@ -11,8 +11,9 @@ class SimulatorManager:
         )
         # self.docker_load = "docker load -i ubuntu_canopen.tar"
         self.docker_run = (
-            "docker run -d --network=host ubuntu_canopen bash -c "
-            "'cd simulator && ./slave '"
+            "docker run -d --network=host astt-cam-software bash -c "
+            "'cd src/antenna_simulator && "
+            "sh compileSlave.sh && ./slave'"
         )
 
     def start_can_interface(self, password):
