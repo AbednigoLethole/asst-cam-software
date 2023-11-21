@@ -9,25 +9,19 @@ on:
 jobs:
   build-image:
     runs-on: ubuntu-20.04
-
+    env:
+      ASTT_USR: ${{vars.ASTT_USR}}
+      ASTT_PASS: ${{vars.ASTT_PASS}}
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Build the ASTT Docker Image
-        run: docker build -t astt-cam-software .
-
-      - name: Export environmental variable
-        run: export ASTT_PASS=$ASTT_PASS
-      
-      - name: Export ASTT user
-        run: export ASTT_U=$ASTT_USR   
+        run: docker build -t astt-cam-software .  
 
       - name: Login to the ASTT docker registry
-        run: | 
-          export ASTT_PASS=$ASTT_PASS
-          export ASTT_USR=$ASTT_USR
-          echo $ASTT_PASS | docker login ghcr.io -u $ASTT_USR --password-stdin 
+        run: echo ${{vars.ASTT_PASS}} | docker login ghcr.io -u ${{vars.ASTT_USR}} --password-stdin 
 
   python-lint:
     runs-on: ubuntu-20.04
