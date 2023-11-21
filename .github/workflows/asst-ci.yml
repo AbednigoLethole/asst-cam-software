@@ -19,15 +19,12 @@ jobs:
 
       - name: Export environmental variable
         run: export CR_PAT=$ASTT_PASS
+      
+      - name: Export ASTT user
+        run: export ASTT_U=$ASTT_USR   
 
-      - name: Disable non tty device error
-        run: |
-          export DOCKER_CLI_ASK_APISERVER=""
-          export DOCKER_CONTENT_TRUST=""
-          export DOCKER_BUILDKIT=1
-        
       - name: Login to the ASTT docker registry
-        run: docker login ghcr.io -u $ASTT_USR --password $CR_PAT 
+        run: echo $CR_PAT | docker login ghcr.io -u $ASTT_U --password-stdin 
 
   python-lint:
     runs-on: ubuntu-20.04
