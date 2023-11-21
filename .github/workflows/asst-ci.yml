@@ -21,7 +21,7 @@ jobs:
         run: docker build -t astt-cam-software .  
 
       - name: Login to GitHub Container Registry
-        run: echo $ASTT_PASS | docker login ghcr.io --username $ASTT_USR --password-stdin
+        run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
         env:
           ASTT_USR: ${{ secrets.ASTT_USR }}
           ASTT_PASS: ${{ secrets.ASTT_PASS }}
