@@ -27,7 +27,7 @@ jobs:
           ASTT_PASS: ${{ secrets.ASTT_PASS }}
       
       - name: Push the astt docker image to GitHub Container Registry
-        run: docker push ghcr.io/astt/astt-cam-software:0.0.1
+        run: docker push ghcr.io/astt/astt-cam-software
 
 
   python-lint:
