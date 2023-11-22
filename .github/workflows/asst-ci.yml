@@ -25,6 +25,10 @@ jobs:
         env:
           ASTT_USR: ${{ secrets.ASTT_USR }}
           ASTT_PASS: ${{ secrets.ASTT_PASS }}
+      
+      - name: Push the astt docker image to GitHub Container Registry
+        run: docker push ghcr.io/astt/astt-cam-software:0.0.1
+
 
   python-lint:
     runs-on: ubuntu-20.04
