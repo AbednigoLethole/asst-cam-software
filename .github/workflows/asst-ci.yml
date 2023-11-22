@@ -37,8 +37,6 @@ jobs:
 
     container:
       image: ghcr.io/abednigolethole/astt-cam-software:latest
-      options: --privileged #Admin rights
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
