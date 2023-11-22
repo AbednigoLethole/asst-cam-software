@@ -37,6 +37,10 @@ jobs:
 
     container:
       image: ghcr.io/abednigolethole/astt-cam-software:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.ASTT_PASS }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
