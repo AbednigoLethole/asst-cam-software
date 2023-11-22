@@ -32,8 +32,12 @@ jobs:
 
 
   python-lint:
-    runs-on: ghcr.io/abednigolethole/astt-cam-software:latest
+    runs-on: ubuntu-20.04
     needs: build-image
+
+    container:
+      image: ghcr.io/abednigolethole/astt-cam-software:latest
+      options: --privileged #Admin rights
 
     steps:
     - name: Checkout code
@@ -43,6 +47,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
+    
         
     - name: Checks if the code is of good quality using isort
       run: isort --check-only --profile black --line-length 70 -w 70 src/
