@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build the ASTT Docker Image
-        run: docker build -t ghcr.io/AbednigoLethole/astt-cam-software .
+        run: docker build -t ghcr.io/abednigoLethole/astt-cam-software .
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
@@ -28,7 +28,7 @@ jobs:
           ASTT_PASS: ${{ secrets.ASTT_PASS }}
       
       - name: Push the astt docker image to GitHub Container Registry
-        run: docker push ghcr.io/AbednigoLethole/astt-cam-software:latest
+        run: docker push ghcr.io/abednigoLethole/astt-cam-software:latest
 
 
   python-lint:
