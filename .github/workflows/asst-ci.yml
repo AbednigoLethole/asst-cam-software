@@ -96,7 +96,7 @@ jobs:
 
 
     - name: Run Tests
-      run: echo "Will test once the tests are available"
+      run: pytest tests -v
 
   docs-build:
     runs-on: ubuntu-20.04
