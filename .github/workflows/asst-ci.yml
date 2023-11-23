@@ -86,7 +86,8 @@ jobs:
       run: sudo sh startVirtualCANInterface.sh
 
     - name: Run the simulator
-      run: docker run -it --network=host ghcr.io/abednigolethole/astt-cam-software 
+      run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software -c "cd src/antenna_simulator && sh compileSlave.sh && ./slave"
+
 
     - name: Run Tests
       run: echo "Will test once the tests are available"
