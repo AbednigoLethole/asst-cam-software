@@ -86,7 +86,7 @@ jobs:
       run: sudo sh startVirtualCANInterface.sh
 
     - name: Run the simulator
-      run: docker run -it --network=ghcr.io/abednigolethole/astt-cam-software 
+      run: docker run -it --network=host ghcr.io/abednigolethole/astt-cam-software 
 
     - name: Run Tests
       run: echo "Will test once the tests are available"
