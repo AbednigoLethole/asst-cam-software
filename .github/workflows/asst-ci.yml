@@ -9,10 +9,6 @@ on:
 jobs:
   build-image:
     runs-on: ubuntu-20.04
-    env:
-      ASTT_USR: ${{ secrets.ASTT_USR }}
-      ASTT_PASS: ${{ secrets.ASTT_PASS }}
-
 
     steps:
       - name: Checkout Repository
@@ -23,10 +19,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
-        env:
-          ASTT_USR: ${{ secrets.ASTT_USR }}
-          ASTT_PASS: ${{ secrets.ASTT_PASS }}
-      
+
       - name: Push the astt docker image to GitHub Container Registry
         run: docker push ghcr.io/abednigolethole/astt-cam-software:latest
 
@@ -77,9 +70,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry # Installing poetry
         poetry config virtualenvs.create false && poetry install
-
-    - name: install astropy separately 
-      run: pip install astropy
 
     - name: Login to GitHub Container Registry
       run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
