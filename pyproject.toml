@@ -59,7 +59,7 @@ python-socketio="*"
 six="*"
 Werkzeug="*"
 zipp="*"
-astropy="*"
+astropy="^4.3.1"
 
 
 
