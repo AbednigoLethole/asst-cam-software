@@ -34,22 +34,21 @@ jobs:
   python-lint:
     runs-on: ubuntu-20.04
     needs: build-image
-
-    container:
-      image: ghcr.io/abednigolethole/astt-cam-software:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.ASTT_PASS }}
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Debugging
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
       run: |
-        echo "Current Directory: $(pwd)"
-        echo "directory files : $ls"
-        echo "PATH: $PATH"
+        python -m pip install --upgrade pip
+        pip install poetry # Installing poetry
+        poetry config virtualenvs.create false && poetry install
         
     - name: Checks if the code is of good quality using isort
       run: isort --check-only --profile black --line-length 70 -w 70 src/
