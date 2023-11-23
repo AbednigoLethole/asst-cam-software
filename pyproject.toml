@@ -59,8 +59,6 @@ python-socketio="*"
 six="*"
 Werkzeug="*"
 zipp="*"
-astropy="^4.3.1"
-
 
 
 [build-system]
