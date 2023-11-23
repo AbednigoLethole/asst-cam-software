@@ -78,6 +78,9 @@ jobs:
     - name: Pull image with the ASTT simulator
       run: docker pull ghcr.io/abednigolethole/astt-cam-software
 
+    - name: Adding VCAN module
+      run: sudo yum install kernel-modules-extra
+
     - name: Starting VCAN Network
       run: sudo sh startVirtualCANInterface.sh
 
