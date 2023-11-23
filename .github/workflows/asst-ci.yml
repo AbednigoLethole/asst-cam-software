@@ -78,6 +78,9 @@ jobs:
         pip install poetry # Installing poetry
         poetry config virtualenvs.create false && poetry install
 
+    - name: install astropy separately 
+      run: pip install astropy
+
     - name: Login to GitHub Container Registry
       run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
     
