@@ -50,14 +50,11 @@ jobs:
       with:
         python-version: '3.10'
 
-      - name: Debugging
-        run: |
-          echo "Current Directory: $(pwd)"
-          echo "directory files : $ls"
-          echo "PATH: $PATH"
-          
-   
-    
+    - name: Debugging
+      run: |
+        echo "Current Directory: $(pwd)"
+        echo "directory files : $ls"
+        echo "PATH: $PATH"
         
     - name: Checks if the code is of good quality using isort
       run: isort --check-only --profile black --line-length 70 -w 70 src/
