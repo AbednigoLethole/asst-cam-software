@@ -79,7 +79,8 @@ jobs:
       run: docker pull ghcr.io/abednigolethole/astt-cam-software
 
     - name: Adding VCAN module
-      run: sudo yum install kernel-modules-extra
+      run: sudo apt-get install linux-modules-extra-$(uname -r)
+
 
     - name: Starting VCAN Network
       run: sudo sh startVirtualCANInterface.sh
