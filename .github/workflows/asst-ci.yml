@@ -84,7 +84,7 @@ jobs:
       run: sudo sh startVirtualCANInterface.sh
 
     - name: Run the simulator
-      run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software sh -c "cd src/antenna_simulator && sh compileSlave.sh && ./slave"
+      run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software bash -c "cd src/antenna_simulator && ./slave"
 
     - name: Run Tests
       run: pytest tests -v
