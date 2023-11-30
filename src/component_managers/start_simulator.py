@@ -13,7 +13,7 @@ class SimulatorManager:
         self.docker_run = (
             "docker run -d --network=host astt-cam-software bash -c "
             "'cd src/antenna_simulator && "
-            "sh compileSlave.sh && ./slave'"
+            "./slave'"
         )
 
     def start_can_interface(self, password):

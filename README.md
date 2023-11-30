@@ -31,10 +31,6 @@ To install and run the software using docker follow this commands:
 * Once the shell is open, move to directory that has the simulator.
 
     ```cd src/antenna_simulator ```
-
-* Then compile the simulator.
-
-    ```sh compileSlave ```
     
 ## **Running the C++ Antenna Simulator**  
 
