@@ -13,6 +13,8 @@ class ASTTComponentManager:
     def __init__(self):
         """Init method for the CM ."""
         self.dishmode = None
+        self.antenna_app_state = None
+        self.antenna_func_state = None
         self.network0 = canopen.Network()
         self.transmission_triggered = False
 
@@ -101,6 +103,72 @@ class ASTTComponentManager:
 
         node.tpdo[2].add_callback(self.az_el_change_callback)
 
+    def func_state_callback(self, incoming_object):
+        """Transmit PDO callback ."""
+        for node_record in incoming_object:
+            print(f"func state : {node_record.raw} ")
+
+    def subscribe_to_func_state(self, node):
+        """CanOpen Subscription to the functional state ."""
+        node.tpdo[3].read()
+        # Mapping the functional state to tpdo
+        node.tpdo[3].clear()
+        node.tpdo[3].add_variable(
+            "Mode and State Feedback", "Functional State"
+        )
+        node.tpdo[3].trans_type = 254
+        node.tpdo[3].event_timer = 3
+        node.tpdo[3].enabled = True
+
+        node.nmt.state = "PRE-OPERATIONAL"
+        print(node.nmt.state)
+        node.tpdo.save()
+        node.tpdo[3].add_callback(self.func_state_callback)
+
+    def stow_pin_callback(self, incoming_object):
+        for node_record in incoming_object:
+            print(f"stow pin state : {node_record.raw} ")
+
+    def subscribe_to_stow_sensor(self, node):
+        """CanOpen Subscription to stow sensors."""
+        node.tpdo[4].read()
+        # Mapping the stow sensors to tpdo
+        node.tpdo[4].clear()
+        node.tpdo[4].add_variable("Sensor Feedback", "Stow sensors")
+        node.tpdo[4].trans_type = 254
+        node.tpdo[4].event_timer = 3
+        node.tpdo[4].enabled = True
+
+        node.nmt.state = "PRE-OPERATIONAL"
+        print(node.nmt.state)
+        node.tpdo.save()
+
+        node.tpdo[4].add_callback(self.stow_pin_callback)
+
+    def subscribe_to_mode_command_obj(self, node):
+        """CanOpen Subscription to the mode command obj ."""
+        node.rpdo.read()
+        # Mapping the mode command obj to rpdo
+        node.rpdo[1].clear()
+        node.rpdo[1].add_variable("Mode command", "Mode")
+        node.rpdo[1].enabled = True
+        node.nmt.state = "PRE-OPERATIONAL"
+        print(node.nmt.state)
+        node.rpdo.save()
+        node.rpdo[1].start(0.1)
+
+    def set_point_mode(self, node):
+        """Commands the ASTT Antenna to point mode"""
+        node.rpdo[1]["Mode command.Mode"].raw = 1
+
+    def set_idle_mode(self, node):
+        """Commands the ASTT Antenna to idle mode"""
+        node.rpdo[1]["Mode command.Mode"].raw = 0
+
+    def set_stow_mode(self, node):
+        """Commands the ASTT Antenna to stow mode"""
+        node.rpdo[1]["Mode command.Mode"].raw = 2
+
     def trigger_transmission(self, node):
         """Triggers the transmission of Az/El ."""
         self.transmission_triggered = True
@@ -146,6 +214,7 @@ if __name__ == "__main__":
     cm = ASTTComponentManager()
     cm.connect_to_network()
     node2 = cm.connect_to_plc_node()
+    cm.subscribe_to_app_state(node2)
     cm.subscribe_to_az_change(node2)
     cm.subscribe_to_el_change(node2)
     cm.trigger_transmission(node2)

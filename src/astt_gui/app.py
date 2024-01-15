@@ -74,6 +74,10 @@ def start_astt_gui():
             # Subscribe to AZ and EL change.
             cm.subscribe_to_az_change(node2)
             cm.subscribe_to_el_change(node2)
+            cm.subscribe_to_func_state(node2)
+            cm.subscribe_to_mode_command_obj(node2)
+            cm.subscribe_to_stow_sensor(node2)
+            cm.set_point_mode(node2)
 
             return jsonify("success")
         if success == 1:
