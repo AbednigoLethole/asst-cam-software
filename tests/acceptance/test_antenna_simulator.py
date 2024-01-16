@@ -1,5 +1,4 @@
 """Test for the Component manager."""
-import pytest
 
 
 def test_antenna_sim_is_available(antenna_node):
