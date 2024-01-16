@@ -17,7 +17,6 @@ app.config["SECRET_KEY"] = "STT"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 cm = ASTTComponentManager()
-node2 = None
 
 
 def get_current_datetime():
@@ -69,15 +68,15 @@ def start_astt_gui():
             time.sleep(2)
             # Connect to VCAN and Siumlator
             cm.connect_to_network()
-            global node2
-            node2 = cm.connect_to_plc_node()
+            cm.connect_to_plc_node()
             # Subscribe to AZ and EL change.
-            cm.subscribe_to_az_change(node2)
-            cm.subscribe_to_el_change(node2)
-            cm.subscribe_to_func_state(node2)
-            cm.subscribe_to_mode_command_obj(node2)
-            cm.subscribe_to_stow_sensor(node2)
-            cm.set_point_mode(node2)
+            cm.subscribe_to_az_change()
+            cm.subscribe_to_el_change()
+            cm.subscribe_to_func_state()
+            cm.subscribe_to_mode_command_obj()
+            cm.subscribe_to_stow_sensor()
+            # Set point mode function below needs to be removed
+            cm.set_point_mode()
 
             return jsonify("success")
         if success == 1:
@@ -90,16 +89,16 @@ def start_astt_gui():
         el = request.form["elevation"]
         # Call a method to point to Desired AZ & EL
         cm.point_to_coordinates(
-            node2, int(time.time()), float(az), float(el)
+            int(time.time()), float(az), float(el)
         )
         # Display current AZ and EL.
-        cm.trigger_transmission(node2)
+        cm.trigger_transmission()
 
         global thread
         with thread_lock:
             if thread is None:
                 thread = socketio.start_background_task(
-                    background_thread, node2
+                    background_thread, cm.antenna_node
                 )
 
     if "sources" in request.form and request.form["sources"] == "sun":
@@ -108,10 +107,10 @@ def start_astt_gui():
             if thread is None:
                 print("Hi")
                 thread2 = socketio.start_background_task(
-                    background_thread, node2
+                    background_thread, cm.antenna_node
                 )
                 print("Hey")
-        cm.track_sun(node2, 1)
+        cm.track_sun(1)
 
     else:
         pass
@@ -128,7 +127,7 @@ def connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(
-                background_thread, node2
+                background_thread, cm.antenna_node
             )
 
 

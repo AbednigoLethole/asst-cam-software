@@ -15,5 +15,5 @@ def antenna_comp_manager():
 def antenna_node(antenna_comp_manager):
     """Estabilish connection and return the atenna node"""
     antenna_comp_manager.connect_to_network()
-    node2 = antenna_comp_manager.connect_to_plc_node()
-    return node2
+    antenna_comp_manager.connect_to_plc_node()
+    return antenna_comp_manager.antenna_node
