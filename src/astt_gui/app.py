@@ -74,8 +74,10 @@ def start_astt_gui():
             cm.subscribe_to_el_change()
             cm.subscribe_to_func_state()
             cm.subscribe_to_mode_command_obj()
+            cm.subscribe_to_antenna_mode()
             cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
+            cm.trigger_transmission()
             cm.set_point_mode()
 
             return jsonify("success")
@@ -87,10 +89,12 @@ def start_astt_gui():
         # Get AZ and EL from GUI.
         az = request.form["azimuth"]
         el = request.form["elevation"]
+        cm.stop_az_el_transmission()
         # Call a method to point to Desired AZ & EL
         cm.point_to_coordinates(
             int(time.time()), float(az), float(el)
         )
+
         # Display current AZ and EL.
         cm.trigger_transmission()
 
@@ -105,11 +109,10 @@ def start_astt_gui():
         global thread2
         with thread_lock:
             if thread is None:
-                print("Hi")
                 thread2 = socketio.start_background_task(
                     background_thread, cm.antenna_node
                 )
-                print("Hey")
+
         cm.track_sun(1)
 
     else:

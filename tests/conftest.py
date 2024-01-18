@@ -4,16 +4,10 @@ import pytest
 from component_managers.astt_comp_manager import ASTTComponentManager
 
 
-@pytest.fixture
-def antenna_comp_manager():
-    """Returns an instance of antenna comp manager"""
+@pytest.fixture(scope="module")
+def comp_manager_connected_to_antenna():
+    """Estabilish connection and return the antenna node"""
     cm = ASTTComponentManager()
+    cm.connect_to_network()
+    cm.connect_to_plc_node()
     return cm
-
-
-@pytest.fixture
-def antenna_node(antenna_comp_manager):
-    """Estabilish connection and return the atenna node"""
-    antenna_comp_manager.connect_to_network()
-    antenna_comp_manager.connect_to_plc_node()
-    return antenna_comp_manager.antenna_node
