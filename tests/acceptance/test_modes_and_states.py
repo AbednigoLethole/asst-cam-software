@@ -1,5 +1,4 @@
 """Test the initial states and modes"""
-import time
 
 
 def test_connection_to_sim_is_success(
