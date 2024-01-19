@@ -107,7 +107,7 @@ class ASTTComponentManager:
 
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
-        (self.antenna_node).tpdo.save()
+        (self.antenna_node).tpdo[1].save()
 
         (self.antenna_node).tpdo[1].add_callback(
             self.az_el_change_callback
@@ -125,7 +125,7 @@ class ASTTComponentManager:
 
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
-        (self.antenna_node).tpdo.save()
+        (self.antenna_node).tpdo[2].save()
 
         (self.antenna_node).tpdo[2].add_callback(
             self.az_el_change_callback
@@ -145,7 +145,7 @@ class ASTTComponentManager:
 
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
-        (self.antenna_node).tpdo.save()
+        (self.antenna_node).tpdo[3].save()
         (self.antenna_node).tpdo[3].add_callback(
             self.func_state_callback
         )
@@ -164,7 +164,7 @@ class ASTTComponentManager:
 
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
-        (self.antenna_node).tpdo.save()
+        (self.antenna_node).tpdo[4].save()
 
         (self.antenna_node).tpdo[4].add_callback(
             self.stow_pin_callback
@@ -184,7 +184,7 @@ class ASTTComponentManager:
 
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
-        (self.antenna_node).tpdo.save()
+        (self.antenna_node).tpdo[6].save()
 
         (self.antenna_node).tpdo[6].add_callback(
             self.antenna_mode_callback
