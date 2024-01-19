@@ -5,7 +5,7 @@ from component_managers.astt_comp_manager import ASTTComponentManager
 
 
 @pytest.fixture(scope="module")
-def comp_manager_connected_to_antenna():
+def cm_manager_connected_to_antnn():
     """Estabilish connection and return the antenna node"""
     cm = ASTTComponentManager()
     cm.connect_to_network()
