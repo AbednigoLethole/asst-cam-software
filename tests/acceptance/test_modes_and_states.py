@@ -5,7 +5,6 @@ import time
 def test_connection_to_sim_is_success(
     comp_manager_connected_to_antenna,
 ):
-
     assert (
         comp_manager_connected_to_antenna.antenna_node
     ) is not None
