@@ -78,6 +78,7 @@ def start_astt_gui():
             cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
             cm.trigger_transmission()
+            cm.set_point_mode()
 
             return jsonify("success")
         if success == 1:
@@ -88,14 +89,11 @@ def start_astt_gui():
         # Get AZ and EL from GUI.
         az = request.form["azimuth"]
         el = request.form["elevation"]
-        cm.set_point_mode()
+        # cm.set_point_mode()
         # Call a method to point to Desired AZ & EL
         cm.point_to_coordinates(
-            int(time.time()), float(az), float(el)
+            float(time.time()), float(az), float(el)
         )
-
-        # Display current AZ and EL.
-        cm.trigger_transmission()
 
         global thread
         with thread_lock:

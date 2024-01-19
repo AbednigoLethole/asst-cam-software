@@ -20,6 +20,7 @@ class ASTTComponentManager:
         self.stow_sensor_state = None
         self.network0 = canopen.Network()
         self.transmission_triggered = False
+        self.modes = ["idle", "point", "stow"]
 
     # =====================
     # Connection functions
@@ -53,34 +54,38 @@ class ASTTComponentManager:
                 node_record.name
                 == "Position Feedback.Azimuth(R64) of position"
             ):
-                print(f"Antenna Azumuth : {node_record.raw} ")
+                # print(f"Antenna Azumuth : {node_record.raw} ")
+                pass
 
             if (
                 node_record.name
                 == "Position Feedback.Elevation(R64) of position"
             ):
-                print(f"Antenna Elevation : {node_record.raw} ")
+                # print(f"Antenna Elevation : {node_record.raw} ")
+                pass
 
     def stow_pin_callback(self, incoming_object):
         for node_record in incoming_object:
-            print(f"stow pin state : {node_record.raw} ")
             # Update if the value from simulator has changed
             if node_record.raw != self.stow_sensor_state:
+                print(f"stow pin state : {node_record.raw} ")
                 self.stow_sensor_state = node_record.raw
 
     def antenna_mode_callback(self, incoming_object):
         for node_record in incoming_object:
-            print(f"antenna mode : {node_record.raw} ")
             # Update if the value from simulator has changed
             if node_record.raw != self.antenna_mode:
+                print(
+                    f"antenna mode : {self.modes[node_record.raw]} "
+                )
                 self.antenna_mode = node_record.raw
 
     def func_state_callback(self, incoming_object):
         """Transmit PDO callback ."""
         for node_record in incoming_object:
-            print(f"func state : {node_record.raw} ")
             # Update if the value from simulator has changed
             if node_record.raw != self.antenna_func_state:
+                print(f"func state : {node_record.raw} ")
                 self.antenna_func_state = node_record.raw
 
     # ========================
@@ -167,21 +172,21 @@ class ASTTComponentManager:
 
     def subscribe_to_antenna_mode(self):
         """CanOpen Subscription to antenna mode."""
-        (self.antenna_node).tpdo[5].read()
+        (self.antenna_node).tpdo[6].read()
         # Mapping the stow sensors to tpdo
-        (self.antenna_node).tpdo[5].clear()
-        (self.antenna_node).tpdo[5].add_variable(
+        (self.antenna_node).tpdo[6].clear()
+        (self.antenna_node).tpdo[6].add_variable(
             "Mode and State Feedback", "Mode"
         )
-        (self.antenna_node).tpdo[5].trans_type = 254
-        (self.antenna_node).tpdo[5].event_timer = 5
-        (self.antenna_node).tpdo[5].enabled = True
+        (self.antenna_node).tpdo[6].trans_type = 254
+        (self.antenna_node).tpdo[6].event_timer = 5
+        (self.antenna_node).tpdo[6].enabled = True
 
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
         (self.antenna_node).tpdo.save()
 
-        (self.antenna_node).tpdo[5].add_callback(
+        (self.antenna_node).tpdo[6].add_callback(
             self.antenna_mode_callback
         )
 
@@ -217,7 +222,8 @@ class ASTTComponentManager:
 
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
-        (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2
+        print(timestamp)
+        (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2.0
         (self.antenna_node).sdo[0x2000][2].raw = az
         (self.antenna_node).sdo[0x2000][3].raw = el
 
