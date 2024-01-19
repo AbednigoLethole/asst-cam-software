@@ -13,36 +13,31 @@ def set_up_subscriptions(comp_manager):
 
 
 def test_connection_to_sim_is_success(
-    comp_manager_connected_to_antenna,
+    cm_manager_connected_to_antnn,
 ):
-    assert (
-        comp_manager_connected_to_antenna.antenna_node
-    ) is not None
+    assert (cm_manager_connected_to_antnn.antenna_node) is not None
 
 
 def test_antenna_starts_at_idle_mode(
-    comp_manager_connected_to_antenna,
+    cm_manager_connected_to_antnn,
 ):
     """Test initial mode of the simulator"""
-    set_up_subscriptions(comp_manager_connected_to_antenna)
-    assert comp_manager_connected_to_antenna.get_antenna_mode() == 0
+    set_up_subscriptions(cm_manager_connected_to_antnn)
+    assert cm_manager_connected_to_antnn.get_antenna_mode() == 0
 
 
 def test_antenna_starts_at_braked_fuc_state(
-    comp_manager_connected_to_antenna,
+    cm_manager_connected_to_antnn,
 ):
     """Test initial func state of the simulator"""
-    assert (
-        comp_manager_connected_to_antenna.get_antenna_func_state()
-        == 0
-    )
+    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 0
 
 
 def test_antenna_starts_at_stow_not_release(
-    comp_manager_connected_to_antenna,
+    cm_manager_connected_to_antnn,
 ):
     """Test initial stow state of the simulator"""
     assert (
-        comp_manager_connected_to_antenna.get_antenna_stow_sensor_state()
+        cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
         == 5
     )

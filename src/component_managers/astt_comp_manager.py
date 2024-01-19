@@ -201,7 +201,7 @@ class ASTTComponentManager:
         (self.antenna_node).rpdo[1].enabled = True
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
         print((self.antenna_node).nmt.state)
-        (self.antenna_node).rpdo.save()
+        (self.antenna_node).rpdo[1].save()
         (self.antenna_node).rpdo[1].start(0.1)
 
     # ========================
