@@ -17,10 +17,37 @@ def test_antenna_trans_to_point(cm_manager_connected_to_antnn):
     """Test point function"""
     set_up_subscriptions(cm_manager_connected_to_antnn)
     cm_manager_connected_to_antnn.set_point_mode()
-    time.sleep(40)
+    # The antenna takes roughly 30 sec to switch modes
+    time.sleep(33)
     assert cm_manager_connected_to_antnn.get_antenna_mode() == 1
     assert cm_manager_connected_to_antnn.get_antenna_func_state() == 1
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
         == 3
+    )
+
+
+def test_antenna_trans_to_stow(cm_manager_connected_to_antnn):
+    """Test the stow function"""
+    cm_manager_connected_to_antnn.set_stow_mode()
+    # The antenna takes roughly 30 sec to switch modes
+    time.sleep(33)
+    assert cm_manager_connected_to_antnn.get_antenna_mode() == 2
+    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 0
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
+        == 5
+    )
+
+
+def test_antenna_trans_to_idle(cm_manager_connected_to_antnn):
+    """Test the idle function"""
+    cm_manager_connected_to_antnn.set_idle_mode()
+    # The antenna takes roughly 30 sec to switch modes
+    time.sleep(33)
+    assert cm_manager_connected_to_antnn.get_antenna_mode() == 0
+    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 0
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
+        == 5
     )
