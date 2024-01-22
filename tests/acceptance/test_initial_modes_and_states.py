@@ -1,6 +1,12 @@
 """Test the initial states and modes"""
 import time
 
+from component_managers.astt_comp_manager import (
+    FuncState,
+    Mode,
+    StowPinState,
+)
+
 
 def set_up_subscriptions(comp_manager):
     """Set up all Canopen subscriptions"""
@@ -23,14 +29,19 @@ def test_antenna_starts_at_idle_mode(
 ):
     """Test initial mode of the simulator"""
     set_up_subscriptions(cm_manager_connected_to_antnn)
-    assert cm_manager_connected_to_antnn.get_antenna_mode() == 0
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_mode() == Mode.IDLE
+    )
 
 
 def test_antenna_starts_at_braked_fuc_state(
     cm_manager_connected_to_antnn,
 ):
     """Test initial func state of the simulator"""
-    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 0
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_func_state()
+        == FuncState.BRAKED
+    )
 
 
 def test_antenna_starts_at_stow_not_release(
@@ -39,5 +50,5 @@ def test_antenna_starts_at_stow_not_release(
     """Test initial stow state of the simulator"""
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
-        == 5
+        == StowPinState.ENGAGED_NOT_RELEASED_STOW_WINDOW
     )

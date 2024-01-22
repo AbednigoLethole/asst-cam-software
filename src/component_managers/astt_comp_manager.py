@@ -6,21 +6,20 @@ import canopen
 
 from threading_lrc import background
 
+from .dish_modes import FuncState, Mode, StowPinState
 from .sources import Sun
 
 
 class ASTTComponentManager:
     def __init__(self):
         """Init method for the CM ."""
-        self.dishmode = None
         self.antenna_node = None
         self.antenna_app_state = None
-        self.antenna_func_state = None
-        self.antenna_mode = None
-        self.stow_sensor_state = None
+        self.antenna_func_state = FuncState.UNKNOWN
+        self.antenna_mode = Mode.UNKNOWN
+        self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
-        self.modes = ["idle", "point", "stow"]
 
     # =====================
     # Connection functions
@@ -64,29 +63,47 @@ class ASTTComponentManager:
                 # print(f"Antenna Elevation : {node_record.raw} ")
                 pass
 
+    # This is helper function to translate int values
+    # To enum values
+    def gen_mode_state_enums(self, name_of_enum, value):
+        """Generate enum values for transmitted values"""
+        if name_of_enum == "Mode":
+            return Mode(value)
+        if name_of_enum == "FuncState":
+            return FuncState(value)
+        if name_of_enum == "StowPinState":
+            return StowPinState(value)
+
     def stow_pin_callback(self, incoming_object):
         for node_record in incoming_object:
+            st_pin_state = self.gen_mode_state_enums(
+                "StowPinState", node_record.raw
+            )
             # Update if the value from simulator has changed
-            if node_record.raw != self.stow_sensor_state:
-                print(f"stow pin state : {node_record.raw} ")
-                self.stow_sensor_state = node_record.raw
+            if st_pin_state != self.stow_sensor_state:
+                self.stow_sensor_state = st_pin_state
+                print(f"stow pin state : {st_pin_state.name} ")
 
     def antenna_mode_callback(self, incoming_object):
         for node_record in incoming_object:
+            ant_mode = self.gen_mode_state_enums(
+                "Mode", node_record.raw
+            )
             # Update if the value from simulator has changed
-            if node_record.raw != self.antenna_mode:
-                print(
-                    f"antenna mode : {self.modes[node_record.raw]} "
-                )
-                self.antenna_mode = node_record.raw
+            if ant_mode != self.antenna_mode:
+                self.antenna_mode = ant_mode
+                print(f"antenna mode : {ant_mode.name} ")
 
     def func_state_callback(self, incoming_object):
         """Transmit PDO callback ."""
         for node_record in incoming_object:
+            func_state = self.gen_mode_state_enums(
+                "FuncState", node_record.raw
+            )
             # Update if the value from simulator has changed
-            if node_record.raw != self.antenna_func_state:
-                print(f"func state : {node_record.raw} ")
-                self.antenna_func_state = node_record.raw
+            if func_state != self.antenna_func_state:
+                self.antenna_func_state = func_state
+                print(f"func state : {func_state.name} ")
 
     # ========================
     # Subscription functions

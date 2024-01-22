@@ -1,6 +1,12 @@
 """Test the mode transitions"""
 import time
 
+from component_managers.astt_comp_manager import (
+    FuncState,
+    Mode,
+    StowPinState,
+)
+
 
 def set_up_subscriptions(comp_manager):
     """Set up all Canopen subscriptions"""
@@ -19,11 +25,16 @@ def test_antenna_trans_to_point(cm_manager_connected_to_antnn):
     cm_manager_connected_to_antnn.set_point_mode()
     # The antenna takes roughly 30 sec to switch modes
     time.sleep(33)
-    assert cm_manager_connected_to_antnn.get_antenna_mode() == 1
-    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 1
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_mode() == Mode.POINT
+    )
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_func_state()
+        == FuncState.MOVING
+    )
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
-        == 3
+        == StowPinState.NOT_ENGAGED_RELEASED_STOW_WINDOW
     )
 
 
@@ -32,11 +43,16 @@ def test_antenna_trans_to_stow(cm_manager_connected_to_antnn):
     cm_manager_connected_to_antnn.set_stow_mode()
     # The antenna takes roughly 30 sec to switch modes
     time.sleep(33)
-    assert cm_manager_connected_to_antnn.get_antenna_mode() == 2
-    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 0
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_mode() == Mode.STOW
+    )
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_func_state()
+        == FuncState.BRAKED
+    )
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
-        == 5
+        == StowPinState.ENGAGED_NOT_RELEASED_STOW_WINDOW
     )
 
 
@@ -45,9 +61,14 @@ def test_antenna_trans_to_idle(cm_manager_connected_to_antnn):
     cm_manager_connected_to_antnn.set_idle_mode()
     # The antenna takes roughly 30 sec to switch modes
     time.sleep(33)
-    assert cm_manager_connected_to_antnn.get_antenna_mode() == 0
-    assert cm_manager_connected_to_antnn.get_antenna_func_state() == 0
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_mode() == Mode.IDLE
+    )
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_func_state()
+        == FuncState.BRAKED
+    )
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
-        == 5
+        == StowPinState.ENGAGED_NOT_RELEASED_STOW_WINDOW
     )
