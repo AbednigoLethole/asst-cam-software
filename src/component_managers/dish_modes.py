@@ -1,0 +1,29 @@
+import enum
+
+
+class Mode(enum.IntEnum):
+    # Modes are from the simulators
+    IDLE = 0
+    POINT = 1
+    STOW = 2
+    UNKNOWN = 3
+
+
+class FuncState(enum.IntEnum):
+    BRAKED = 0
+    MOVING = 1
+    ESTOP = 2
+    ERROR = 3
+    UNKNOWN = 4
+
+
+class StowPinState(enum.IntEnum):
+    NOT_ENGAGED_NOT_RELEASED_NOT_STOW_WINDOW = 0
+    NOT_ENGAGED_NOT_RELEASED_STOW_WINDOW = 1
+    NOT_ENGAGED_RELEASED_NOT_STOW_WINDOW = 2
+    NOT_ENGAGED_RELEASED_STOW_WINDOW = 3
+    ENGAGED_NOT_RELEASED_NOT_STOW_WINDOW = 4
+    ENGAGED_NOT_RELEASED_STOW_WINDOW = 5
+    ENGAGED_RELEASED_NOT_STOW_WINDOW = 6
+    ENGAGED_RELEASED_STOW_WINDOW = 7
+    UNKNOWN = 8

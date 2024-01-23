@@ -44,13 +44,13 @@ jobs:
         poetry config virtualenvs.create false && poetry install
         
     - name: Checks if the code is of good quality using isort
-      run: isort --check-only --profile black --line-length 70 -w 70 src/
+      run: isort --check-only --profile black --line-length 70 -w 70 src/ tests/
 
     - name: Checks if the code is of good quality using black
-      run: black --exclude .+\.ipynb --check --line-length 70 --line-length 70 src/
+      run: black --exclude .+\.ipynb --check --line-length 70 --line-length 70 src/ tests/
 
     - name: Checks if the code is of good quality using flake8
-      run: flake8 --show-source --statistics --max-line-length 70 --max-line-length=70 src/ 
+      run: flake8 --show-source --statistics --max-line-length 70 --max-line-length=70 src/ tests/
 
   test:
     runs-on: ubuntu-20.04
