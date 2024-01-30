@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ASTT CAM Software's documentation!
-=============================================
+ASTT CAM Software's documentation!
+==================================
 
 .. image:: images/astt.jpg
   :width: 80%
@@ -14,7 +14,10 @@ Welcome to ASTT CAM Software's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+
+   GUI<gui/index>
+   Software<software/index>
+   User Guide<how_to>
 
 
 
