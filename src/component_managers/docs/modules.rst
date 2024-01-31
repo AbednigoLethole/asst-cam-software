@@ -1,10 +1,9 @@
-src
-===
+component_managers
+==================
 
 .. toctree::
    :maxdepth: 4
 
-   src
    astt_comp_manager
    dish_modes
    sources
