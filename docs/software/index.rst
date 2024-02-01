@@ -1,7 +1,7 @@
 Mode Transitions
 ================
 
-Describer iimodes ke mntase 😉
+These modules communicate with the component manager and are called as required.
 
 
 .. automodule:: src.component_managers
