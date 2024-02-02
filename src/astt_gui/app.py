@@ -21,6 +21,7 @@ cm = ASTTComponentManager()
 logger = logging.getLogger("ASTT-GUI")
 
 logging.basicConfig(
+    filename="app_dev.log",
     format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
     level=logging.INFO,
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -65,6 +66,7 @@ def start_astt_gui():
         and request.form["button"] == "Initialize"
     ):
         user_pass = request.form["password"]
+        cm.clear_all_logs()
         # Start VCAN network & simulator
         logger.info("Intitialized button triggered")
         simulator_manager = SimulatorManager()
@@ -75,6 +77,7 @@ def start_astt_gui():
         # Report incorrect password to user.
         if success == 0:
             logger.info("correct password")
+
             simulator_manager.run_contaier_and_startup_simulator()
             # Await Simulator to start up
             time.sleep(2)

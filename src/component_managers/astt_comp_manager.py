@@ -23,6 +23,7 @@ class ASTTComponentManager:
         self.transmission_triggered = False
         self.logger = logging.getLogger("ASTT-COMP-MANAGER")
         logging.basicConfig(
+            filename="app_dev.log",
             format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
             level=logging.INFO,
             datefmt="%Y-%m-%d %H:%M:%S",
@@ -343,6 +344,23 @@ class ASTTComponentManager:
 
     def track_sun_update(self):
         pass
+
+    def clear_all_logs(self):
+        """Clears all the logs in app_dev.log"""
+        try:
+            with open("app_dev.log", "w") as file:
+                file.truncate(0)
+            self.logger.info(
+                "Successfully cleared logs in app_dev.log"
+            )
+        except FileNotFoundError:
+            self.logger.info(
+                "File app_dev.log not found. No logs cleared."
+            )
+        except Exception as err:
+            self.logger.error(
+                f"Failed to clear logs in , error: {err}"
+            )
 
 
 if __name__ == "__main__":
