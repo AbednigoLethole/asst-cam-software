@@ -350,9 +350,6 @@ class ASTTComponentManager:
         try:
             with open("app_dev.log", "w") as file:
                 file.truncate(0)
-            self.logger.info(
-                "Successfully cleared logs in app_dev.log"
-            )
         except FileNotFoundError:
             self.logger.info(
                 "File app_dev.log not found. No logs cleared."
@@ -361,6 +358,7 @@ class ASTTComponentManager:
             self.logger.error(
                 f"Failed to clear logs in , error: {err}"
             )
+        file.close()
 
 
 if __name__ == "__main__":
