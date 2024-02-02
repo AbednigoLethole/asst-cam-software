@@ -21,9 +21,9 @@ class ASTTComponentManager:
         self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("ASTT-COMP-MANAGER")
         logging.basicConfig(
-            format="%(asctime)s|%(levelname)s|%(message)s",
+            format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
             level=logging.INFO,
             datefmt="%Y-%m-%d %H:%M:%S",
         )
