@@ -38,5 +38,5 @@ class SimulatorManager:
 
 if __name__ == "__main__":
     simulator_manager = SimulatorManager()
-    simulator_manager.start_can_interface()
+    simulator_manager.start_can_interface('9807@Suprise')
     simulator_manager.run_contaier_and_startup_simulator()
