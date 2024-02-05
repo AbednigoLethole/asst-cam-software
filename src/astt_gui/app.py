@@ -106,7 +106,6 @@ def start_astt_gui():
         # Get AZ and EL from GUI.
         az = request.form["azimuth"]
         el = request.form["elevation"]
-        # cm.set_point_mode()
         # Call a method to point to Desired AZ & EL
         cm.point_to_coordinates(
             float(time.time()), float(az), float(el)
