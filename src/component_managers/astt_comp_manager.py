@@ -285,6 +285,7 @@ class ASTTComponentManager:
 
     def trigger_transmission(self):
         """Triggers the transmission of Az/El ."""
+        self.logger.info("Transmission is triggered")
         self.transmission_triggered = True
         (self.antenna_node).nmt.state = "OPERATIONAL"
         (self.network0).sync.start(0.5)
@@ -351,7 +352,7 @@ class ASTTComponentManager:
             with open("app_dev.log", "w") as file:
                 file.truncate(0)
         except FileNotFoundError:
-            self.logger.info(
+            self.logger.error(
                 "File app_dev.log not found. No logs cleared."
             )
         except Exception as err:
