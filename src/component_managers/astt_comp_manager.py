@@ -64,14 +64,12 @@ class ASTTComponentManager:
                 node_record.name
                 == "Position Feedback.Azimuth(R64) of position"
             ):
-                # print(f"Antenna Azumuth : {node_record.raw} ")
                 pass
 
             if (
                 node_record.name
                 == "Position Feedback.Elevation(R64) of position"
             ):
-                # print(f"Antenna Elevation : {node_record.raw} ")
                 pass
 
     # This is helper function to translate int values
