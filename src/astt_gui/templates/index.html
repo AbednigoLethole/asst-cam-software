@@ -286,10 +286,25 @@
     <section class="section dashboard">
       <div class="col-lg-12">
         <div class="row">
-          <div class="card">
+          <div class="card shadow p-5">
             <div class="card-body">
               <div class="div" id="pie">
-                <h2>Reserved for antenna heath status (Pie Chart) & states Display</h2>
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                     <h4>Application State</h4>
+                     <button class="btn btn-primary" style="width: 190px;">Unknown</button>
+                    </div>
+                    <div class="col">
+                      <h4>Modes state</h4>
+                      <button class="btn btn-primary" style="width: 190px;">Unknown</button>
+                    </div>
+                    <div class="col">
+                      <h4>Functional State</h4>
+                      <button class="btn btn-primary" style="width: 190px;">Unknown</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -297,16 +312,33 @@
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-8">
+            <div class="card shadow p-5">
+              <h5 class="card-title">Controls</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Controls</h5>
-                  <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
-                    <button onclick="openInitModal('')" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
-                    <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
-                    <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#modeModal"><span class='bi bi-arrows-collapse'></span> Antenna Modes</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
-                  </div> 
+                  <div class="col-lg-12">
+                    <div class="row">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col">
+                              <button onclick="openInitModal('')" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#modeModal"><span class='bi bi-arrows-collapse'></span> Antenna Modes</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>    
+                </div>
                 </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
                 <script>
@@ -375,8 +407,6 @@
                   });
   
                 </script>
-  
-              </div>
                          <!-- Modes Modal -->
                 <div class="modal fade" id="modeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -490,32 +520,32 @@
                   </div>
                 </div>
             <!-- Reports -->
-            <div class="mb-6">
-              <div class="card" style="display: flexbox;">
-
-                <div class="card-body">
-                  <script type="text/javascript" src="{{ url_for('static', filename = 'js/graphs.js') }}"></script>
-                  <div class="container">
-                    <div class="hero">
-                      <h4>Real Time Sensor Display</h4>
-                      <div class="chart-container">
-                        <canvas id="myChart" width="1000" height="200"></canvas>
-                      </div>
-                      <!--Elevation Graph-->
-                      <div class="chart2-container">
-                        <canvas id="myChart2" width="1000" height="200"></canvas>
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="card shadow p-5" style="display: flexbox;">
+                    <div class="card-body">
+                      <script type="text/javascript" src="{{ url_for('static', filename = 'js/graphs.js') }}"></script>
+                      <div class="container">
+                        <div class="hero">
+                          <h4>Real Time Sensor Display</h4>
+                          <div class="chart-container">
+                            <canvas id="myChart" width="1000" height="200"></canvas>
+                          </div>
+                          <!--Elevation Graph-->
+                          <div class="chart2-container">
+                            <canvas id="myChart2" width="1000" height="200"></canvas>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
               </div>
             </div><!-- End Reports -->
 
             <!-- Recent Sales -->
-            <div class="col-12">
-              <div class="card recent-sales overflow-auto">
-
+            <div class="col-lg-12">
+              <div class="row">
+              <div class="shadow p-5">
                 <div class="filter">
                   <!-- <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -582,7 +612,7 @@
                   </table>
 
                 </div>
-
+              </div>
               </div>
             </div><!-- End Recent Sales -->
           </div>
