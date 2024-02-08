@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import time
 
@@ -20,6 +21,13 @@ class ASTTComponentManager:
         self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
+        self.logger = logging.getLogger("ASTT-COMP-MANAGER")
+        logging.basicConfig(
+            filename="app_dev.log",
+            format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
+            level=logging.INFO,
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
 
     # =====================
     # Connection functions
@@ -27,10 +35,12 @@ class ASTTComponentManager:
 
     def connect_to_network(self):
         """Connects to the CAN0 ."""
+        self.logger.debug("Starting VCAN Network")
         (self.network0).connect(channel="can0", bustype="socketcan")
 
     def connect_to_plc_node(self):
         """Connect to the C++  antenna simulator."""
+        self.logger.debug("Connecting to PLC node")
         curr_dir = os.getcwd()
         eds_rel_path = "src/component_managers/cpp-slave.eds"
         eds_full_path = os.path.join(curr_dir, eds_rel_path)
@@ -41,6 +51,7 @@ class ASTTComponentManager:
         )
         (self.network0).add_node(node2)
         self.antenna_node = node2
+        self.logger.info("Connected to PLC node")
 
     # ========================
     # Callbacks
@@ -53,14 +64,12 @@ class ASTTComponentManager:
                 node_record.name
                 == "Position Feedback.Azimuth(R64) of position"
             ):
-                # print(f"Antenna Azumuth : {node_record.raw} ")
                 pass
 
             if (
                 node_record.name
                 == "Position Feedback.Elevation(R64) of position"
             ):
-                # print(f"Antenna Elevation : {node_record.raw} ")
                 pass
 
     # This is helper function to translate int values
@@ -111,6 +120,7 @@ class ASTTComponentManager:
 
     def subscribe_to_az_change(self):
         """CanOpen Subscription to the Azimuth ."""
+        self.logger.info("Subscribing to azimuth ")
         (self.antenna_node).tpdo.read()
         # Mapping the Azimuth to tpdo
         (self.antenna_node).tpdo[1].clear()
@@ -129,9 +139,11 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[1].add_callback(
             self.az_el_change_callback
         )
+        self.logger.info("Subscribed to azimuth")
 
     def subscribe_to_el_change(self):
         """CanOpen Subscription to the Elevation ."""
+        self.logger.info("Subscribing to elevation ")
         (self.antenna_node).tpdo[2].read()
         # Mapping the Elevation to tpdo
         (self.antenna_node).tpdo[2].clear()
@@ -147,9 +159,11 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[2].add_callback(
             self.az_el_change_callback
         )
+        self.logger.info("Subscribed to elevation")
 
     def subscribe_to_func_state(self):
         """CanOpen Subscription to the functional state ."""
+        self.logger.info("Subscribing to functional state")
         (self.antenna_node).tpdo[3].read()
         # Mapping the functional state to tpdo
         (self.antenna_node).tpdo[3].clear()
@@ -166,9 +180,11 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[3].add_callback(
             self.func_state_callback
         )
+        self.logger.info("Subscribed to functional state")
 
     def subscribe_to_stow_sensor(self):
         """CanOpen Subscription to stow sensors."""
+        self.logger.info("Subscribing to stow sensor ")
         (self.antenna_node).tpdo[4].read()
         # Mapping the stow sensors to tpdo
         (self.antenna_node).tpdo[4].clear()
@@ -186,9 +202,11 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[4].add_callback(
             self.stow_pin_callback
         )
+        self.logger.info("Subscribed to stow sensor")
 
     def subscribe_to_antenna_mode(self):
         """CanOpen Subscription to antenna mode."""
+        self.logger.info("Subscribing to antenna mode ")
         (self.antenna_node).tpdo[6].read()
         # Mapping the stow sensors to tpdo
         (self.antenna_node).tpdo[6].clear()
@@ -206,9 +224,11 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[6].add_callback(
             self.antenna_mode_callback
         )
+        self.logger.info("Subscribed to antenna mode")
 
     def subscribe_to_mode_command_obj(self):
         """CanOpen Subscription to the mode command obj ."""
+        self.logger.info("Subscribing to mode command obj")
         (self.antenna_node).rpdo.read()
         # Mapping the mode command obj to rpdo
         (self.antenna_node).rpdo[1].clear()
@@ -220,6 +240,7 @@ class ASTTComponentManager:
         print((self.antenna_node).nmt.state)
         (self.antenna_node).rpdo[1].save()
         (self.antenna_node).rpdo[1].start(0.1)
+        self.logger.info("Subscribed to mode command obj")
 
     # ========================
     # Commands
@@ -235,29 +256,34 @@ class ASTTComponentManager:
 
     def get_plc_state(self):
         """Returns node state."""
+        self.logger.info("Reading plc state")
         return (self.antenna_node).nmt.state
 
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
-        print(timestamp)
+        self.logger.info(f"Point called with AZ {az} and EL {el} ")
         (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2.0
         (self.antenna_node).sdo[0x2000][2].raw = az
         (self.antenna_node).sdo[0x2000][3].raw = el
 
     def set_point_mode(self):
         """Commands the ASTT Antenna to point mode"""
+        self.logger.info("Set point mode called!!")
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 1
 
     def set_idle_mode(self):
         """Commands the ASTT Antenna to idle mode"""
+        self.logger.info("Set idle mode called!!")
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 0
 
     def set_stow_mode(self):
         """Commands the ASTT Antenna to stow mode"""
+        self.logger.info("Set stow mode called!!")
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 2
 
     def trigger_transmission(self):
         """Triggers the transmission of Az/El ."""
+        self.logger.info("Transmission is triggered")
         self.transmission_triggered = True
         (self.antenna_node).nmt.state = "OPERATIONAL"
         (self.network0).sync.start(0.5)
@@ -285,6 +311,7 @@ class ASTTComponentManager:
     @background
     def track_sun(self, duration_time):
         # Converting the duretion time to seconds
+        self.logger.info("Starting to track the sun")
         time_conversion = duration_time * 3600
         count = 1
         sun = Sun(-33.9326033333, 18.47222, 3.6)
@@ -305,13 +332,32 @@ class ASTTComponentManager:
             else:
                 pass
             time.sleep(5)
-            print("---------------------------------------")
-            print("Sun_Az :", str(az), "Sun_El :", str(el))
-            print("---------------------------------------")
+            self.logger.info(
+                "---------------------------------------"
+            )
+            self.logger.info("Sun_Az :", str(az), "Sun_El :", str(el))
+            self.logger.info(
+                "---------------------------------------"
+            )
             count += 1
 
     def track_sun_update(self):
         pass
+
+    def clear_all_logs(self):
+        """Clears all the logs in app_dev.log"""
+        try:
+            with open("app_dev.log", "w") as file:
+                file.truncate(0)
+        except FileNotFoundError:
+            self.logger.error(
+                "File app_dev.log not found. No logs cleared."
+            )
+        except Exception as err:
+            self.logger.error(
+                f"Failed to clear logs in , error: {err}"
+            )
+        file.close()
 
 
 if __name__ == "__main__":
