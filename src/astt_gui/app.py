@@ -1,3 +1,4 @@
+import logging
 import time
 from datetime import datetime
 from threading import Lock
@@ -17,6 +18,14 @@ app.config["SECRET_KEY"] = "STT"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 cm = ASTTComponentManager()
+logger = logging.getLogger("ASTT-GUI")
+
+logging.basicConfig(
+    filename="app_dev.log",
+    format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 
 def get_current_datetime():
@@ -57,12 +66,18 @@ def start_astt_gui():
         and request.form["button"] == "Initialize"
     ):
         user_pass = request.form["password"]
+        cm.clear_all_logs()
         # Start VCAN network & simulator
+        logger.info("Intitialized button triggered")
         simulator_manager = SimulatorManager()
+        logger.info("Starting vcan interface")
+        logger.info("Passing user password")
         success = simulator_manager.start_can_interface(user_pass)
 
         # Report incorrect password to user.
         if success == 0:
+            logger.info("correct password")
+
             simulator_manager.run_contaier_and_startup_simulator()
             # Await Simulator to start up
             time.sleep(2)
@@ -82,14 +97,15 @@ def start_astt_gui():
 
             return jsonify("success")
         if success == 1:
+            logger.warn("Incorrect password entered")
             return jsonify("Wrong password,Try again!!")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:
+        logger.info("Pointing button triggered")
         # Get AZ and EL from GUI.
         az = request.form["azimuth"]
         el = request.form["elevation"]
-        # cm.set_point_mode()
         # Call a method to point to Desired AZ & EL
         cm.point_to_coordinates(
             float(time.time()), float(az), float(el)
@@ -103,6 +119,7 @@ def start_astt_gui():
                 )
 
     if "sources" in request.form and request.form["sources"] == "sun":
+        logger.info("Tracking button triggered")
         global thread2
         with thread_lock:
             if thread is None:
