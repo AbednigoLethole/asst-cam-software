@@ -93,7 +93,6 @@ def start_astt_gui():
             cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
             cm.trigger_transmission()
-            cm.set_point_mode()
 
             return jsonify("success")
         if success == 1:
@@ -128,7 +127,12 @@ def start_astt_gui():
                 )
 
         cm.track_sun(1)
-
+    if "modes" in request.form and request.form["modes"] == "Idle":
+        cm.set_idle_mode()
+    if "modes" in request.form and request.form["modes"] == "Stow":
+        cm.set_stow_mode()
+    if "modes" in request.form and request.form["modes"] == "Point":
+        cm.set_point_mode()
     else:
         pass
 
