@@ -288,24 +288,22 @@
         <div class="row">
           <div class="card shadow p-5">
             <div class="card-body">
-              <div class="div" id="pie">
                 <div class="container">
                   <div class="row">
                     <div class="col">
                      <h4>Application State</h4>
-                     <button class="btn btn-primary" style="width: 190px;">Unknown</button>
+                     <button class="btn btn-secondary" style="width: 190px;">Unknown</button>
                     </div>
                     <div class="col">
                       <h4>Modes state</h4>
-                      <button class="btn btn-primary" style="width: 190px;">Unknown</button>
+                      <button class="btn btn-secondary" style="width: 190px;">Unknown</button>
                     </div>
                     <div class="col">
                       <h4>Functional State</h4>
-                      <button class="btn btn-primary" style="width: 190px;">Unknown</button>
+                      <button class="btn btn-secondary" style="width: 190px;">Unknown</button>
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
       </div>
@@ -314,7 +312,6 @@
           <div class="row">
             <div class="card shadow p-5">
               <h5 class="card-title">Controls</h5>
-                <div class="card-body">
                   <div class="col-lg-12">
                     <div class="row">
                         <div class="container">
@@ -336,7 +333,6 @@
                             </div>
                           </div>
                         </div>
-                    </div>
                   </div>    
                 </div>
                 </div>
@@ -525,96 +521,18 @@
                 <div class="card shadow p-5" style="display: flexbox;">
                     <div class="card-body">
                       <script type="text/javascript" src="{{ url_for('static', filename = 'js/graphs.js') }}"></script>
-                      <div class="container">
-                        <div class="hero">
                           <h4>Real Time Sensor Display</h4>
                           <div class="chart-container">
-                            <canvas id="myChart" width="1000" height="200"></canvas>
+                            <canvas id="myChart" width="1000" height="270"></canvas>
                           </div>
                           <!--Elevation Graph-->
                           <div class="chart2-container">
-                            <canvas id="myChart2" width="1000" height="200"></canvas>
+                            <canvas id="myChart2" width="1000" height="270"></canvas>
                           </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
               </div>
-            </div><!-- End Reports -->
-
-            <!-- Recent Sales -->
-            <div class="col-lg-12">
-              <div class="row">
-              <div class="shadow p-5">
-                <div class="filter">
-                  <!-- <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Recent Logs <span>| Today</span></h5>
-
-                  <table class="table table-borderless datatable">
-                    <thead>
-                      <tr>
-                        <th scope="col">Source Co-ordinates</th>
-                        <th scope="col">Azimith</th>
-                        <th scope="col">Elevation</th>
-                        <th scope="col">Timestamp</th>
-                        <th scope="col">Modes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-success">Track</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-warning">stow</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-success">Track</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-danger">Stop</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-success">Track</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-              </div>
-              </div>
-            </div><!-- End Recent Sales -->
+            </div>
           </div>
         </div><!-- End Left side columns -->
 
