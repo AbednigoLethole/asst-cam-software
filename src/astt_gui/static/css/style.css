@@ -9,6 +9,59 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+
+
+/* Default styles */
+.container {
+  width: 80%; /* Adjust according to your design */
+  margin: 0 auto; /* Center the container */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 90%; /* Adjust for smaller screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    width: 95%; /* Adjust for even smaller screens */
+  }
+}
+
+/* Example of flexible layout */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+  width: 50%; /* Two columns on larger screens */
+}
+
+@media screen and (max-width: 768px) {
+  .flex-item {
+    width: 100%; /* One column on smaller screens */
+  }
+}
+
+/* Example of adjusting font sizes */
+h1 {
+  font-size: 2em; /* Default font size */
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.5em; /* Decrease font size for smaller screens */
+  }
+}
+
+
+
+
+
+/*-----------------------------------------------------------------*/
 :root {
   scroll-behavior: smooth;
 }

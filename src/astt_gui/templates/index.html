@@ -284,22 +284,57 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <div class="row">
-
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="card shadow p-5">
+            <div class="card-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                     <h4>Stow-Pin State</h4>
+                     <button class="btn btn-secondary" style="width: 190px;">Unknown</button>
+                    </div>
+                    <div class="col">
+                      <h4>Modes state</h4>
+                      <button class="btn btn-secondary" style="width: 190px;">Unknown</button>
+                    </div>
+                    <div class="col">
+                      <h4>Functional State</h4>
+                      <button class="btn btn-secondary" style="width: 190px;">Unknown</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+      </div>
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-8">
-                <div class="card-body">
-                  <h5 class="card-title">Controls</h5>
-                  <div class="btn-controls" style="position:relative;display:flex;justify-content:space-between;left:250px">
-                    <button onclick="openInitModal('')" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
-                    <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
-                    <button class="btn btn-primary"><span class='bi bi-arrows-collapse'></span> Stow Antenna</button>
-                    <button class="btn btn-primary"><span class='bi bi-arrows-expand'></span> Unstow Antenna</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
-                  </div> 
+            <div class="card shadow p-5">
+              <h5 class="card-title">Controls</h5>
+                  <div class="col-lg-12">
+                    <div class="row">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col">
+                              <button onclick="openInitModal('')" class="btn btn-primary"><i class='bx bxs-right-arrow'></i> Initialize System</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#modeModal"><span class='bi bi-arrows-collapse'></span> Antenna Modes</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                            </div>
+                          </div>
+                        </div>
+                  </div>    
+                </div>
                 </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
                 <script>
@@ -368,8 +403,31 @@
                   });
   
                 </script>
-  
-              </div>
+                         <!-- Modes Modal -->
+                <div class="modal fade" id="modeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Choose Mode</h5>
+                      
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST" action="/">
+                          <select class="form-select" aria-label="Default select example" id="modes" name="modes">
+                            <option selected>--Select--</option>
+                            <option value="idle">Idle</option>
+                            <option value="stow">Stow</option>
+                            <option value="point">Point</option>
+                          </select>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Start"></input>
+                      </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
                           <!-- Point Modal -->
                 <div class="modal fade" id="pointModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -458,101 +516,23 @@
                   </div>
                 </div>
             <!-- Reports -->
-            <div class="mb-6">
-              <div class="card" style="display: flexbox;">
-
-                <div class="card-body">
-                  <script type="text/javascript" src="{{ url_for('static', filename = 'js/graphs.js') }}"></script>
-                  <div class="container">
-                    <div class="hero">
-                      <h4>Real Time Sensor Display</h4>
-                      <div class="chart-container">
-                        <canvas id="myChart" width="1000" height="200"></canvas>
-                      </div>
-                      <!--Elevation Graph-->
-                      <div class="chart2-container">
-                        <canvas id="myChart2" width="1000" height="200"></canvas>
-                      </div>
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="card shadow p-5" style="display: flexbox;">
+                    <div class="card-body">
+                      <script type="text/javascript" src="{{ url_for('static', filename = 'js/graphs.js') }}"></script>
+                          <h4>Real Time Sensor Display</h4>
+                          <div class="chart-container">
+                            <canvas id="myChart" width="1000" height="270"></canvas>
+                          </div>
+                          <!--Elevation Graph-->
+                          <div class="chart2-container">
+                            <canvas id="myChart2" width="1000" height="270"></canvas>
+                          </div>
                     </div>
                   </div>
-                </div>
-
               </div>
-            </div><!-- End Reports -->
-
-            <!-- Recent Sales -->
-            <div class="col-12">
-              <div class="card recent-sales overflow-auto">
-
-                <div class="filter">
-                  <!-- <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Recent Logs <span>| Today</span></h5>
-
-                  <table class="table table-borderless datatable">
-                    <thead>
-                      <tr>
-                        <th scope="col">Source Co-ordinates</th>
-                        <th scope="col">Azimith</th>
-                        <th scope="col">Elevation</th>
-                        <th scope="col">Timestamp</th>
-                        <th scope="col">Modes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-success">Track</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-warning">stow</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-success">Track</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-danger">Stop</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">23,20.14w, 34,88E</a></th>
-                        <td>45.4 deg</td>
-                        <td>68.5 deg</td>
-                        <td>645372829494</td>
-                        <td><span class="badge bg-success">Track</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-
-              </div>
-            </div><!-- End Recent Sales -->
+            </div>
           </div>
         </div><!-- End Left side columns -->
 
