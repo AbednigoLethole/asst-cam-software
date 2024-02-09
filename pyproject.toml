@@ -70,6 +70,7 @@ sphinx-rtd-theme = "*"
 sphinx.ext.todo = "*"
 sphinx.ext.viewcode = "*" 
 sphinx.ext.autodoc = "*"
+sphinx-autodoc-typehints = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -19,7 +19,7 @@ author = 'Phelokazi, Umkhulu, Surprise, Xitsembiso, Abednigo, Lebogang, Nomzamo,
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc", "sphinx-autodoc-typehints"]
 
 plantuml_syntax_error_image = True
 
