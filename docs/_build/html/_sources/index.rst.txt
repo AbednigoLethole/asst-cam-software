@@ -17,7 +17,7 @@ The system utilizes GPS data to determine real-time location information, such a
 
 .. image:: images/astt.jpg
   :width: 80%
-  :alt: Dish LMC diagram
+  :alt: ASTT Software Architecture
 
 .. toctree::
    :maxdepth: 2
