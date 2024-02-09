@@ -2,65 +2,91 @@
 function modeChanged(newMode) {
     var modeColor = "";
     var modeAndColour = {
-        "Unknown": "#212529",
-        "Idle": "#dc3545",
-        "Stow": "#ffc107",
-        "Point": "#198754"
+        "UNKNOWN": "#212529",
+        "IDLE": "#dc3545",
+        "STOW": "#ffc107",
+        "POINT": "#198754"
     };
     if (newMode in modeAndColour) {
         modeColor = modeAndColour[newMode];
     }
+    var modeButton = document.getElementById("modeState");
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var modeButton = document.getElementById("modeState");
+    modeButton.style.backgroundColor = modeColor;
+    modeButton.innerText = newMode;
 
-        modeButton.style.backgroundColor = modeColor;
-        modeButton.innerText = newMode;
-    });
 }
 ///////////////////////Stow pin State //////////////////////////
 
-function StowPinState(stowState) {
-    var stateColor = "";
-    var stowStateAndColour = {
-        "Unknown": "#212529",
-        "StowPinEngaged": "#dc3545",
-        "StowPinReleased": "#198754"
-    };
-    if (stowState in stowStateAndColour) {
-        stateColor = stowStateAndColour[stowState];
-    }
+function stowPinStateChanged(stowState) {
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var stateButton = document.getElementById("funcState");
+    var stowStateColor = "";
+    var stowStateName = "";
+    var disengagedEnums = [
+        "NOT_ENGAGED_NOT_RELEASED_NOT_STOW_WINDOW",
+        "NOT_ENGAGED_NOT_RELEASED_STOW_WINDOW",
+        "NOT_ENGAGED_RELEASED_NOT_STOW_WINDOW",
+        "NOT_ENGAGED_RELEASED_STOW_WINDOW",
+    ];
 
-        stateButton.style.backgroundColor = stateColor;
-        stateButton.innerText = stowState;
+    var engagedEnums = [
+        "ENGAGED_NOT_RELEASED_NOT_STOW_WINDOW",
+        "ENGAGED_NOT_RELEASED_STOW_WINDOW", 
+        "ENGAGED_RELEASED_NOT_STOW_WINDOW",
+        "ENGAGED_RELEASED_STOW_WINDOW",
+    ];
+
+    disengagedEnums.forEach((disengagedEnum) => {
+        if (disengagedEnum == stowState) {
+            stowStateColor = "#198754";
+            stowStateName = "DISENGAGED";
+        }
     });
+
+    engagedEnums.forEach((engagedEnum) => {
+        if (engagedEnum == stowState) {
+            stowStateColor = "#dc3545";
+            stowStateName = "ENGAGED";
+        }
+    });
+    
+    if (stowState == "UNKNOWN"){
+        stowStateColor = "#212529";
+        stowStateName = stowState;
+    }
+    console.log("stow state: " + stowStateName);
+    var stateButton = document.getElementById("stowState");
+    stateButton.style.backgroundColor = stowStateColor;
+    stateButton.innerText = stowStateName;
+
 }
 
 /////////////////////Function State //////////////////////////////
 
-function funcState(funcState) {
+function funcStateChanged(funcState) {
     var stateColor = "";
     var funcStateAndColour = {
-        "Unknown": "#212529",
-        "Braked": "#dc3545",
-        "Moving": "#198754"
+        "UNKNOWN": "#212529",
+        "BRAKED": "#dc3545",
+        "MOVING": "#198754"
     };
     if (funcState in funcStateAndColour) {
         stateColor = funcStateAndColour[funcState];
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var stateButton = document.getElementById("funcState");
+    console.log("gets there")
+    var stateButton = document.getElementById("funcState");
 
-        stateButton.style.backgroundColor = stateColor;
-        stateButton.innerText = funcState;
-    });
+    stateButton.style.backgroundColor = stateColor;
+    stateButton.innerText = funcState;
+ 
 }
+var socket = io.connect();
+socket.on("updateStateMode", function (msg) {
+    console.log("Received mode & state Data :: " + msg.mode + " :: " + msg.funcState + " :: " + msg.stowPinState);
 
-StowPinState("StowPinReleased")
-modeChanged("Idle")
-funcState("Braked")
-
+    modeChanged(msg.mode);
+    funcStateChanged(msg.funcState);
+    stowPinStateChanged(msg.stowPinState)
+ 
+  });

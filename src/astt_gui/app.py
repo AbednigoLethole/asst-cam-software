@@ -12,6 +12,7 @@ from component_managers.start_simulator import SimulatorManager
 thread = None
 thread_lock = Lock()
 thread2 = None
+thread3 = None
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "STT"
@@ -50,6 +51,25 @@ def background_thread(node):
                 {"az": az, "el": el, "date": get_current_datetime()},
             )
             socketio.sleep(1)
+
+
+def states_and_modes_thread(comp_manager):
+    logger.info("Thread triggered")
+    while True:
+        func_state = comp_manager.antenna_func_state.name
+        mode = comp_manager.antenna_mode.name
+        stow_pin_state = comp_manager.stow_sensor_state.name
+        if func_state and mode is not None:
+            socketio.emit(
+                "updateStateMode",
+                {
+                    "mode": str(mode),
+                    "funcState": str(func_state),
+                    "stowPinState": str(stow_pin_state),
+                },
+            )
+            socketio.sleep(1)
+        logger.info("SENT")
 
 
 @app.route("/", methods=["GET"])
@@ -93,6 +113,12 @@ def start_astt_gui():
             cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
             cm.trigger_transmission()
+            global thread3
+            with thread_lock:
+                if thread3 is None:
+                    thread3 = socketio.start_background_task(
+                        states_and_modes_thread, cm
+                    )
 
             return jsonify("success")
         if success == 1:
