@@ -11,15 +11,17 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 import sphinx_rtd_theme
+import sphinx.ext.autodoc
+import sphinx.builders.html
 
 project = 'ASTT CAM Software'
-copyright = '2024, Phelokazi, Umkhulu, Surprise, Xitsembiso, Abednigo, Lebogang, Nomzamo, Jake, Tamari'
-author = 'Phelokazi, Umkhulu, Surprise, Xitsembiso, Abednigo, Lebogang, Nomzamo, Jake, Tamari'
+copyright = '2024, Phelokazi, Umkhulu, Surprise, Xitsembiso, Abednigo, Lebogang, Nomzamo, Jake, Tamari, Ndifikile'
+author = 'Phelokazi, Umkhulu, Surprise, Xitsembiso, Abednigo, Lebogang, Nomzamo, Jake, Tamari, Ndifikile'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc", "sphinx-autodoc-typehints"]
+extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc", "sphinx_autodoc_typehints"]
 
 plantuml_syntax_error_image = True
 
