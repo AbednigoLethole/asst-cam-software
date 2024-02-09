@@ -60,6 +60,11 @@ six="*"
 Werkzeug="*"
 zipp="*"
 astropy="*"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
 Sphinx = "5.1.1"
 sphinx-rtd-theme = "*"
 sphinx.ext.todo = "*"
