@@ -1,4 +1,5 @@
 """Test the initial states and modes"""
+
 import time
 
 from component_managers.astt_comp_manager import (

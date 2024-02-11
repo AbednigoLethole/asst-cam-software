@@ -1,4 +1,5 @@
 """Test the mode transitions"""
+
 import time
 
 from component_managers.astt_comp_manager import (
