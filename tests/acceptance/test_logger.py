@@ -8,5 +8,5 @@ def test_logs_are_cleared(cm_manager_connected_to_antnn):
     cm_manager_connected_to_antnn.clear_all_logs()
     file_name = "app_dev.log"
     absolute_path = os.path.abspath(file_name)
-    # when the file is cleared, the size becomes zero
+    # When the file is cleared, the size becomes zero
     assert os.path.getsize(absolute_path) == 0
