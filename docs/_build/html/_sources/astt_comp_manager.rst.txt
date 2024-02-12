@@ -1,0 +1,7 @@
+astt\_comp\_manager module
+==========================
+
+.. automodule:: astt_comp_manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
