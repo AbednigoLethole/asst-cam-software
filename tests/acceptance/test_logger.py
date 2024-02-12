@@ -3,7 +3,7 @@ import os
 
 
 def test_logs_are_cleared(cm_manager_connected_to_antnn):
-    """Tests clear_all_logs function"""
+    """Test if clear_all_logs gets logged"""
     # It is expected that logs are written immediately
     cm_manager_connected_to_antnn.clear_all_logs()
     file_name = "app_dev.log"
