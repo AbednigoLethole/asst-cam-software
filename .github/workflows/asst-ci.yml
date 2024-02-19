@@ -52,7 +52,7 @@ jobs:
     - name: Checks if the code is of good quality using flake8
       run: flake8 --show-source --statistics --max-line-length 70 --max-line-length=70 src/ tests/
 
-  test:
+  acceptance-test:
     runs-on: ubuntu-20.04
     needs: build-image
 
@@ -88,6 +88,22 @@ jobs:
 
     - name: Run Tests
       run: pytest tests -v
+
+  unit-test:
+    runs-on: ubuntu-20.04
+    needs: build-image
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: echo "Will run unit tests"
 
   docs-build:
     runs-on: ubuntu-20.04
