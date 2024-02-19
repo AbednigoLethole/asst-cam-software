@@ -1,4 +1,5 @@
 """Test the pointing function with inputs"""
+
 import time
 
 import pytest
