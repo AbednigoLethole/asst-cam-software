@@ -86,8 +86,8 @@ jobs:
     - name: Run the simulator
       run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software bash -c "cd src/antenna_simulator && ./slave"
 
-    - name: Run Tests
-      run: pytest tests -v
+    - name: Run Acceptance Tests
+      run: pytest tests/acceptance -v
 
   unit-test:
     runs-on: ubuntu-20.04
@@ -102,8 +102,8 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
-      run: echo "Will run unit tests"
+    - name: Run unit tests
+      run: cd tests/unit && python3 -m unittest -v
 
   docs-build:
     runs-on: ubuntu-20.04
