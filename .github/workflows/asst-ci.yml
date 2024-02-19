@@ -102,8 +102,9 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Run unit tests
-      run: cd tests/unit && python3 -m unittest -v
+    - name: Run all unit tests
+      run: python -m unittest discover -v -s tests/unit
+
 
   docs-build:
     runs-on: ubuntu-20.04
