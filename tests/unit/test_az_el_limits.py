@@ -2,7 +2,7 @@
 
 import unittest
 
-from component_managers.astt_comp_manager import ASTTComponentManager
+from src.component_managers.astt_comp_manager import ASTTComponentManager
 
 
 class TestAzElLimits(unittest.TestCase):
