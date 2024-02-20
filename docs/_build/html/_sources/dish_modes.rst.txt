@@ -1,7 +1,0 @@
-dish\_modes module
-==================
-
-.. automodule:: dish_modes
-   :members:
-   :undoc-members:
-   :show-inheritance:

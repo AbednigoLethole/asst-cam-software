@@ -72,5 +72,12 @@ To install and run the software using docker follow this commands:
 
     ``` pytest tests/ -v ```
 
+## **Building the docs**
 
+* To build the docs,first go to the directory where conf.py exists.
+    ```cd docs ```
 
+* Generate the readthedocs pages
+    ```sphinx-build -b html . _build -v ```
+
+* The home page of the docs is found in _build directory,open the index.html with the browser.
