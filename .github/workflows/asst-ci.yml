@@ -130,7 +130,7 @@ jobs:
         poetry config virtualenvs.create false && poetry install
 
     - name: Install Sphinx
-      run: pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints
+      run: pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints canopen flask astropy
 
     - name: builds the docs
       run: sphinx-build -M html docs docs/build
