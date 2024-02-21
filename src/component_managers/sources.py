@@ -30,12 +30,7 @@ class Sun:
         return earth_coords
 
     def get_sun_az_el(self, sun_time):
-        """This method outputs the Sun's current Azimuth
-        and Elevation.
-        Returns:
-          A tuple that contains the Azimuth and Elevation
-          in degrees.
-        """
+        """This method outputs the Sun's current Azimuth and Elevation."""
         astropy_time = Time(sun_time, scale="utc")
         astt_coords = EarthLocation(
             lat=self.lat, lon=self.lon, height=self.alt * u.m
@@ -82,12 +77,7 @@ class Satellite1:
 
     def get_sat1_az_el(self):
         # TODO: Work on the logic to get azimuth and elevation.
-        """This method outputs a satellite's current Azimuth
-        and Elevation.
-        Returns:
-          A tuple that contains the Azimuth and Elevation
-          in degrees.
-        """
+        """This method outputs a satellite's current Az and El."""
         pass
 
 

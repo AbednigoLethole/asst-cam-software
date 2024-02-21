@@ -13,33 +13,11 @@ To install and run the software using docker follow this commands:
 
     ```git clone https://github.com/AbednigoLethole/asst-cam-software.git```
 
-* start the virtual CAN Interface
-
-    ```sh startVirtualCANInterface.sh```
-
 * Build the docker image locally.
 
     ```docker build -t astt-cam-software . ```
 
-* Run the container shell that has the simulator with all its dependencies.
-
-    ```docker run -it --network=host astt-cam-software ```
-
-* Once the shell is open, move to directory that has the simulator.
-
-    ```cd src/antenna_simulator ```
-    
- **Running the C++ Antenna Simulator**  
-
-* The simulator is alrealdy compiled so use the following command to start it:
-
-    ```./slave ```
-
-* To restart the simulator, use the following command:
-
-    ``` reset && ./slave```
-
- **Running the component manager**
+**Install the dependencies**
 
 * Install Poetry
 
@@ -49,21 +27,25 @@ To install and run the software using docker follow this commands:
 
     ``` poetry config virtualenvs.create false && poetry install ```
 
-* run the asst component manager
-
-``` python3 src/component_managers/asst_comp_manager.py ```
-
- **Running the GUI**
+**Running the GUI**
 
 * Run the GUI
 
 ``` python3 src/asst_gui/app.py ```
 
 
- **Running the tests**
-
-* Ensure the simulator is running
+**Running the unit tests**
 
 * Run the test
 
-    ``` pytest tests/ -v ```
+    ``` python -m unittest discover -v -s tests/unit ```
+**Building the docs**
+
+* To build the docs,first go to the directory where conf.py exists.
+    ```cd docs ```
+
+* Generate the readthedocs pages
+    ```sphinx-build -b html . _build -v ```
+
+* The home page of the docs is found in _build directory,open the index.html with the browser.
+  
