@@ -1,6 +1,7 @@
 # ASTT CAM software
 ===================
-[![Documentation Status](https://readthedocs.org/projects/https://readthedocs.org/projects/asst-cam-software/badge/?version=latest)](https://readthedocs.org/projects/asst-cam-software/en/latest/?badge=latest)
+
+[![Documentation Status](https://readthedocs.org/projects/asst-cam-software/badge/?version=latest)](https://asst-cam-software.readthedocs.io/en/latest/)
 
 The ASTT CAM software is the control and monitoring system for the AVN Satelite Teaching Telescope. The software monitors the sensors and command the telescope to move in specified direction(Az/El).
 
