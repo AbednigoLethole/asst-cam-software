@@ -1,3 +1,50 @@
 How to deploy the software
 ==========================
 
+**Installation**  
+The software currently runs on:   
+* Ubuntu machines
+
+ To install and run the simulator, download docker on your machine/computer and build the software using it.
+
+To install and run the software using docker follow this commands:
+
+* Clone this repository into your local computer.
+
+    ```git clone https://github.com/AbednigoLethole/asst-cam-software.git```
+
+* Build the docker image locally.
+
+    ```docker build -t astt-cam-software . ```
+
+**Install the dependencies**
+
+* Install Poetry
+
+    ``` pip install poetry ```
+
+* Install dependencies
+
+    ``` poetry config virtualenvs.create false && poetry install ```
+
+**Running the GUI**
+
+* Run the GUI
+
+``` python3 src/asst_gui/app.py ```
+
+
+**Running the unit tests**
+
+* Run the test
+
+    ``` python -m unittest discover -v -s tests/unit ```
+**Building the docs**
+
+* To build the docs,first go to the directory where conf.py exists.
+    ```cd docs ```
+
+* Generate the readthedocs pages
+    ```sphinx-build -b html . _build -v ```
+
+* The home page of the docs is found in _build directory,open the index.html with the browser.

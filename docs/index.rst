@@ -27,6 +27,7 @@ The system utilizes GPS data to determine real-time location information, such a
    GUI<gui/index>
    Software<software/index>
    User Guide<how_to>
+   Comp Manager<component_manager_api>
 
 
 

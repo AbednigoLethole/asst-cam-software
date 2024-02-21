@@ -30,12 +30,7 @@ class Sun:
         return earth_coords
 
     def get_sun_az_el(self, sun_time):
-        """This method outputs the Sun's current Azimuth
-        and Elevation.
-        Returns:
-          A tuple that contains the Azimuth and Elevation
-          in degrees.
-        """
+        """This method outputs the Sun's current Az and El."""
         astropy_time = Time(sun_time, scale="utc")
         astt_coords = EarthLocation(
             lat=self.lat, lon=self.lon, height=self.alt * u.m
@@ -50,7 +45,7 @@ class Sun:
         return (az, el)
 
     def calc_position_sun(self):
-        """Calculates Sun's Az and El and writes it to a file"""
+        """Calculates Sun's Az and El and writes it to a file."""
         # Calculate timestamp
         FUTURE_SECONDS = 10
         track_time = datetime.datetime.now(
@@ -82,17 +77,12 @@ class Satellite1:
 
     def get_sat1_az_el(self):
         # TODO: Work on the logic to get azimuth and elevation.
-        """This method outputs a satellite's current Azimuth
-        and Elevation.
-        Returns:
-          A tuple that contains the Azimuth and Elevation
-          in degrees.
-        """
+        """This method outputs a satellite's current Az and El."""
         pass
 
 
 class Satellite2:
-    "Class to get source Azimuth and Elevation using the source name"
+    "Class to get source Az and El using the source name"
 
     def __init__(self, lat, lon, alt, name):
         self.lat = lat
@@ -101,7 +91,7 @@ class Satellite2:
         self.name = name
 
     def get_az_el_sat2(self):
-        # TODO: Find the database that has the source(s) names.
+        # TODO: Find the database that has the source names.
         source_coords = SkyCoord.from_name(self.name)
         print(source_coords)
         pass
