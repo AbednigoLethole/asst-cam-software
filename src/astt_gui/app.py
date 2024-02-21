@@ -132,9 +132,13 @@ def start_astt_gui():
         az = request.form["azimuth"]
         el = request.form["elevation"]
         # Call a method to point to Desired AZ & EL
-        cm.point_to_coordinates(
-            float(time.time()), float(az), float(el)
-        )
+        try:
+            cm.point_to_coordinates(
+                float(time.time()), float(az), float(el)
+            )
+
+        except (Exception, ValueError) as err:
+            logger.error(f"Error encountered : {err}")
 
         global thread
         with thread_lock:
