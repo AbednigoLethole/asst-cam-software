@@ -1,5 +1,4 @@
 # ASTT CAM software
-===================
 
 [![Documentation Status](https://readthedocs.org/projects/asst-cam-software/badge/?version=latest)](https://asst-cam-software.readthedocs.io/en/latest/)
 

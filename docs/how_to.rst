@@ -48,4 +48,3 @@ To install and run the software using docker follow this commands:
     ```sphinx-build -b html . _build -v ```
 
 * The home page of the docs is found in _build directory,open the index.html with the browser.
-  
