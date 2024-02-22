@@ -265,7 +265,7 @@ class ASTTComponentManager:
 
     def is_el_allowed(self, el):
         """Allows elevation of [-15,92]"""
-        return True if (el >= -15.0 and el <= 91.0) else False
+        return True if (el >= -15.0 and el <= 92.0) else False
 
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
