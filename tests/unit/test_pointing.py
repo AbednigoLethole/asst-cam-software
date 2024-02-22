@@ -10,7 +10,6 @@ from src.component_managers.astt_comp_manager import (
 
 
 class TestAntennaPointing(unittest.TestCase):
-
     @patch("src.component_managers.astt_comp_manager.canopen.Network")
     @patch(
         "src.component_managers.astt_comp_manager.canopen.RemoteNode"
