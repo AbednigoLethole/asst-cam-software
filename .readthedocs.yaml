@@ -13,7 +13,7 @@ build:
       - poetry config virtualenvs.create false
     post_install:
       - poetry install --only docs
-      - pip install Sphinx sphinx-rtd-theme sphinx-autodoc-typehints
+      - pip install Sphinx sphinx-rtd-theme sphinx-autodoc-typehints canopen flask astropy
 
 
 

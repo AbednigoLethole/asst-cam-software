@@ -259,12 +259,26 @@ class ASTTComponentManager:
         self.logger.info("Reading plc state")
         return (self.antenna_node).nmt.state
 
+    def is_az_allowed(self, az):
+        """Allows Azimuth of [-127,127]"""
+        return True if (az >= -127.0 and az <= 127.0) else False
+
+    def is_el_allowed(self, el):
+        """Allows elevation of [-15,92]"""
+        return True if (el >= -15.0 and el <= 92.0) else False
+
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
         self.logger.info(f"Point called with AZ {az} and EL {el} ")
-        (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2.0
-        (self.antenna_node).sdo[0x2000][2].raw = az
-        (self.antenna_node).sdo[0x2000][3].raw = el
+        if self.is_az_allowed(az) and self.is_el_allowed(el):
+            (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2.0
+            (self.antenna_node).sdo[0x2000][2].raw = az
+            (self.antenna_node).sdo[0x2000][3].raw = el
+        else:
+            self.logger.exception(
+                f"az: {az} or el: {el} is out of range"
+            )
+            raise ValueError
 
     def set_point_mode(self):
         """Commands the ASTT Antenna to point mode"""

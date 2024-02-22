@@ -1,7 +1,0 @@
-start\_simulator module
-=======================
-
-.. automodule:: start_simulator
-   :members:
-   :undoc-members:
-   :show-inheritance:
