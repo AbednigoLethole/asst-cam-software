@@ -22,7 +22,7 @@ WORKDIR /app
 COPY . /app
 
 # Dependencies to build lely
-RUN apt install -qq -y git build-essential automake libtool python3-setuptools python3-wheel python3-empy python3-yaml libbluetooth-dev valgrind doxygen graphviz -y
+RUN apt install git build-essential automake libtool python3-setuptools python3-wheel python3-empy python3-yaml libbluetooth-dev valgrind doxygen graphviz -y
 
 # Get and build lely
 #COPY installLely.sh /app/
