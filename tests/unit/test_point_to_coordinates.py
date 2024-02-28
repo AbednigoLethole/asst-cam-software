@@ -1,13 +1,19 @@
 import unittest
-from unittest.mock import patch, MagicMock, call
+from unittest.mock import MagicMock, call, patch
 
-from src.component_managers.astt_comp_manager import ASTTComponentManager
+from src.component_managers.astt_comp_manager import (
+    ASTTComponentManager,
+)
 
 
 class TestAntennaPointing(unittest.TestCase):
     @patch("src.component_managers.astt_comp_manager.canopen.Network")
-    @patch("src.component_managers.astt_comp_manager.canopen.RemoteNode")
-    def test_point_to_coordinates_function(self, mock_RemoteNode, mock_Network):
+    @patch(
+        "src.component_managers.astt_comp_manager.canopen.RemoteNode"
+    )
+    def test_point_to_coordinates_function(
+        self, mock_RemoteNode, mock_Network
+    ):
         # Create an instance of ASTTComponentManager
         manager = ASTTComponentManager()
 
@@ -31,7 +37,7 @@ class TestAntennaPointing(unittest.TestCase):
         calls = [
             call((0x2000, 1), 1234567890.0 + 2.0),
             call((0x2000, 2), az),
-            call((0x2000, 3), el)
+            call((0x2000, 3), el),
         ]
         mock_sdo.__setitem__(calls, any_order=True)
 
