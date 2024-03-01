@@ -34,5 +34,5 @@ RUN chmod +x /app/src/antenna_simulator/compileSlave.sh
 RUN /app/src/antenna_simulator/compileSlave.sh 
 
 # Installing Python dependencies
-RUN pip3 install poetry 
+RUN pip3 install poetry==1.7.1
 RUN poetry config virtualenvs.create false && poetry install
