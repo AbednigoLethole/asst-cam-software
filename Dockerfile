@@ -21,6 +21,10 @@ WORKDIR /app
 # Copying asst code into the container
 COPY . /app
 
+# Installing Python dependencies
+RUN pip3 install poetry==1.7.1
+RUN poetry config virtualenvs.create false && poetry install
+
 # Dependencies to build lely
 RUN apt install git build-essential automake libtool python3-setuptools python3-wheel python3-empy python3-yaml libbluetooth-dev valgrind doxygen graphviz -y
 
@@ -33,6 +37,4 @@ RUN /app/installLely.sh
 RUN chmod +x /app/src/antenna_simulator/compileSlave.sh
 RUN /app/src/antenna_simulator/compileSlave.sh 
 
-# Installing Python dependencies
-RUN pip3 install poetry 
-RUN poetry config virtualenvs.create false && poetry install
+
