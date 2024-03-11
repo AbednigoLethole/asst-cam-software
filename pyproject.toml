@@ -60,7 +60,10 @@ six="1.16.0"
 Werkzeug="3.0.1"
 zipp="3.17.0"
 astropy="5.2.2"
+<<<<<<< HEAD
 setuptools="45.2.0"
+=======
+>>>>>>> main
 
 [tool.poetry.group.docs]
 optional = true
@@ -71,5 +74,5 @@ sphinx-rtd-theme = "*"
 sphinx-autodoc-typehints = "*"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["setuptools","poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
