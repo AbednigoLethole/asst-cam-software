@@ -1,11 +1,17 @@
 import unittest
 from unittest.mock import patch
+
+from src.component_managers.astt_comp_manager import (
+    ASTTComponentManager,
+)
 from src.component_managers.dish_modes import Mode
-from src.component_managers.astt_comp_manager import ASTTComponentManager
+
 
 class TestAntennaModes(unittest.TestCase):
     @patch("src.component_managers.astt_comp_manager.canopen.Network")
-    @patch("src.component_managers.astt_comp_manager.canopen.RemoteNode")
+    @patch(
+        "src.component_managers.astt_comp_manager.canopen.RemoteNode"
+    )
     def setUp(self, mock_RemoteNode, antenna_node):
         # Create an instance of ASTTComponentManager
         self.manager = ASTTComponentManager()
@@ -32,5 +38,6 @@ class TestAntennaModes(unittest.TestCase):
         if mode != Mode.UNKNOWN:
             self.assertEqual(mode, Mode.STOW.value)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
