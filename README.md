@@ -36,7 +36,7 @@ To install and run the software using docker follow this commands:
 
 * Run the GUI
 
-``` python3 src/asst_gui/app.py ```
+``` python3 src/astt_gui/app.py ```
 
 
 ## **Running the unit tests**
