@@ -20,19 +20,31 @@ class TestAntennaModes(unittest.TestCase):
         mock_plc_node = mock_RemoteNode.return_value
         self.manager.antenna_node = mock_plc_node
 
-    @patch.object(ASTTComponentManager, 'get_antenna_mode', return_value=Mode.POINT) # noqa
+    @patch.object(
+        ASTTComponentManager,
+        "get_antenna_mode",
+        return_value=Mode.POINT,
+    )  # noqa
     def test_set_point_mode(self, mock_get_antenna_mode):
         self.manager.set_point_mode()
         mode = self.manager.get_antenna_mode()
         self.assertEqual(mode, Mode.POINT)
 
-    @patch.object(ASTTComponentManager, 'get_antenna_mode', return_value=Mode.IDLE) # noqa
+    @patch.object(
+        ASTTComponentManager,
+        "get_antenna_mode",
+        return_value=Mode.IDLE,
+    )  # noqa
     def test_set_idle_mode(self, mock_get_antenna_mode):
         self.manager.set_idle_mode()
         mode = self.manager.get_antenna_mode()
         self.assertEqual(mode, Mode.IDLE)
 
-    @patch.object(ASTTComponentManager, 'get_antenna_mode', return_value=Mode.STOW) # noqa
+    @patch.object(
+        ASTTComponentManager,
+        "get_antenna_mode",
+        return_value=Mode.STOW,
+    )  # noqa
     def test_set_stow_mode(self, mock_get_antenna_mode):
         self.manager.set_stow_mode()
         mode = self.manager.get_antenna_mode()

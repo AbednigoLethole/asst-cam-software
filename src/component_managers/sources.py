@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+import datetime
 
 from astropy import units as u
 from astropy.coordinates import (
@@ -11,7 +11,7 @@ from astropy.time import Time
 
 # TODO: Use ASTT GPS Reciever Component Manager.
 
-current_time = datetime.now(timezone.utc)
+current_time = datetime.datetime.now(datetime.timezone.utc)
 track_time = Time(current_time, scale="utc")
 
 
