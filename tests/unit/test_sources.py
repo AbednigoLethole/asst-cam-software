@@ -51,15 +51,28 @@ class TestGetSunAzEl(unittest.TestCase):
         reason="Consider making main function to have a return"
     )
     def test_calc_position_sun(self):
-        track_time = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=10)
-        timestamp = (track_time - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)).total_seconds()
-        earth_coords = EarthLocation(lat=self.sun.lat, lon=self.sun.lon, height=self.sun.alt * u.m)
+        track_time = datetime.datetime.now(
+            datetime.timezone.utc
+        ) + datetime.timedelta(seconds=10)
+        timestamp = (
+            track_time
+            - datetime.datetime(
+                1970, 1, 1, tzinfo=datetime.timezone.utc
+            )
+        ).total_seconds()
+        earth_coords = EarthLocation(
+            lat=self.sun.lat,
+            lon=self.sun.lon,
+            height=self.sun.alt * u.m,
+        )
         tt = Time(track_time, scale="utc")
         aa = AltAz(obstime=tt, location=earth_coords)
         sun_data = get_sun(tt).transform_to(aa)
         azi = sun_data.az.to(u.degree).value
         ele = sun_data.alt.to(u.degree).value
-        results = f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
+        results = (
+            f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
+        )
         result = print(results)
         # Invoke the calc_position_sun method
         self.sun.calc_position_sun()
