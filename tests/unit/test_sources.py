@@ -51,7 +51,7 @@ class TestGetSunAzEl(unittest.TestCase):
         reason="Consider making main function to have a return"
     )
     @pytest.mark.usefixtures("_pass_fixtures")
-    def test_calc_position_sun(self):
+    def test_calc_position_sun(self, capfd):
         track_time = datetime.datetime.now(
             datetime.timezone.utc
         ) + datetime.timedelta(seconds=10)
@@ -77,7 +77,7 @@ class TestGetSunAzEl(unittest.TestCase):
         # Invoke the calc_position_sun method
         self.sun.calc_position_sun()
         # Capture the standard output and error
-        out, err = self.capfd.readouterr()
+        out, err = capfd.readouterr()
         # self.assertAlmostEqual(results, err)
         assert results in out
 
