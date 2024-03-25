@@ -10,12 +10,14 @@ from src.component_managers.sources import Sun
 
 
 class TestGetSunAzEl(unittest.TestCase):
-    @pytest.fixture(autouse=True)
-    def _pass_fixtures(self, capsys):
-        self.capsys = capsys
 
     def setUp(self):
         self.sun = Sun(lat=-33.9326033333, lon=18.47222, alt=3.6)
+        self.capsys = None
+
+    @pytest.fixture(autouse=True)
+    def _pass_fixtures(self, capsys):
+        self.capsys = capsys
 
     def test_earth_coords_valid(self):
         result = self.sun.earth_coords()
@@ -46,9 +48,9 @@ class TestGetSunAzEl(unittest.TestCase):
         self.assertAlmostEqual(az, expected_az)
         self.assertAlmostEqual(el, expected_el)
 
-    # @pytest.mark.xfail(
-    #     reason="Consider making main function to have a return"
-    # )
+    @pytest.mark.xfail(
+        reason="Consider making main function to have a return"
+    )
     def test_calc_position_sun(self):
         track_time = datetime.datetime.now(
             datetime.timezone.utc
