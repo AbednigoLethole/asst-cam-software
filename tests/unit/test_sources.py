@@ -10,7 +10,6 @@ from src.component_managers.sources import Sun
 
 
 class TestGetSunAzEl(unittest.TestCase):
-
     @pytest.fixture(autouse=True)
     def _pass_fixtures(self, capsys):
         self.capsys = capsys
@@ -47,9 +46,9 @@ class TestGetSunAzEl(unittest.TestCase):
         self.assertAlmostEqual(az, expected_az)
         self.assertAlmostEqual(el, expected_el)
 
-    @pytest.mark.xfail(
-        reason="Consider making main function to have a return"
-    )
+    # @pytest.mark.xfail(
+    #     reason="Consider making main function to have a return"
+    # )
     def test_calc_position_sun(self):
         track_time = datetime.datetime.now(
             datetime.timezone.utc
@@ -73,12 +72,12 @@ class TestGetSunAzEl(unittest.TestCase):
         results = (
             f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
         )
-        result = print(results)
         # Invoke the calc_position_sun method
         self.sun.calc_position_sun()
         # Capture the standard output and error
-        captured = self.capsys.readouterr()
-        self.assertAlmostEqual(result, captured.out)
+        out, err = self.capsys.readouterr()
+        # self.assertAlmostEqual(results, err)
+        assert results in err
 
 
 if __name__ == "__main__":
