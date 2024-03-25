@@ -15,8 +15,8 @@ class TestGetSunAzEl(unittest.TestCase):
         self.sun = Sun(lat=-33.9326033333, lon=18.47222, alt=3.6)
 
     @pytest.fixture(autouse=True)
-    def _pass_fixtures(self, capsys):
-        self.capsys = capsys
+    def _pass_fixtures(self, capfd):
+        self.capfd = capfd
 
     def test_earth_coords_valid(self):
         result = self.sun.earth_coords()
@@ -77,9 +77,9 @@ class TestGetSunAzEl(unittest.TestCase):
         # Invoke the calc_position_sun method
         self.sun.calc_position_sun()
         # Capture the standard output and error
-        out, err = self.capsys.readouterr()
+        out, err = self.capfd.readouterr()
         # self.assertAlmostEqual(results, err)
-        assert results in err
+        assert results in out
 
 
 if __name__ == "__main__":
