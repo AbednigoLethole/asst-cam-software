@@ -13,7 +13,6 @@ class TestGetSunAzEl(unittest.TestCase):
 
     def setUp(self):
         self.sun = Sun(lat=-33.9326033333, lon=18.47222, alt=3.6)
-        self.capsys = None
 
     @pytest.fixture(autouse=True)
     def _pass_fixtures(self, capsys):
@@ -51,6 +50,7 @@ class TestGetSunAzEl(unittest.TestCase):
     @pytest.mark.xfail(
         reason="Consider making main function to have a return"
     )
+    @pytest.mark.usefixtures("_pass_fixtures")
     def test_calc_position_sun(self):
         track_time = datetime.datetime.now(
             datetime.timezone.utc
