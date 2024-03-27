@@ -78,7 +78,7 @@ class TestGetSunAzEl(unittest.TestCase):
         # Changed the strings to be in a list
         el = list(out.split(" "))
         ef = list(results.split(" "))
-        # From the list extract only the numbers and change their types to int.
+        # In the list extract only the numbers and change them to int.
         el[2], el[5], el[7] = (
             int(float(el[2])),
             int(float(el[5])),
@@ -89,11 +89,9 @@ class TestGetSunAzEl(unittest.TestCase):
             int(float(ef[5])),
             int(float(ef[7])),
         )
-        # self.assertAlmostEqual(el[2], ef[2])
+        self.assertAlmostEqual(el[2], ef[2])
         self.assertAlmostEqual(el[5], ef[5])
         self.assertAlmostEqual(el[7], ef[7])
-
-        # https://pavolkutaj.medium.com/how-to-test-printed-output-in-python-with-pytest-and-its-capsys-fixture-161010cfc5ad#:~:text=the%20function%20test_my_function%20takes%20one,fixture%20to%20capture%20the%20outputs.
 
 
 if __name__ == "__main__":
