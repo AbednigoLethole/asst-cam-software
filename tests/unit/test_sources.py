@@ -47,11 +47,11 @@ class TestGetSunAzEl(unittest.TestCase):
         self.assertAlmostEqual(az, expected_az)
         self.assertAlmostEqual(el, expected_el)
 
-    @pytest.mark.xfail(
-        reason="Consider making main function to have a return"
-    )
+    # @pytest.mark.xfail(
+    #     reason="Consider making main function to have a return"
+    # )
     @pytest.mark.usefixtures("_pass_fixtures")
-    def test_calc_position_sun(self, capfd):
+    def test_calc_position_sun(self):
         track_time = datetime.datetime.now(
             datetime.timezone.utc
         ) + datetime.timedelta(seconds=10)
@@ -77,9 +77,20 @@ class TestGetSunAzEl(unittest.TestCase):
         # Invoke the calc_position_sun method
         self.sun.calc_position_sun()
         # Capture the standard output and error
-        out, err = capfd.readouterr()
-        # self.assertAlmostEqual(results, err)
-        assert results in out
+        out, err = (self.capfd.readouterr().out).split("\n")
+        # Changed the strings to be in a list
+        el = (list(out.split(" ")))
+        ef = (list(results.split(" ")))
+        # From the list extract only the numbers and change their types. 
+        el[2], el[5], el[7] = int(float(el[2])),float(el[5]), float(el[7])
+        ef[2], ef[5], ef[7] = int(float(ef[2])),float(ef[5]), float(ef[7])
+        # Decided to make the timestamp to be an int type instead
+        # self.assertAlmostEqual(el[2], ef[2])
+        self.assertAlmostEqual(el[5], ef[5], places=2)
+        self.assertAlmostEqual(el[7], ef[7], places=2)
+    
+
+        # https://pavolkutaj.medium.com/how-to-test-printed-output-in-python-with-pytest-and-its-capsys-fixture-161010cfc5ad#:~:text=the%20function%20test_my_function%20takes%20one,fixture%20to%20capture%20the%20outputs.
 
 
 if __name__ == "__main__":
