@@ -1,3 +1,4 @@
+# noqa: E501
 import datetime
 import unittest
 
@@ -70,7 +71,7 @@ class TestGetSunAzEl(unittest.TestCase):
     #     azi = sun_data.az.to(u.degree).value
     #     ele = sun_data.alt.to(u.degree).value
     #     results = (
-    #         f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
+    #     f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
     #     )
     #     # Invoke the calc_position_sun method
     #     self.sun.calc_position_sun()
@@ -79,7 +80,7 @@ class TestGetSunAzEl(unittest.TestCase):
     #     # Changed the strings to be in a list
     #     el = list(out.split(" "))
     #     ef = list(results.split(" "))
-    #     # In the list extract only the numbers and change them to int.
+    #     In the list extract only the numbers and change them to int.
     #     el[2], el[5], el[7] = (
     #         int(float(el[2])),
     #         int(float(el[5])),
