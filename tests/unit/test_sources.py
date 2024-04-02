@@ -47,52 +47,52 @@ class TestGetSunAzEl(unittest.TestCase):
         self.assertAlmostEqual(az, expected_az)
         self.assertAlmostEqual(el, expected_el)
 
-    @pytest.mark.skip(reason="to look at this later")
-    @pytest.mark.usefixtures("_pass_fixtures")
-    def test_calc_position_sun(self):
-        track_time = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(seconds=10)
-        timestamp = (
-            track_time
-            - datetime.datetime(
-                1970, 1, 1, tzinfo=datetime.timezone.utc
-            )
-        ).total_seconds()
-        earth_coords = EarthLocation(
-            lat=self.sun.lat,
-            lon=self.sun.lon,
-            height=self.sun.alt * u.m,
-        )
-        tt = Time(track_time, scale="utc")
-        aa = AltAz(obstime=tt, location=earth_coords)
-        sun_data = get_sun(tt).transform_to(aa)
-        azi = sun_data.az.to(u.degree).value
-        ele = sun_data.alt.to(u.degree).value
-        results = (
-            f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
-        )
-        # Invoke the calc_position_sun method
-        self.sun.calc_position_sun()
-        # Capture the standard output and error
-        out, err = self.capfd.readouterr().out.split("\n")
-        # Changed the strings to be in a list
-        el = list(out.split(" "))
-        ef = list(results.split(" "))
-        # In the list extract only the numbers and change them to int.
-        el[2], el[5], el[7] = (
-            int(float(el[2])),
-            int(float(el[5])),
-            int(float(el[7])),
-        )
-        ef[2], ef[5], ef[7] = (
-            int(float(ef[2])),
-            int(float(ef[5])),
-            int(float(ef[7])),
-        )
-        # self.assertAlmostEqual(el[2], ef[2])
-        self.assertAlmostEqual(el[5], ef[5])
-        self.assertAlmostEqual(el[7], ef[7])
+    # @pytest.mark.skip(reason="to look at this later")
+    # @pytest.mark.usefixtures("_pass_fixtures")
+    # def test_calc_position_sun(self):
+    #     track_time = datetime.datetime.now(
+    #         datetime.timezone.utc
+    #     ) + datetime.timedelta(seconds=10)
+    #     timestamp = (
+    #         track_time
+    #         - datetime.datetime(
+    #             1970, 1, 1, tzinfo=datetime.timezone.utc
+    #         )
+    #     ).total_seconds()
+    #     earth_coords = EarthLocation(
+    #         lat=self.sun.lat,
+    #         lon=self.sun.lon,
+    #         height=self.sun.alt * u.m,
+    #     )
+    #     tt = Time(track_time, scale="utc")
+    #     aa = AltAz(obstime=tt, location=earth_coords)
+    #     sun_data = get_sun(tt).transform_to(aa)
+    #     azi = sun_data.az.to(u.degree).value
+    #     ele = sun_data.alt.to(u.degree).value
+    #     results = (
+    #         f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
+    #     )
+    #     # Invoke the calc_position_sun method
+    #     self.sun.calc_position_sun()
+    #     # Capture the standard output and error
+    #     out, err = self.capfd.readouterr().out.split("\n")
+    #     # Changed the strings to be in a list
+    #     el = list(out.split(" "))
+    #     ef = list(results.split(" "))
+    #     # In the list extract only the numbers and change them to int.
+    #     el[2], el[5], el[7] = (
+    #         int(float(el[2])),
+    #         int(float(el[5])),
+    #         int(float(el[7])),
+    #     )
+    #     ef[2], ef[5], ef[7] = (
+    #         int(float(ef[2])),
+    #         int(float(ef[5])),
+    #         int(float(ef[7])),
+    #     )
+    #     # self.assertAlmostEqual(el[2], ef[2])
+    #     self.assertAlmostEqual(el[5], ef[5])
+    #     self.assertAlmostEqual(el[7], ef[7])
 
 
 if __name__ == "__main__":
