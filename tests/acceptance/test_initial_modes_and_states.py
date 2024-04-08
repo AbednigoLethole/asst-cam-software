@@ -30,14 +30,19 @@ def test_antenna_starts_at_idle_mode(
 ):
     """Test initial mode of the simulator"""
     set_up_subscriptions(cm_manager_connected_to_antnn)
-    assert cm_manager_connected_to_antnn.get_antenna_mode() == Mode.IDLE
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_mode() == Mode.IDLE
+    )
 
 
 def test_antenna_starts_at_braked_fuc_state(
     cm_manager_connected_to_antnn,
 ):
     """Test initial func state of the simulator"""
-    assert cm_manager_connected_to_antnn.get_antenna_func_state() == FuncState.BRAKED
+    assert (
+        cm_manager_connected_to_antnn.get_antenna_func_state()
+        == FuncState.BRAKED
+    )
 
 
 def test_antenna_starts_at_stow_not_release(

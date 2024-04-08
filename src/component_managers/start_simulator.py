@@ -6,7 +6,9 @@ yellow = "\033[0;33m"
 
 class SimulatorManager:
     def __init__(self):
-        self.start_virtual_can = "sudo -S sh startVirtualCANInterface.sh"
+        self.start_virtual_can = (
+            "sudo -S sh startVirtualCANInterface.sh"
+        )
         # self.docker_load = "docker load -i ubuntu_canopen.tar"
         self.docker_run = (
             "docker run -d --network=host astt-cam-software bash -c "

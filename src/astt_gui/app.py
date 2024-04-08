@@ -40,8 +40,12 @@ def background_thread(node):
         while True:
             node.tpdo[1].wait_for_reception()
             node.tpdo[2].wait_for_reception()
-            az = node.tpdo["Position Feedback.Azimuth(R64) of position"].raw
-            el = node.tpdo["Position Feedback.Elevation(R64) of position"].raw
+            az = node.tpdo[
+                "Position Feedback.Azimuth(R64) of position"
+            ].raw
+            el = node.tpdo[
+                "Position Feedback.Elevation(R64) of position"
+            ].raw
             socketio.emit(
                 "updateAZELData",
                 {"az": az, "el": el, "date": get_current_datetime()},
@@ -77,7 +81,10 @@ def index():
 def start_astt_gui():
     # Trigger condition when Initialize button is clicked.
 
-    if "button" in request.form and request.form["button"] == "Initialize":
+    if (
+        "button" in request.form
+        and request.form["button"] == "Initialize"
+    ):
         user_pass = request.form["password"]
         cm.clear_all_logs()
         # Start VCAN network & simulator
@@ -109,7 +116,9 @@ def start_astt_gui():
             global thread3
             with thread_lock:
                 if thread3 is None:
-                    thread3 = socketio.start_background_task(states_and_modes_thread, cm)
+                    thread3 = socketio.start_background_task(
+                        states_and_modes_thread, cm
+                    )
 
             return jsonify("success")
         if success == 1:
@@ -124,7 +133,9 @@ def start_astt_gui():
         el = request.form["elevation"]
         # Call a method to point to Desired AZ & EL
         try:
-            cm.point_to_coordinates(float(time.time()), float(az), float(el))
+            cm.point_to_coordinates(
+                float(time.time()), float(az), float(el)
+            )
 
         except (Exception, ValueError) as err:
             logger.error(f"Error encountered : {err}")
@@ -132,14 +143,18 @@ def start_astt_gui():
         global thread
         with thread_lock:
             if thread is None:
-                thread = socketio.start_background_task(background_thread, cm.antenna_node)
+                thread = socketio.start_background_task(
+                    background_thread, cm.antenna_node
+                )
 
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
         global thread2
         with thread_lock:
             if thread is None:
-                thread2 = socketio.start_background_task(background_thread, cm.antenna_node)
+                thread2 = socketio.start_background_task(
+                    background_thread, cm.antenna_node
+                )
 
         cm.track_sun(1)
     if "modes" in request.form and request.form["modes"] == "Idle":
@@ -162,7 +177,9 @@ def connect():
     global thread
     with thread_lock:
         if thread is None:
-            thread = socketio.start_background_task(background_thread, cm.antenna_node)
+            thread = socketio.start_background_task(
+                background_thread, cm.antenna_node
+            )
 
 
 """

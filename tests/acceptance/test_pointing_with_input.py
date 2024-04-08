@@ -28,7 +28,9 @@ def test_point_func_rejects_incor_input(
     # Tests whether point to coordinates raises a value error
     # when values out of range are passed.
     with pytest.raises(ValueError):
-        cm_manager_connected_to_antnn.point_to_coordinates(float(time.time()), 130.0, 100.0)
+        cm_manager_connected_to_antnn.point_to_coordinates(
+            float(time.time()), 130.0, 100.0
+        )
 
 
 def test_point_func_accepts_corr_input(cm_manager_connected_to_antnn):
@@ -36,5 +38,7 @@ def test_point_func_accepts_corr_input(cm_manager_connected_to_antnn):
     # Assume the antenna is in pointing because of the function
     # above sets it.
     # Assert true gets triggered if AZ/EL are accepted
-    cm_manager_connected_to_antnn.point_to_coordinates(float(time.time()), 56.0, -5.0)
+    cm_manager_connected_to_antnn.point_to_coordinates(
+        float(time.time()), 56.0, -5.0
+    )
     assert True

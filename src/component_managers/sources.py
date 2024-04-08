@@ -24,13 +24,17 @@ class Sun:
         self.alt = alt
 
     def earth_coords(self):
-        earth_coords = EarthLocation(lat=self.lat, lon=self.lon, height=self.alt * u.m)
+        earth_coords = EarthLocation(
+            lat=self.lat, lon=self.lon, height=self.alt * u.m
+        )
         return earth_coords
 
     def get_sun_az_el(self, sun_time):
         """This method outputs the Sun's current Az and El."""
         astropy_time = Time(sun_time, scale="utc")
-        astt_coords = EarthLocation(lat=self.lat, lon=self.lon, height=self.alt * u.m)
+        astt_coords = EarthLocation(
+            lat=self.lat, lon=self.lon, height=self.alt * u.m
+        )
         alt_az = AltAz(obstime=astropy_time, location=astt_coords)
         # TODO: Change get_sun method to a suitable function to
         # find satellites.
@@ -44,18 +48,23 @@ class Sun:
         """Calculates Sun's Az and El and writes it to a file."""
         # Calculate timestamp
         FUTURE_SECONDS = 10
-        track_time = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
-            seconds=FUTURE_SECONDS
-        )
+        track_time = datetime.datetime.now(
+            datetime.timezone.utc
+        ) + datetime.timedelta(seconds=FUTURE_SECONDS)
         timestamp = (
-            track_time - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+            track_time
+            - datetime.datetime(
+                1970, 1, 1, tzinfo=datetime.timezone.utc
+            )
         ).total_seconds()
         tt = Time(track_time, scale="utc")
         aa = AltAz(obstime=tt, location=self.earth_coords())
         sun_data = get_sun(tt).transform_to(aa)
         azi = sun_data.az.to(u.degree).value
         ele = sun_data.alt.to(u.degree).value
-        print(f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}")
+        print(
+            f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
+        )
 
 
 class Satellite1:
