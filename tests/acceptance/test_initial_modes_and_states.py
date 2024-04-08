@@ -2,7 +2,11 @@
 
 import time
 
-from component_managers.astt_comp_manager import FuncState, Mode, StowPinState
+from component_managers.astt_comp_manager import (
+    FuncState,
+    Mode,
+    StowPinState,
+)
 
 
 def set_up_subscriptions(comp_manager):

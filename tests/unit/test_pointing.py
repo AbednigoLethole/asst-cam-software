@@ -4,7 +4,9 @@ import time
 import unittest
 from unittest.mock import patch
 
-from src.component_managers.astt_comp_manager import ASTTComponentManager
+from src.component_managers.astt_comp_manager import (
+    ASTTComponentManager,
+)
 
 
 class TestAntennaPointing(unittest.TestCase):
