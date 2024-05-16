@@ -114,7 +114,7 @@
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell" title="This is an alert button for all warnings, errors and fatal system errors"></i><span>Alarms</span><span class="badge bg-danger badge-number">4</span>
+            <i class="bi bi-bell" title="This is an alert bell signals the user for all warnings, errors and fatal system errors, it informs the user on any mishaps that may happen in an operation. For example if the antenna reaches its poistion limits (Elevation and Azumith) this where the notification will pop up."></i><span>Alarms</span><span class="badge bg-danger badge-number">4</span>
           
           </a><!-- End Notification Icon -->
 
@@ -199,7 +199,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide" title="This drop down stores our log file."></i><span>Logs</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-menu-button-wide" title="This drop down leads to where the sytems stores our log file, the log file consists of the initialization operation of the antenna, then records all operations there on. Note, when the system is reinitialised the logs are wiped and wacked, and a new log file is created."></i><span>Logs</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
           <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
@@ -230,7 +230,7 @@
                   <div class="row">
                     <div class="col">
                       <h4>Stow-Pin State</h4>
-                      <button class="btn btn-secondary" title="This is where we display our stow states" style="width: 190px;" id="stowState">UNKNOWN</button>
+                      <button class="btn btn-secondary" title="This display box is where we display our stow states. i.e when the antenna is about to start pointing, this display box will contantly change as the stow pin is being disengaged and the antenna will start the pointing operation." style="width: 190px;" id="stowState">UNKNOWN</button>
                       <!--<div class="btn-container">
                         <button class="btn btn-secondary" id="stowState">UNKNOWN</button>
                         <span class="tooltip">This is where we display our stow states</span>
@@ -238,7 +238,7 @@
                       </div>
                     <div class="col">
                       <h4>Modes state</h4>
-                      <button class="btn btn-secondary" title="This is where we display our modes states" style="width: 190px;" id="modeState">UNKNOWN</button>
+                      <button class="btn btn-secondary" title="This display box is where we display our modes states, when the Antenna mode button is triggered, this display box will show different operational modes for the simulator as per operation being executed in simulator. " style="width: 190px;" id="modeState">UNKNOWN</button>
                       <!-- <div class="btn-container">
                         <button class="btn btn-secondary" id="modeState">UNKNOWN</button>
                         <span class="tooltip">This is where we display our modes states</span>
@@ -246,7 +246,7 @@
                     </div>
                     <div class="col">
                       <h4>Functional State</h4>
-                      <button class="btn btn-secondary" title="This is where we display our functional states" style="width: 190px;" id="funcState">UNKNOWN</button>
+                      <button class="btn btn-secondary" title="This display box is where we display our functional states, which are namely braked, moving, estop, error and unknown. This gives a indication of what the antenna will be doing depending on the operation being executed. For example if the mode is on pointing then this display box will show that the antenna is moving." style="width: 190px;" id="funcState">UNKNOWN</button>
                       <!--<div class="btn-container">
                         <button class="btn btn-secondary" id="funcState">UNKNOWN</button>
                         <span class="tooltip">This is where we display our functional states</span>
@@ -267,23 +267,23 @@
                         <div class="container">
                           <div class="row">
                             <div class="col">
-                              <button onclick="openInitModal('')" class="btn btn-primary" title="This button initializes the system"> <i class='bx bxs-right-arrow'></i> Initialize System</button>
+                              <button onclick="openInitModal('')" class="btn btn-primary" title="This button initializes the system, the user must enter a valid password in order for the  the antenna/simulator to be started and subscriptions to sensors are made on the antenna.and the initial values of sensors will be populated above on the states grids above"> <i class='bx bxs-right-arrow'></i> Initialize System</button>
                             </div>
                             <div class="col">
-                              <button class="btn btn-primary" title="This button is used when we want to scan for sources i.e the sun also the stars in the evening"><span class="bi bi-qr-code"></span> Scan Source/s</button>
+                              <button class="btn btn-primary" title="This button is used when we want to scan for sources i.e the sun and/or the stars or any other optical source(s)."><span class="bi bi-qr-code"></span> Scan Source/s</button>
                               <!--<div class="btn-container">
                                 <button class="btn btn-primary"><span class="bi bi-qr-code"></span> Scan Source/s</button>
                                 <span class="tooltip">This is where we display sources</span>
                               </div> -->
                             </div>
                             <div class="col">
-                              <button class="btn btn-primary" title="This button is used to switch between different antenna modes namely, Idle, Stow and Point."  data-bs-toggle="modal" data-bs-target="#modeModal"><span class='bi bi-arrows-collapse'></span> Antenna Modes</button>
+                              <button class="btn btn-primary" title="This button is used to switch between different antenna modes namely, Idle, Stow and Point. This allows the system to keep strict rules to ensure the antenna is not misused. For example the antenna is set to not be able to point if it is on stow mode."  data-bs-toggle="modal" data-bs-target="#modeModal"><span class='bi bi-arrows-collapse'></span> Antenna Modes</button>
                             </div>
                             <div class="col">
-                              <button class="btn btn-primary" title="This button allows us to point to a specific source, we give it pointing targets i.e azimuth and elevation in degrees" data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
+                              <button class="btn btn-primary" title="This button allows us to point to a specific source, we give it pointing targets i.e azimuth and elevation in degrees. When pressed the graphing of the targets will be displayed as the antenna moves to the designated pointing targets." data-bs-toggle="modal" data-bs-target="#pointModal"><span class="bi bi-app-indicator"></span> Point Source</button>
                             </div>
                             <div class="col">
-                              <button class="btn btn-primary" title="This button is used for tracking sources, the button allows you to choose a specific source you would like to track at a particular time." data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
+                              <button class="btn btn-primary" title="This button is used for tracking sources, the button allows you to choose a specific source you would like to track at a particular time, i.e We have options to track the Sun and the dstv intelsat." data-bs-toggle="modal" data-bs-target="#trackModal"><span class='bi bi-geo-alt-fill'></span> Track Source</button>
                             </div>
                           </div>
                         </div>
