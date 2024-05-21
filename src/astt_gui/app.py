@@ -96,7 +96,6 @@ def start_astt_gui():
         and request.form["button"] == "Initialize"
     ):
         user_pass = request.form["password"]
-        cm.clear_all_logs()
         # Start VCAN network & simulator
         message_json = {"message": "Intitialized button triggered"}
         logger.info(json.dumps(message_json))
