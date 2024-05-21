@@ -1,4 +1,7 @@
+import json
 import logging
+import logging.handlers
+import os
 import time
 from datetime import datetime
 from threading import Lock
@@ -9,6 +12,7 @@ from flask_socketio import SocketIO
 from component_managers.astt_comp_manager import ASTTComponentManager
 from component_managers.start_simulator import SimulatorManager
 
+logstash_ip = os.environ["LOGSTASH_IP"]
 thread = None
 thread_lock = Lock()
 thread2 = None
@@ -21,8 +25,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 cm = ASTTComponentManager()
 logger = logging.getLogger("ASTT-GUI")
 
+logstash_handler = logging.handlers.SocketHandler(logstash_ip, 5000)
+logstash_handler.setLevel(logging.INFO)
+logger.addHandler(logstash_handler)
+
+
 logging.basicConfig(
-    filename="app_dev.log",
     format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
     level=logging.INFO,
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -54,7 +62,8 @@ def background_thread(node):
 
 
 def states_and_modes_thread(comp_manager):
-    logger.info("Thread triggered")
+    message_json = {"message": "Thread triggered"}
+    logger.info(json.dumps(message_json))
     while True:
         func_state = comp_manager.antenna_func_state.name
         mode = comp_manager.antenna_mode.name
@@ -69,7 +78,8 @@ def states_and_modes_thread(comp_manager):
                 },
             )
             socketio.sleep(1)
-        logger.info("SENT")
+        message_json = {"message": "SENT"}
+        logger.info(json.dumps(message_json))
 
 
 @app.route("/", methods=["GET"])
@@ -88,15 +98,17 @@ def start_astt_gui():
         user_pass = request.form["password"]
         cm.clear_all_logs()
         # Start VCAN network & simulator
-        logger.info("Intitialized button triggered")
+        message_json = {"message": "Intitialized button triggered"}
+        logger.info(json.dumps(message_json))
         simulator_manager = SimulatorManager()
-        logger.info("Starting vcan interface")
-        logger.info("Passing user password")
+        message_json = {"message": "Passing user password"}
+        logger.info(json.dumps(message_json))
         success = simulator_manager.start_can_interface(user_pass)
 
         # Report incorrect password to user.
         if success == 0:
-            logger.info("correct password")
+            message_json = {"message": "correct password"}
+            logger.info(json.dumps(message_json))
 
             simulator_manager.run_contaier_and_startup_simulator()
             # Await Simulator to start up
@@ -122,12 +134,14 @@ def start_astt_gui():
 
             return jsonify("success")
         if success == 1:
-            logger.warn("Incorrect password entered")
+            message_json = {"message": "Incorrect password entered"}
+            logger.warn(json.dumps(message_json))
             return jsonify("Wrong password,Try again!!")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:
-        logger.info("Pointing button triggered")
+        message_json = {"message": "Pointing button triggered"}
+        logger.info(json.dumps(message_json))
         # Get AZ and EL from GUI.
         az = request.form["azimuth"]
         el = request.form["elevation"]
@@ -138,7 +152,8 @@ def start_astt_gui():
             )
 
         except (Exception, ValueError) as err:
-            logger.error(f"Error encountered : {err}")
+            message_json = {"message": f"Error encountered : {err}"}
+            logger.error(json.dumps(message_json))
 
         global thread
         with thread_lock:
@@ -148,7 +163,8 @@ def start_astt_gui():
                 )
 
     if "sources" in request.form and request.form["sources"] == "sun":
-        logger.info("Tracking button triggered")
+        message_json = {"message": "Tracking button triggered"}
+        logger.info(json.dumps(message_json))
         global thread2
         with thread_lock:
             if thread is None:
@@ -193,4 +209,4 @@ def disconnect():
 
 if __name__ == "__main__":
     print("App started")
-    socketio.run(app,port=5003)
+    socketio.run(app, port=5003)
