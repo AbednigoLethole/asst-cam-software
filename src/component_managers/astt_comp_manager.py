@@ -23,7 +23,10 @@ class ASTTComponentManager:
         self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
-        self.logstash_ip = os.environ["LOGSTASH_IP"]
+        try:
+            self.logstash_ip = os.environ["LOGSTASH_IP"]
+        except Exception:
+            self.logstash_ip = "localhost"
         self.logger = logging.getLogger("ASTT-COMP-MANAGER")
         logging.basicConfig(
             format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
