@@ -1,5 +1,7 @@
 import datetime
+import json
 import logging
+import logging.handlers
 import os
 import time
 
@@ -21,13 +23,18 @@ class ASTTComponentManager:
         self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
+        self.logstash_ip = os.environ["LOGSTASH_IP"]
         self.logger = logging.getLogger("ASTT-COMP-MANAGER")
         logging.basicConfig(
-            filename="app_dev.log",
             format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
             level=logging.INFO,
             datefmt="%Y-%m-%d %H:%M:%S",
         )
+        self.logstash_handler = logging.handlers.SocketHandler(
+            self.logstash_ip, 5000
+        )
+        (self.logstash_handler).setLevel(logging.INFO)
+        (self.logger).addHandler(self.logstash_handler)
 
     # =====================
     # Connection functions
@@ -35,12 +42,14 @@ class ASTTComponentManager:
 
     def connect_to_network(self):
         """Connects to the CAN0 ."""
-        self.logger.debug("Starting VCAN Network")
+        msg_in_json = {"message": "Starting VCAN Network"}
+        self.logger.debug(json.dumps(msg_in_json))
         (self.network0).connect(channel="can0", bustype="socketcan")
 
     def connect_to_plc_node(self):
         """Connect to the C++  antenna simulator."""
-        self.logger.debug("Connecting to PLC node")
+        msg_in_json = {"message": "Connecting to PLC node"}
+        self.logger.debug(json.dumps(msg_in_json))
         curr_dir = os.getcwd()
         eds_rel_path = "src/component_managers/cpp-slave.eds"
         eds_full_path = os.path.join(curr_dir, eds_rel_path)
@@ -51,7 +60,8 @@ class ASTTComponentManager:
         )
         (self.network0).add_node(node2)
         self.antenna_node = node2
-        self.logger.info("Connected to PLC node")
+        msg_in_json = {"message": "Connected to PLC node"}
+        self.logger.info(json.dumps(msg_in_json))
 
     # ========================
     # Callbacks
@@ -86,9 +96,10 @@ class ASTTComponentManager:
             try:
                 generated_enum = state_mode_calls[name_of_enum](value)
             except Exception as err:
-                self.logger.exception(
-                    f"could not generate mode or state, {err}"
-                )
+                msg_in_json = {
+                    "message": f"couldn't generate mode/state, {err}"
+                }
+                self.logger.exception(json.dumps(msg_in_json))
         return generated_enum
 
     def stow_pin_callback(self, incoming_object):
@@ -128,7 +139,8 @@ class ASTTComponentManager:
 
     def subscribe_to_az_change(self):
         """CanOpen Subscription to the Azimuth ."""
-        self.logger.info("Subscribing to azimuth ")
+        msg_in_json = {"message": "Subscribing to azimuth"}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).tpdo.read()
         # Mapping the Azimuth to tpdo
         (self.antenna_node).tpdo[1].clear()
@@ -147,7 +159,8 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[1].add_callback(
             self.az_el_change_callback
         )
-        self.logger.info("Subscribed to azimuth")
+        msg_in_json = {"message": "Subscribed to azimuth"}
+        self.logger.info(json.dumps(msg_in_json))
 
     def subscribe_to_el_change(self):
         """CanOpen Subscription to the Elevation ."""
@@ -167,11 +180,13 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[2].add_callback(
             self.az_el_change_callback
         )
-        self.logger.info("Subscribed to elevation")
+        msg_in_json = {"message": "Subscribed to elevation"}
+        self.logger.info(json.dumps(msg_in_json))
 
     def subscribe_to_func_state(self):
         """CanOpen Subscription to the functional state ."""
-        self.logger.info("Subscribing to functional state")
+        msg_in_json = {"message": "Subscribing to functional state"}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).tpdo[3].read()
         # Mapping the functional state to tpdo
         (self.antenna_node).tpdo[3].clear()
@@ -188,11 +203,13 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[3].add_callback(
             self.func_state_callback
         )
-        self.logger.info("Subscribed to functional state")
+        msg_in_json = {"message": "Subscribed to functional state"}
+        self.logger.info(json.dumps(msg_in_json))
 
     def subscribe_to_stow_sensor(self):
         """CanOpen Subscription to stow sensors."""
-        self.logger.info("Subscribing to stow sensor ")
+        msg_in_json = {"message": "Subscribing to stow sensor "}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).tpdo[4].read()
         # Mapping the stow sensors to tpdo
         (self.antenna_node).tpdo[4].clear()
@@ -210,11 +227,13 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[4].add_callback(
             self.stow_pin_callback
         )
-        self.logger.info("Subscribed to stow sensor")
+        msg_in_json = {"message": "Subscribed to stow sensor"}
+        self.logger.info(json.dumps(msg_in_json))
 
     def subscribe_to_antenna_mode(self):
         """CanOpen Subscription to antenna mode."""
-        self.logger.info("Subscribing to antenna mode ")
+        msg_in_json = {"message": "Subscribing to antenna mode "}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).tpdo[6].read()
         # Mapping the stow sensors to tpdo
         (self.antenna_node).tpdo[6].clear()
@@ -232,11 +251,13 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[6].add_callback(
             self.antenna_mode_callback
         )
-        self.logger.info("Subscribed to antenna mode")
+        msg_in_json = {"message": "Subscribed to antenna mode"}
+        self.logger.info(json.dumps(msg_in_json))
 
     def subscribe_to_mode_command_obj(self):
         """CanOpen Subscription to the mode command obj ."""
-        self.logger.info("Subscribing to mode command obj")
+        msg_in_json = {"message": "Subscribing to mode command obj"}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).rpdo.read()
         # Mapping the mode command obj to rpdo
         (self.antenna_node).rpdo[1].clear()
@@ -248,7 +269,8 @@ class ASTTComponentManager:
         print((self.antenna_node).nmt.state)
         (self.antenna_node).rpdo[1].save()
         (self.antenna_node).rpdo[1].start(0.1)
-        self.logger.info("Subscribed to mode command obj")
+        msg_in_json = {"message": "Subscribed to mode command obj"}
+        self.logger.info(json.dumps(msg_in_json))
 
     # ========================
     # Commands
@@ -264,7 +286,8 @@ class ASTTComponentManager:
 
     def get_plc_state(self):
         """Returns node state."""
-        self.logger.info("Reading plc state")
+        msg_in_json = {"message": "Reading plc state"}
+        self.logger.info(json.dumps(msg_in_json))
         return (self.antenna_node).nmt.state
 
     def is_az_allowed(self, az):
@@ -277,35 +300,43 @@ class ASTTComponentManager:
 
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
-        self.logger.info(f"Point called with AZ {az} and EL {el} ")
+        msg_in_json = {
+            "message": f"Point called with AZ {az} and EL {el} "
+        }
+        self.logger.info(json.dumps(msg_in_json))
         if self.is_az_allowed(az) and self.is_el_allowed(el):
             (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2.0
             (self.antenna_node).sdo[0x2000][2].raw = az
             (self.antenna_node).sdo[0x2000][3].raw = el
         else:
-            self.logger.exception(
-                f"az: {az} or el: {el} is out of range"
-            )
+            msg_in_json = {
+                "message": f"az: {az} or el: {el} is out of range"
+            }
+            self.logger.exception(json.dumps(msg_in_json))
             raise ValueError
 
     def set_point_mode(self):
         """Commands the ASTT Antenna to point mode"""
-        self.logger.info("Set point mode called!!")
+        msg_in_json = {"message": "Set point mode called!!"}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 1
 
     def set_idle_mode(self):
         """Commands the ASTT Antenna to idle mode"""
-        self.logger.info("Set idle mode called!!")
+        msg_in_json = {"message": "Set idle mode called!!"}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 0
 
     def set_stow_mode(self):
         """Commands the ASTT Antenna to stow mode"""
-        self.logger.info("Set stow mode called!!")
+        msg_in_json = {"message": "Set stow mode called!!"}
+        self.logger.info(json.dumps(msg_in_json))
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 2
 
     def trigger_transmission(self):
         """Triggers the transmission of Az/El ."""
-        self.logger.info("Transmission is triggered")
+        msg_in_json = {"message": "Transmission is triggered"}
+        self.logger.info(json.dumps(msg_in_json))
         self.transmission_triggered = True
         (self.antenna_node).nmt.state = "OPERATIONAL"
         (self.network0).sync.start(0.5)
@@ -333,7 +364,8 @@ class ASTTComponentManager:
     @background
     def track_sun(self, duration_time):
         # Converting the duretion time to seconds
-        self.logger.info("Starting to track the sun")
+        msg_in_json = {"message": "Starting to track the sun"}
+        self.logger.info(json.dumps(msg_in_json))
         time_conversion = duration_time * 3600
         count = 1
         sun = Sun(-33.9326033333, 18.47222, 3.6)
@@ -354,32 +386,12 @@ class ASTTComponentManager:
             else:
                 pass
             time.sleep(5)
-            self.logger.info(
-                "---------------------------------------"
-            )
-            self.logger.info("Sun_Az :", str(az), "Sun_El :", str(el))
-            self.logger.info(
-                "---------------------------------------"
-            )
+            msg_in_json = {"message": f"Sun_Az : {az}, Sun_El : {el}"}
+            self.logger.info(json.dumps(msg_in_json))
             count += 1
 
     def track_sun_update(self):
         pass
-
-    def clear_all_logs(self):
-        """Clears all the logs in app_dev.log"""
-        try:
-            with open("app_dev.log", "w") as file:
-                file.truncate(0)
-        except FileNotFoundError:
-            self.logger.error(
-                "File app_dev.log not found. No logs cleared."
-            )
-        except Exception as err:
-            self.logger.error(
-                f"Failed to clear logs in , error: {err}"
-            )
-        file.close()
 
 
 if __name__ == "__main__":
