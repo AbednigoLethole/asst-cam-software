@@ -54,7 +54,7 @@ class Sun:
         while True:
             # Get user for input
             user_input = input(
-                "Enter the time & date in the format YYYY, MM, DD, HH, MM, SS: "
+                "Enter time & date in the format YYYY, MM, DD, HH, MM, SS: "
             )
             # Parse user input
             try:

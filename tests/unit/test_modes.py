@@ -16,6 +16,8 @@ class TestAntennaModes(unittest.TestCase):
         self.manager = ASTTComponentManager()
         mock_network = mock_Network.return_value
         mock_plc_node = mock_RemoteNode.return_value
+        self.manager.network0 = mock_network
+        self.manager.antenna_node = mock_plc_node
 
     def test_point_mode(self):
         self.manager.antenna_mode = Mode.POINT
