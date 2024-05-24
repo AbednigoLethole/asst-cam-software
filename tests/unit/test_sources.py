@@ -3,7 +3,6 @@ import datetime
 import unittest
 from unittest.mock import patch
 
-
 from astropy.coordinates import EarthLocation
 
 from src.component_managers.sources import Sun
@@ -45,4 +44,3 @@ class TestGetSunAzEl(unittest.TestCase):
         self.assertAlmostEqual(timestamp, expected_timestamp)
         self.assertAlmostEqual(azimuth, expected_az)
         self.assertAlmostEqual(elevation, expected_el)
-

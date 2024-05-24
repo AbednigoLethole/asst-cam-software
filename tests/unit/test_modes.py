@@ -31,4 +31,3 @@ class TestAntennaModes(unittest.TestCase):
         self.manager.antenna_mode = Mode.STOW
         mode = self.manager.get_antenna_mode()
         self.assertEqual(mode, Mode.STOW)
-
