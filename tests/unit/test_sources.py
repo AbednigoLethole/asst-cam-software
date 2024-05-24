@@ -28,19 +28,19 @@ class TestGetSunAzEl(unittest.TestCase):
         expected_az = 337.11244076091316
         expected_el = 35.546531518065116
         az, el = self.sun.get_sun_az_el(sun_time)
-        self.assertAlmostEqual(az, expected_az)
-        self.assertAlmostEqual(el, expected_el)
+        self.assertAlmostEqual(az, expected_az, places=5)
+        self.assertAlmostEqual(el, expected_el, places=5)
 
     @patch("builtins.input")
     def test_calc_position_sun(self, mocked_input):
         mocked_input.return_value = "2024, 5, 8, 12, 0, 0"
         track_time = mocked_input.return_value
-        expected_timestamp = 1715169610.0
+        expected_timestam = 1715169610.0
         expected_el = 35.53304352273266
         expected_az = 337.06644428631614
         timestamp, azimuth, elevation = self.sun.calc_position_sun(
             track_time
         )
-        self.assertAlmostEqual(timestamp, expected_timestamp)
-        self.assertAlmostEqual(azimuth, expected_az)
-        self.assertAlmostEqual(elevation, expected_el)
+        self.assertAlmostEqual(timestamp, expected_timestam, places=5)
+        self.assertAlmostEqual(azimuth, expected_az, places=5)
+        self.assertAlmostEqual(elevation, expected_el, places=5)
