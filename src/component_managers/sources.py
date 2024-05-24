@@ -54,7 +54,7 @@ class Sun:
         while True:
             # Get user for input
             user_input = input(
-                "Enter time & date in the format YYYY, MM, DD, HH, MM, SS: "
+                "Time & date in the format YYYY, MM, DD, HH, MM, SS: "
             )
             # Parse user input
             try:
@@ -73,7 +73,7 @@ class Sun:
                 break  # Break out of the loop if input is valid
             except ValueError:
                 print(
-                    "Invalid format.Please enter the values in the specified format."
+                    "Invalid.Enter the values in the specified format"
                 )
         timestamp = (
             track_time
