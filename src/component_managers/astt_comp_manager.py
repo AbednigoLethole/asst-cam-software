@@ -1,9 +1,11 @@
 import datetime
 import logging
+import logging.handlers
 import os
 import time
 
 import canopen
+from logstash_formatter import LogstashFormatterV1
 
 from threading_lrc import background
 
@@ -21,10 +23,21 @@ class ASTTComponentManager:
         self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
+        try:
+            self.logstash_ip = os.environ["LOGSTASH_IP"]
+        except Exception:
+            self.logstash_ip = "localhost"
         self.logger = logging.getLogger("ASTT-COMP-MANAGER")
+        # Setting up logstash configurations
+        self.logstash_handler = logging.handlers.SocketHandler(
+            self.logstash_ip, 5000
+        )
+        (self.logstash_handler).setLevel(logging.INFO)
+        self.formatter = LogstashFormatterV1()
+        self.logstash_handler.setFormatter(self.formatter)
+        (self.logger).addHandler(self.logstash_handler)
         logging.basicConfig(
-            filename="app_dev.log",
-            format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
+            format="%(message)s",
             level=logging.INFO,
             datefmt="%Y-%m-%d %H:%M:%S",
         )
@@ -87,7 +100,7 @@ class ASTTComponentManager:
                 generated_enum = state_mode_calls[name_of_enum](value)
             except Exception as err:
                 self.logger.exception(
-                    f"could not generate mode or state, {err}"
+                    f"couldn't generate mode/state, {err}"
                 )
         return generated_enum
 
@@ -128,7 +141,7 @@ class ASTTComponentManager:
 
     def subscribe_to_az_change(self):
         """CanOpen Subscription to the Azimuth ."""
-        self.logger.info("Subscribing to azimuth ")
+        self.logger.info("Subscribing to azimuth")
         (self.antenna_node).tpdo.read()
         # Mapping the Azimuth to tpdo
         (self.antenna_node).tpdo[1].clear()
@@ -354,32 +367,11 @@ class ASTTComponentManager:
             else:
                 pass
             time.sleep(5)
-            self.logger.info(
-                "---------------------------------------"
-            )
-            self.logger.info("Sun_Az :", str(az), "Sun_El :", str(el))
-            self.logger.info(
-                "---------------------------------------"
-            )
+            self.logger.info(f"Sun_Az : {az}, Sun_El : {el}")
             count += 1
 
     def track_sun_update(self):
         pass
-
-    def clear_all_logs(self):
-        """Clears all the logs in app_dev.log"""
-        try:
-            with open("app_dev.log", "w") as file:
-                file.truncate(0)
-        except FileNotFoundError:
-            self.logger.error(
-                "File app_dev.log not found. No logs cleared."
-            )
-        except Exception as err:
-            self.logger.error(
-                f"Failed to clear logs in , error: {err}"
-            )
-        file.close()
 
 
 if __name__ == "__main__":

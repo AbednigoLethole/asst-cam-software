@@ -1,14 +1,18 @@
 import logging
+import logging.handlers
+import os
 import time
 from datetime import datetime
 from threading import Lock
 
 from flask import Flask, jsonify, render_template, request
 from flask_socketio import SocketIO
+from logstash_formatter import LogstashFormatterV1
 
 from component_managers.astt_comp_manager import ASTTComponentManager
 from component_managers.start_simulator import SimulatorManager
 
+logstash_ip = os.environ["LOGSTASH_IP"]
 thread = None
 thread_lock = Lock()
 thread2 = None
@@ -21,9 +25,15 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 cm = ASTTComponentManager()
 logger = logging.getLogger("ASTT-GUI")
 
+# Setting up logstash configurations
+formatter = LogstashFormatterV1()
+logstash_handler = logging.handlers.SocketHandler(logstash_ip, 5000)
+logstash_handler.setFormatter(formatter)
+logstash_handler.setLevel(logging.INFO)
+logger.addHandler(logstash_handler)
+
 logging.basicConfig(
-    filename="app_dev.log",
-    format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
+    format="%(name)s|%(message)s",
     level=logging.INFO,
     datefmt="%Y-%m-%d %H:%M:%S",
 )
@@ -69,7 +79,6 @@ def states_and_modes_thread(comp_manager):
                 },
             )
             socketio.sleep(1)
-        logger.info("SENT")
 
 
 @app.route("/", methods=["GET"])
@@ -86,11 +95,9 @@ def start_astt_gui():
         and request.form["button"] == "Initialize"
     ):
         user_pass = request.form["password"]
-        cm.clear_all_logs()
         # Start VCAN network & simulator
         logger.info("Intitialized button triggered")
         simulator_manager = SimulatorManager()
-        logger.info("Starting vcan interface")
         logger.info("Passing user password")
         success = simulator_manager.start_can_interface(user_pass)
 
@@ -193,4 +200,4 @@ def disconnect():
 
 if __name__ == "__main__":
     print("App started")
-    socketio.run(app)
+    socketio.run(app, port=5003)
