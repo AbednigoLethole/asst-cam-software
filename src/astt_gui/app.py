@@ -1,4 +1,3 @@
-import json
 import logging
 import logging.handlers
 import os
@@ -8,6 +7,7 @@ from threading import Lock
 
 from flask import Flask, jsonify, render_template, request
 from flask_socketio import SocketIO
+from logstash_formatter import LogstashFormatterV1
 
 from component_managers.astt_comp_manager import ASTTComponentManager
 from component_managers.start_simulator import SimulatorManager
@@ -25,13 +25,15 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 cm = ASTTComponentManager()
 logger = logging.getLogger("ASTT-GUI")
 
+# Setting up logstash configurations
+formatter = LogstashFormatterV1()
 logstash_handler = logging.handlers.SocketHandler(logstash_ip, 5000)
+logstash_handler.setFormatter(formatter)
 logstash_handler.setLevel(logging.INFO)
 logger.addHandler(logstash_handler)
 
-
 logging.basicConfig(
-    format="%(asctime)s|%(levelname)s|%(name)s|%(message)s",
+    format="%(name)s|%(message)s",
     level=logging.INFO,
     datefmt="%Y-%m-%d %H:%M:%S",
 )
@@ -62,8 +64,7 @@ def background_thread(node):
 
 
 def states_and_modes_thread(comp_manager):
-    message_json = {"message": "Thread triggered"}
-    logger.info(json.dumps(message_json))
+    logger.info("Thread triggered")
     while True:
         func_state = comp_manager.antenna_func_state.name
         mode = comp_manager.antenna_mode.name
@@ -78,8 +79,6 @@ def states_and_modes_thread(comp_manager):
                 },
             )
             socketio.sleep(1)
-        message_json = {"message": "SENT"}
-        logger.info(json.dumps(message_json))
 
 
 @app.route("/", methods=["GET"])
@@ -97,17 +96,14 @@ def start_astt_gui():
     ):
         user_pass = request.form["password"]
         # Start VCAN network & simulator
-        message_json = {"message": "Intitialized button triggered"}
-        logger.info(json.dumps(message_json))
+        logger.info("Intitialized button triggered")
         simulator_manager = SimulatorManager()
-        message_json = {"message": "Passing user password"}
-        logger.info(json.dumps(message_json))
+        logger.info("Passing user password")
         success = simulator_manager.start_can_interface(user_pass)
 
         # Report incorrect password to user.
         if success == 0:
-            message_json = {"message": "correct password"}
-            logger.info(json.dumps(message_json))
+            logger.info("correct password")
 
             simulator_manager.run_contaier_and_startup_simulator()
             # Await Simulator to start up
@@ -133,14 +129,12 @@ def start_astt_gui():
 
             return jsonify("success")
         if success == 1:
-            message_json = {"message": "Incorrect password entered"}
-            logger.warn(json.dumps(message_json))
+            logger.warn("Incorrect password entered")
             return jsonify("Wrong password,Try again!!")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:
-        message_json = {"message": "Pointing button triggered"}
-        logger.info(json.dumps(message_json))
+        logger.info("Pointing button triggered")
         # Get AZ and EL from GUI.
         az = request.form["azimuth"]
         el = request.form["elevation"]
@@ -151,8 +145,7 @@ def start_astt_gui():
             )
 
         except (Exception, ValueError) as err:
-            message_json = {"message": f"Error encountered : {err}"}
-            logger.error(json.dumps(message_json))
+            logger.error(f"Error encountered : {err}")
 
         global thread
         with thread_lock:
@@ -162,8 +155,7 @@ def start_astt_gui():
                 )
 
     if "sources" in request.form and request.form["sources"] == "sun":
-        message_json = {"message": "Tracking button triggered"}
-        logger.info(json.dumps(message_json))
+        logger.info("Tracking button triggered")
         global thread2
         with thread_lock:
             if thread is None:
