@@ -75,13 +75,21 @@ class ASTTComponentManager:
     # This is helper function to translate int values
     # To enum values
     def gen_mode_state_enums(self, name_of_enum, value):
-        """Generate enum values for transmitted values"""
-        if name_of_enum == "Mode":
-            return Mode(value)
-        if name_of_enum == "FuncState":
-            return FuncState(value)
-        if name_of_enum == "StowPinState":
-            return StowPinState(value)
+        """Generate enum values for transmitted values."""
+        generated_enum = None
+        state_mode_calls = {
+            "Mode": Mode,
+            "FuncState": FuncState,
+            "StowPinState": StowPinState,
+        }
+        if name_of_enum in state_mode_calls:
+            try:
+                generated_enum = state_mode_calls[name_of_enum](value)
+            except Exception as err:
+                self.logger.exception(
+                    f"could not generate mode or state, {err}"
+                )
+        return generated_enum
 
     def stow_pin_callback(self, incoming_object):
         for node_record in incoming_object:
