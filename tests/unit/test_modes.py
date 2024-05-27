@@ -7,6 +7,12 @@ from src.component_managers.astt_comp_manager import (
 from src.component_managers.dish_modes import Mode
 
 
+# Creating a customized Mocked incoming Object
+class MockedIncomingTpdo:
+    def __init__(self, raw):
+        self.raw = raw
+
+
 class TestAntennaModes(unittest.TestCase):
     @patch("src.component_managers.astt_comp_manager.canopen.Network")
     @patch(
@@ -20,16 +26,19 @@ class TestAntennaModes(unittest.TestCase):
         self.manager.antenna_node = mock_plc_node
 
     def test_point_mode(self):
-        self.manager.antenna_mode = Mode.POINT
+        incoming_obj = MockedIncomingTpdo(1)
+        self.manager.antenna_mode_callback([incoming_obj])
         mode = self.manager.get_antenna_mode()
         self.assertEqual(mode, Mode.POINT)
 
     def test_idle_mode(self):
-        self.manager.antenna_mode = Mode.IDLE
+        incoming_obj = MockedIncomingTpdo(0)
+        self.manager.antenna_mode_callback([incoming_obj])
         mode = self.manager.get_antenna_mode()
         self.assertEqual(mode, Mode.IDLE)
 
     def test_stow_mode(self):
-        self.manager.antenna_mode = Mode.STOW
+        incoming_obj = MockedIncomingTpdo(2)
+        self.manager.antenna_mode_callback([incoming_obj])
         mode = self.manager.get_antenna_mode()
         self.assertEqual(mode, Mode.STOW)
