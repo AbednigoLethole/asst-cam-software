@@ -42,7 +42,6 @@ class Sun:
         sun_coords = get_sun(astropy_time).transform_to(alt_az)
         az = sun_coords.az.to(u.degree).value
         el = sun_coords.alt.to(u.degree).value
-        # print("Sun_Az :", str(az), "Sun_El :", str(el))
         return (az, el)
 
     def calc_position_sun(self, track_time):
@@ -86,9 +85,6 @@ class Sun:
         sun_data = get_sun(tt).transform_to(aa)
         azi = sun_data.az.to(u.degree).value
         ele = sun_data.alt.to(u.degree).value
-        # print(
-        # f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
-        # )
         return [timestamp, azi, ele]
 
 
