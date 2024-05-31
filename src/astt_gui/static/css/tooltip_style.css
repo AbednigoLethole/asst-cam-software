@@ -1,0 +1,27 @@
+/*
+.btn-container {
+    position: relative;
+    display: inline-block;
+}
+.btn {
+    width: 190px;
+    text-align: center;
+    cursor: pointer;
+}
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    background-color: #1808a7;
+    color: #100e0e;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.btn-container:hover .tooltip {
+    visibility: visible;
+}
+*/
