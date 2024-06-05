@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+# noqa: E501
+import datetime
 
 from astropy import units as u
 from astropy.coordinates import (
@@ -11,7 +12,7 @@ from astropy.time import Time
 
 # TODO: Use ASTT GPS Reciever Component Manager.
 
-current_time = datetime.now(timezone.utc)
+current_time = datetime.datetime.now(datetime.timezone.utc)
 track_time = Time(current_time, scale="utc")
 
 
@@ -41,16 +42,38 @@ class Sun:
         sun_coords = get_sun(astropy_time).transform_to(alt_az)
         az = sun_coords.az.to(u.degree).value
         el = sun_coords.alt.to(u.degree).value
-        # print("Sun_Az :", str(az), "Sun_El :", str(el))
         return (az, el)
 
-    def calc_position_sun(self):
-        """Calculates Sun's Az and El and writes it to a file."""
-        # Calculate timestamp
+    def calc_position_sun(self, track_time):
+        """Calculates Sun's Az and El
+
+        :return: timestamp, azimuth and elevation of the Sun.
+        """
         FUTURE_SECONDS = 10
-        track_time = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(seconds=FUTURE_SECONDS)
+        while True:
+            # Get user for input
+            user_input = input(
+                "Time & date in the format YYYY, MM, DD, HH, MM, SS: "
+            )
+            # Parse user input
+            try:
+                year, month, day, hour, minute, second = map(
+                    int, user_input.split(",")
+                )
+                track_time = datetime.datetime(
+                    year,
+                    month,
+                    day,
+                    hour,
+                    minute,
+                    second,
+                    tzinfo=datetime.timezone.utc,
+                ) + datetime.timedelta(seconds=FUTURE_SECONDS)
+                break  # Break out of the loop if input is valid
+            except ValueError:
+                print(
+                    "Invalid.Enter the values in the specified format"
+                )
         timestamp = (
             track_time
             - datetime.datetime(
@@ -62,9 +85,7 @@ class Sun:
         sun_data = get_sun(tt).transform_to(aa)
         azi = sun_data.az.to(u.degree).value
         ele = sun_data.alt.to(u.degree).value
-        print(
-            f"[+] Point: {timestamp} => azimuth {azi} elevation {ele}"
-        )
+        return [timestamp, azi, ele]
 
 
 class Satellite1:
