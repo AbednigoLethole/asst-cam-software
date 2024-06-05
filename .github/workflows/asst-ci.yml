@@ -20,13 +20,23 @@ jobs:
         run: echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
 
       - name: Build the ASTT Docker Image
-        run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
+        if: ${{ GITHUB_REF_NAME =='main' }}
+          run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
+
+      - name: Dev:Build the ASTT Docker Image
+        if: ${{ GITHUB_REF_NAME !='main' }}
+          run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION-dev.c$GITHUB_SHA .
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
 
       - name: Push the astt docker image to GitHub Container Registry
-        run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
+        if: ${{ GITHUB_REF_NAME =='main' }}
+          run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
+
+      - name: Dev:Push the astt docker image to GitHub Container Registry
+        if: ${{ GITHUB_REF_NAME !='main' }}
+          run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION-dev.c$GITHUB_SHA
 
 
   python-lint:
@@ -89,10 +99,19 @@ jobs:
       run: sudo sh startVirtualCANInterface.sh
 
     - name: Run the simulator
-      run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION bash -c "cd src/antenna_simulator && ./slave"
+      if: ${{ GITHUB_REF_NAME =='main' }}
+        run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION bash -c "cd src/antenna_simulator && ./slave"
+
+    - name: Dev:Run the simulator
+      if: ${{ GITHUB_REF_NAME !='main' }}
+        run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION-dev.c$GITHUB_SHA bash -c "cd src/antenna_simulator && ./slave"
 
     - name: Run Acceptance Tests
       run: pytest tests/acceptance -v
+
+    - name: Delete the ASTT docker development image
+      if: ${{ GITHUB_REF_NAME !='main' }}
+        run: docker rmi ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION-dev.c$GITHUB_SHA
 
   unit-test:
     runs-on: ubuntu-20.04
