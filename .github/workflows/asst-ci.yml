@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+    
+      - name: Test env GITHUB_REF_NAME
+        run: echo "GITHUB_REF_NAME=$(GITHUB_REF_NAME)"
 
       - name: Build the ASTT Docker Image
         run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
