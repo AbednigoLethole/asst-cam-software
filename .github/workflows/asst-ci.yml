@@ -7,9 +7,6 @@ on:
       - '*' 
 env:
   ASTT_VERSION: 1.0.0
-  ASTT_IMG_DEV_NAME: ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
-  ASTT_IMG_PROD_NAME: ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION-dev.c$GITHUB_SHA
-
 
 jobs:
   build-image:
@@ -23,13 +20,13 @@ jobs:
         run: echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
 
       - name: Build the ASTT Docker Image
-        run: docker build -t $ASTT_IMG_DEV_NAME .
+        run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
 
       - name: Push the astt docker image to GitHub Container Registry
-        run: docker push $ASTT_IMG_DEV_NAME
+        run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
 
 
   python-lint:
@@ -83,7 +80,7 @@ jobs:
       run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
     
     - name: Pull image with the ASTT simulator
-      run: docker pull $ASTT_IMG_DEV_NAME
+      run: docker pull ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
 
     - name: Adding VCAN module
       run: sudo apt-get install linux-modules-extra-$(uname -r)
@@ -92,7 +89,7 @@ jobs:
       run: sudo sh startVirtualCANInterface.sh
 
     - name: Run the simulator
-      run: docker run -d --network=host $ASTT_IMG_DEV_NAME bash -c "cd src/antenna_simulator && ./slave"
+      run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION bash -c "cd src/antenna_simulator && ./slave"
 
     - name: Run Acceptance Tests
       run: pytest tests/acceptance -v
