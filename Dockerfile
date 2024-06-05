@@ -36,5 +36,3 @@ RUN /app/installLely.sh
 # Compile slave
 RUN chmod +x /app/src/antenna_simulator/compileSlave.sh
 RUN /app/src/antenna_simulator/compileSlave.sh 
-
-
