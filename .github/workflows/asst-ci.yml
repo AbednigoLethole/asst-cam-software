@@ -24,16 +24,24 @@ jobs:
         if: ${{ github.ref_name != 'main' }}
         run: echo "Not running against main branch"
 
-      - name: Build the ASTT Docker Image
+      - name: Build the ASTT Docker Image for non-main branch
         if: ${{ github.ref_name != 'main' }}
-        run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
+        run: docker build -t ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}-dev.c${{ github.sha }} .
+
+      - name: Build the ASTT Docker Image for main branch
+        if: ${{ github.ref_name == 'main' }}
+        run: docker build -t ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }} .
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
 
-      - name: Push the ASTT Docker Image to GitHub Container Registry
+      - name: Push the ASTT Docker Image for non-main branch
         if: ${{ github.ref_name != 'main' }}
-        run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
+        run: docker push ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}-dev.c${{ github.sha }}
+
+      - name: Push the ASTT Docker Image for main branch
+        if: ${{ github.ref_name == 'main' }}
+        run: docker push ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}
 
   python-lint:
     runs-on: ubuntu-20.04
@@ -85,8 +93,13 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
     
-      - name: Pull ASTT simulator image
-        run: docker pull ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
+      - name: Pull ASTT simulator image for main branch
+        if: ${{ github.ref_name == 'main' }}
+        run: docker pull ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}
+
+      - name: Pull ASTT simulator image for non-main branch
+        if: ${{ github.ref_name != 'main' }}
+        run: docker pull ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}-dev.c${{ github.sha }}
 
       - name: Add VCAN module
         run: sudo apt-get install linux-modules-extra-$(uname -r)
@@ -94,11 +107,20 @@ jobs:
       - name: Start VCAN Network
         run: sudo sh startVirtualCANInterface.sh
 
-      - name: Run the simulator
-        run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION bash -c "cd src/antenna_simulator && ./slave"
+      - name: Run the simulator for main branch
+        if: ${{ github.ref_name == 'main' }}
+        run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }} bash -c "cd src/antenna_simulator && ./slave"
+
+      - name: Run the simulator for non-main branch
+        if: ${{ github.ref_name != 'main' }}
+        run: docker run -d --network=host ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}-dev.c${{ github.sha }} bash -c "cd src/antenna_simulator && ./slave"
 
       - name: Run Acceptance Tests
         run: pytest tests/acceptance -v
+
+      - name: Force remove docker image for non-main branch
+        if: ${{ github.ref_name != 'main' }}
+        run: docker rmi -f ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}-dev.c${{ github.sha }}
 
   unit-test:
     runs-on: ubuntu-20.04
