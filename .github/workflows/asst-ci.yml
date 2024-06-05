@@ -16,9 +16,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-    
-      - name: Test env GITHUB_REF_NAME
-        run: echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
 
       - name: Check if not running against main
         if: ${{ github.ref_name != 'main' }}
@@ -121,6 +118,9 @@ jobs:
       - name: Force remove docker image for non-main branch
         if: ${{ github.ref_name != 'main' }}
         run: docker rmi -f ghcr.io/abednigolethole/astt-cam-software:${{ env.ASTT_VERSION }}-dev.c${{ github.sha }}
+
+      - name: Verify non-main docker images are deleted
+        run: docker images
 
   unit-test:
     runs-on: ubuntu-20.04
