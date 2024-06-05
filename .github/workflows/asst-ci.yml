@@ -19,14 +19,20 @@ jobs:
       - name: Test env GITHUB_REF_NAME
         run: echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
 
-      - name: Build the ASTT Docker Image
-        run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
+      - name: Checks if the job run not agaist the main
+      if: ${{ vars.GITHUB_REF_NAME != 'main' }}
+      steps:
+        - name: Build the ASTT Docker Image
+          run: docker build -t ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION .
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.ASTT_PASS }}" | docker login ghcr.io --username "${{ secrets.ASTT_USR }}" --password-stdin
 
-      - name: Push the astt docker image to GitHub Container Registry
-        run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
+      - name: Checks if the job run not agaist the main
+        if: ${{ vars.GITHUB_REF_NAME != 'main' }}
+        steps:
+          - name: Push the astt docker image to GitHub Container Registry
+            run: docker push ghcr.io/abednigolethole/astt-cam-software:$ASTT_VERSION
 
 
   python-lint:
