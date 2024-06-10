@@ -15,3 +15,4 @@ six
 Werkzeug
 zipp
 sphinx
+pytest-cov
