@@ -1,9 +1,7 @@
 """Configuration set for tests."""
 
-import pytest
-
 from component_managers.astt_comp_manager import ASTTComponentManager
-
+import pytest
 
 
 @pytest.fixture(scope="module")
