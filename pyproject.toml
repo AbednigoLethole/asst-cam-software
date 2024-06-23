@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "astt-cam-software"
-version = "0.0.1"
+version = "1.0.0"
 license = "MIT license"
 readme = 'README.md'
 description = "A GIT's project to build a telescope."
