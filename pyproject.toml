@@ -28,6 +28,10 @@ include = [
 ]
 
 
+[[tool.poetry.source]]
+name = "PyPI-public"
+url = 'https://pypi.org/simple'
+
 [tool.poetry.dependencies]
 python = "^3.8"
 assertpy = "^1.1"
