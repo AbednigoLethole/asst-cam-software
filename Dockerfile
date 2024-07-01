@@ -26,7 +26,7 @@ RUN pip3 install poetry==1.8.3
 RUN poetry config virtualenvs.create false && poetry install
 
 # Dependencies to build lely
-RUN apt install git build-essential automake libtool python3-setuptools python3-wheel python3-empy python3-yaml libbluetooth-dev valgrind doxygen graphviz -y
+RUN apt install git build-essential automake libtool python3-wheel python3-empy python3-yaml libbluetooth-dev valgrind doxygen graphviz -y
 
 # Get and build lely
 #COPY installLely.sh /app/
