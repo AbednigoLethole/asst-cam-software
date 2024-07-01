@@ -1112,7 +1112,7 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "43907b0483e7000f78c02788501279fba0fd1d13c5751229b377b474dd2b247c"
+content-hash = "cc97f6b80c4117695ee2faaa1a46d2dfac4fd2cfe65ef1a9d40327e5aea486c7"
 
 [metadata.files]
 alabaster = [
