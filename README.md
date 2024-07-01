@@ -54,3 +54,11 @@ To install and run the software using docker follow this commands:
     ```sphinx-build -b html . _build -v ```
 
 * The home page of the docs is found in _build directory,open the index.html with the browser.
+
+## **Updating poetry lock file**
+
+* To update the poetry lock file, ensure you shell (only) into the astt container.
+    ``` docker run -it -v "$(pwd)":/workspace <image id> /bin/bash ```
+
+*  Run the command to update the poetry file.
+    ``` cd ../workspace && poetry lock --no-update ```
