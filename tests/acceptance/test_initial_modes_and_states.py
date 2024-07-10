@@ -1,4 +1,6 @@
-"""Test the initial states and modes"""
+"""Test the initial states and modes."""
+
+# pylint: enable=duplicate-code
 
 import time
 
@@ -22,13 +24,14 @@ def set_up_subscriptions(comp_manager):
 def test_connection_to_sim_is_success(
     cm_manager_connected_to_antnn,
 ):
+    """Testing CAN network communication is successful."""
     assert (cm_manager_connected_to_antnn.antenna_node) is not None
 
 
 def test_antenna_starts_at_idle_mode(
     cm_manager_connected_to_antnn,
 ):
-    """Test initial mode of the simulator"""
+    """Test initial mode of the simulator."""
     set_up_subscriptions(cm_manager_connected_to_antnn)
     assert (
         cm_manager_connected_to_antnn.get_antenna_mode() == Mode.IDLE
@@ -38,7 +41,7 @@ def test_antenna_starts_at_idle_mode(
 def test_antenna_starts_at_braked_fuc_state(
     cm_manager_connected_to_antnn,
 ):
-    """Test initial func state of the simulator"""
+    """Test initial func state of the simulator."""
     assert (
         cm_manager_connected_to_antnn.get_antenna_func_state()
         == FuncState.BRAKED
@@ -48,7 +51,7 @@ def test_antenna_starts_at_braked_fuc_state(
 def test_antenna_starts_at_stow_not_release(
     cm_manager_connected_to_antnn,
 ):
-    """Test initial stow state of the simulator"""
+    """Test initial stow state of the simulator."""
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
         == StowPinState.ENGAGED_NOT_RELEASED_STOW_WINDOW

@@ -1,5 +1,8 @@
 """ Tests for the generation of mode & states enums"""
 
+# pylint: disable=invalid-name,unused-argument,too-many-public-methods
+# pylint: disable=attribute-defined-outside-init
+
 import unittest
 
 from src.component_managers.astt_comp_manager import (
@@ -8,6 +11,7 @@ from src.component_managers.astt_comp_manager import (
 
 
 class TestStatesModesGeneratiom(unittest.TestCase):
+    """TestCase for generated enums for states and modes."""
 
     def setUp(self):
         self.manager = ASTTComponentManager()

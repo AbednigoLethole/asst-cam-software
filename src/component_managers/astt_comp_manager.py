@@ -1,11 +1,12 @@
+# pylint: disable=invalid-name,unused-argument,too-many-public-methods
+# pylint: disable=attribute-defined-outside-init
+
 import datetime
 import logging
 import os
 import time
 
 import canopen
-
-from threading_lrc import background
 
 from .dish_modes import FuncState, Mode, StowPinState
 from .sources import Sun
@@ -330,7 +331,6 @@ class ASTTComponentManager:
         """Returns the antenna stow sensor state"""
         return self.stow_sensor_state
 
-    @background
     def track_sun(self, duration_time):
         # Converting the duretion time to seconds
         self.logger.info("Starting to track the sun")

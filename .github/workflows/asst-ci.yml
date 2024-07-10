@@ -56,6 +56,7 @@ jobs:
     
     - name: Analysing the code with pylint 
       run: pylint --max-line-length=99 src/ tests/
+      
     - name: Runs mypy 
       run: mypy src/ tests/
 
@@ -153,4 +154,3 @@ jobs:
 
     - name: Publish artifact
       run: echo "Will publish the asst software."
-    
