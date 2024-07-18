@@ -79,8 +79,10 @@ def index():
 
 @app.route("/", methods=["POST"])
 def start_astt_gui():
+    """ This is for any button """
+    # You want to stop tracking as soon as you press any other button.
+    cm.trackstop = True
     # Trigger condition when Initialize button is clicked.
-
     if (
         "button" in request.form
         and request.form["button"] == "Initialize"
@@ -104,12 +106,12 @@ def start_astt_gui():
             # Connect to VCAN and Siumlator
             cm.connect_to_network()
             cm.connect_to_plc_node()
-            # Subscribe to AZ and EL change.
+            # Subscribe to change events.
+            cm.subscribe_to_timestamp()
             cm.subscribe_to_az_change()
             cm.subscribe_to_el_change()
-            cm.subscribe_to_func_state()
+            cm.subscribe_to_func_state_and_mode()
             cm.subscribe_to_mode_command_obj()
-            cm.subscribe_to_antenna_mode()
             cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
             cm.trigger_transmission()
@@ -134,7 +136,7 @@ def start_astt_gui():
         # Call a method to point to Desired AZ & EL
         try:
             cm.point_to_coordinates(
-                float(time.time()), float(az), float(el)
+                float(time.time()) + 5, float(az), float(el)
             )
 
         except (Exception, ValueError) as err:
@@ -147,6 +149,8 @@ def start_astt_gui():
                     background_thread, cm.antenna_node
                 )
 
+    az_speed = request.form.get("az_speed")
+    el_speed = request.form.get("el_speed")
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
         global thread2
@@ -156,7 +160,12 @@ def start_astt_gui():
                     background_thread, cm.antenna_node
                 )
 
-        cm.track_sun(1)
+        cm.trackstop = False
+        if az_speed and el_speed:
+            cm.track_sun(duration_time=1, az_speed=float(az_speed), el_speed=float(el_speed))
+        else:
+            cm.track_sun(duration_time=1)
+
     if "modes" in request.form and request.form["modes"] == "Idle":
         cm.set_idle_mode()
     if "modes" in request.form and request.form["modes"] == "Stow":
