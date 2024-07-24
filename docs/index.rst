@@ -27,9 +27,9 @@ Components of the ASTT CAM Software
 
 
    Getting started<getting_started>
-   Installation<gui/index>
-   User Guide<how_to>
-   Developer Guide<how_to>
+   Installation<how_to_install>
+   User Guide<usage>
+   Developer Guide<dev_practices>
    APIs Guide<gui/index>
    Software<software/index>
    Comp Manager<component_manager_api>
