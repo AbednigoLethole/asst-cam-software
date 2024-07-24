@@ -30,9 +30,9 @@ Components of the ASTT CAM Software
    Installation<how_to_install>
    User Guide<usage>
    Developer Guide<dev_practices>
-   APIs Guide<gui/index>
-   Software<software/index>
-   Comp Manager<component_manager_api>
+   GUI API<gui/index>
+   Comp Manager API<component_manager_api>
+   Additional API<software/index>
 
 
 

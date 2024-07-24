@@ -166,3 +166,22 @@ StowPinState Enum
         ENGAGED_RELEASED_NOT_STOW_WINDOW = 6
         ENGAGED_RELEASED_STOW_WINDOW = 7
         UNKNOWN = 8
+
+
+**Application state transition**
+
+.. image:: images/state.png
+  :width: 100%
+  :alt: ASTT software simulator state
+
+**Functional state transition**
+
+.. image:: images/functional_state.png
+  :width: 100%
+  :alt: ASTT software functional state
+
+**Mode transition** 
+
+.. image:: images/mode_transition.png
+  :width: 100%
+  :alt: ASTT software mode transition
