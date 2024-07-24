@@ -90,9 +90,79 @@ Buttons and Their Functions
         Click on the "Track Source" button.
 
         Select the source you want to track (e.g., Sun, Intel Satellite).
-        
+
         The system will start tracking the chosen source.
 
+**Monitored attributes on the antenna**
 
+.. list-table:: **Attributes**
+   :header-rows: 1
 
+   * - Attribute
+     - Type
+     - Description
+   * - Azimuth
+     - float
+     - The azimuth angle of the antenna. Limits: -127.0 <= az <= 127.0
+   * - Elevation
+     - float
+     - The elevation angle of the antenna. Limits: -15.0 <= el <= 92.0
+   * - Timestamp
+     - time
+     - The timestamp of the measurement.
+   * - Mode
+     - enum
+     - The operational mode of the antenna. See :ref:`mode_enum`.
+   * - FuncState
+     - enum
+     - The functional state of the antenna. See :ref:`funcstate_enum`.
+   * - StowPinState
+     - enum
+     - The stow pin state of the antenna. See :ref:`stowpinstat_enum`.
 
+**Enums**
+
+.. _mode_enum:
+
+Mode Enum
+---------
+
+::
+
+    class Mode(enum.IntEnum):
+        IDLE = 0
+        POINT = 1
+        STOW = 2
+        UNKNOWN = 3
+
+.. _funcstate_enum:
+
+FuncState Enum
+--------------
+
+::
+
+    class FuncState(enum.IntEnum):
+        BRAKED = 0
+        MOVING = 1
+        ESTOP = 2
+        ERROR = 3
+        UNKNOWN = 4
+
+.. _stowpinstat_enum:
+
+StowPinState Enum
+-----------------
+
+::
+
+    class StowPinState(enum.IntEnum):
+        NOT_ENGAGED_NOT_RELEASED_NOT_STOW_WINDOW = 0
+        NOT_ENGAGED_NOT_RELEASED_STOW_WINDOW = 1
+        NOT_ENGAGED_RELEASED_NOT_STOW_WINDOW = 2
+        NOT_ENGAGED_RELEASED_STOW_WINDOW = 3
+        ENGAGED_NOT_RELEASED_NOT_STOW_WINDOW = 4
+        ENGAGED_NOT_RELEASED_STOW_WINDOW = 5
+        ENGAGED_RELEASED_NOT_STOW_WINDOW = 6
+        ENGAGED_RELEASED_STOW_WINDOW = 7
+        UNKNOWN = 8
