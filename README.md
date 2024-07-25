@@ -26,7 +26,7 @@ To install and run the software using docker follow this commands:
 
 * Install Poetry
 
-    ``` pip install poetry ```
+    ``` pip install poetry==1.7.1 ```
 
 * Install dependencies
 
