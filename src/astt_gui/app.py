@@ -79,7 +79,10 @@ def index():
 
 @app.route("/", methods=["POST"])
 def start_astt_gui():
-    """ This is for any button """
+    """This function is designed to respond to user interactions with the GUI.
+    Whenever a POST request is made (e.g., a button click or any request made by the user),
+    this function will be executed to handle the request and update the GUI accordingly.
+    """  # noqa: E501
     # You want to stop tracking as soon as you press any other button.
     cm.trackstop = True
     # Trigger condition when Initialize button is clicked.
@@ -162,7 +165,11 @@ def start_astt_gui():
 
         cm.trackstop = False
         if az_speed and el_speed:
-            cm.track_sun(duration_time=1, az_speed=float(az_speed), el_speed=float(el_speed))
+            cm.track_sun(
+                duration_time=1,
+                az_speed=float(az_speed),
+                el_speed=float(el_speed),
+            )
         else:
             cm.track_sun(duration_time=1)
 
