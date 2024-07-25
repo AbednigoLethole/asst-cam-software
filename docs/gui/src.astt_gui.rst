@@ -6,7 +6,7 @@ Below are the functions/modules.
 Modules available
 -----------------
 
-src.astt\_gui.app module
+src.astt_gui.app module
 ------------------------
 
 .. automodule:: src.astt_gui.app
