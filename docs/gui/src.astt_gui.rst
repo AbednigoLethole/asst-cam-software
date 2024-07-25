@@ -1,12 +1,12 @@
-GUI Package
-===========
-
-Web interface for a celestial tracking system, allowing users to initialize the system, point to specific coordinates, and track celestial sources like the sun in real-time. The communication with the tracking system is facilitated through background threads and WebSocket events
+GUI functions
+=============
+The app.py consist script additional functions that do not directly handles requests.
+Below are the functions/modules.
 
 Modules available
 -----------------
 
-src.astt\_gui.app module
+src.astt_gui.app module
 ------------------------
 
 .. automodule:: src.astt_gui.app
