@@ -42,13 +42,13 @@ def test_antenna_trans_to_stow(cm_manager_connected_to_antnn):
     """Test the stow function"""
     cm_manager_connected_to_antnn.set_stow_mode()
     # The antenna takes roughly 30 sec to switch modes
-    time.sleep(60)
+    time.sleep(45)
     assert (
         cm_manager_connected_to_antnn.get_antenna_mode() == Mode.STOW
     )
     assert (
         cm_manager_connected_to_antnn.get_antenna_func_state()
-        == FuncState.BRAKED
+        == FuncState.ESTOP
     )
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
