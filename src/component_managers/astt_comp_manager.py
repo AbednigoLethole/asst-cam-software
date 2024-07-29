@@ -249,9 +249,7 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[3].add_callback(
             self.state_mode_callback
         )
-        self.logger.info(
-            "Subscribed to functional state and antenna mode"
-        )
+        self.logger.info("Subscribed to functional state and mode")
 
     def subscribe_to_stow_sensor(self):
         """CanOpen Subscription to stow sensors."""

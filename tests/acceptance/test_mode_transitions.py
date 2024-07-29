@@ -12,9 +12,8 @@ from component_managers.astt_comp_manager import (
 def set_up_subscriptions(comp_manager):
     """Set up all Canopen subscriptions"""
     comp_manager.set_plc_node_to_preoperational()
-    comp_manager.subscribe_to_antenna_mode()
+    comp_manager.subscribe_to_func_state_and_mode()
     comp_manager.subscribe_to_stow_sensor()
-    comp_manager.subscribe_to_func_state()
     comp_manager.subscribe_to_mode_command_obj()
     comp_manager.trigger_transmission()
     time.sleep(7)
