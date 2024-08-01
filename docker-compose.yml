@@ -1,11 +1,13 @@
+version: '3'
 services:
   astt-cam-software-gui:
     image: astt-cam-software:latest
     container_name: astt-cam-software-gui
     ports:
       - 5000:5000
-    networks:
-      - astt-network
+    network_mode: "host"
+    environment:
+      - PYTHONPATH=/app/src
     command: >
         bash -c "poetry install
         && python3 src/astt_gui/app.py"
@@ -13,20 +15,7 @@ services:
   astt-antenna-simulator:
     image: astt-cam-software:latest
     container_name: astt-antenna-simulator
-    networks:
-      - astt-network
+    network_mode: "host"
     command: >
         bash -c "cd src/antenna_simulator
         && ./slave"
-
-networks:
-  astt-network:
-    driver: bridge
-
-
-
-
-
-    
-    
-

@@ -21,15 +21,15 @@ WORKDIR /app
 # Copying asst code into the container
 COPY . /app
 
-# setting the python path
-RUN export PYTHONPATH=/app/src
-
 # Installing Python dependencies
 RUN pip3 install poetry==1.7.1
 RUN poetry config virtualenvs.create false && poetry install
 
 # Dependencies to build lely
 RUN apt install git build-essential automake libtool python3-setuptools python3-wheel python3-empy python3-yaml libbluetooth-dev valgrind doxygen graphviz -y
+
+# Installing Python dependencies
+RUN pip install -r requirements.txt
 
 # Get and build lely
 #COPY installLely.sh /app/
