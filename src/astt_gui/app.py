@@ -193,4 +193,4 @@ def disconnect():
 
 if __name__ == "__main__":
     print("App started")
-    socketio.run(app,allow_unsafe_werkzeug=True)
+    socketio.run(app, allow_unsafe_werkzeug=True)
