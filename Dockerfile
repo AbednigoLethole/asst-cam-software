@@ -21,6 +21,9 @@ WORKDIR /app
 # Copying asst code into the container
 COPY . /app
 
+# setting the python path
+RUN export PYTHONPATH=/app/src
+
 # Installing Python dependencies
 RUN pip3 install poetry==1.7.1
 RUN poetry config virtualenvs.create false && poetry install
