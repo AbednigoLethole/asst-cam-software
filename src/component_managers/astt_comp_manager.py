@@ -316,9 +316,15 @@ class ASTTComponentManager:
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
         self.logger.info(f"Point called with AZ {az} and EL {el} ")
-        (self.antenna_node).sdo[0x2000][1].raw = timestamp
-        (self.antenna_node).sdo[0x2000][2].raw = az
-        (self.antenna_node).sdo[0x2000][3].raw = el
+        if self.is_az_allowed(az) and self.is_el_allowed(el):
+            (self.antenna_node).sdo[0x2000][1].raw = timestamp
+            (self.antenna_node).sdo[0x2000][2].raw = az
+            (self.antenna_node).sdo[0x2000][3].raw = el
+        else:
+            self.logger.exception(
+                f"az: {az} or el: {el} is out of range"
+            )
+            raise ValueError
 
     def set_point_mode(self):
         """Commands the ASTT Antenna to point mode"""
