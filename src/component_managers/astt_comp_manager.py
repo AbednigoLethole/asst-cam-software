@@ -129,7 +129,7 @@ class ASTTComponentManager:
     def stow_pin_callback(self, incoming_object):
         for node_record in incoming_object:
             st_pin_state = self.gen_mode_state_enums(
-                "StowPinState", node_record.raw
+                "StowPinState", node_record.raw & 0b111
             )
             # Update if the value from simulator has changed
             if st_pin_state != self.stow_sensor_state:
@@ -151,14 +151,13 @@ class ASTTComponentManager:
                 "Mode and State Feedback.Functional State"
                 == node_record.name
             ):
-                for node_record in incoming_object:
-                    func_state = self.gen_mode_state_enums(
-                        "FuncState", node_record.raw
-                    )
-                    # Update if the value from simulator has changed
-                    if func_state != self.antenna_func_state:
-                        self.antenna_func_state = func_state
-                        print(f"func state : {func_state.name} ")
+                func_state = self.gen_mode_state_enums(
+                    "FuncState", node_record.raw
+                )
+                # Update if the value from simulator has changed
+                if func_state != self.antenna_func_state:
+                    self.antenna_func_state = func_state
+                    print(f"func state : {func_state.name} ")
 
     # ========================
     # Subscription functions
@@ -317,15 +316,9 @@ class ASTTComponentManager:
     def point_to_coordinates(self, timestamp, az, el):
         """commands the simulator to point az/el ."""
         self.logger.info(f"Point called with AZ {az} and EL {el} ")
-        if self.is_az_allowed(az) and self.is_el_allowed(el):
-            (self.antenna_node).sdo[0x2000][1].raw = timestamp
-            (self.antenna_node).sdo[0x2000][2].raw = az
-            (self.antenna_node).sdo[0x2000][3].raw = el
-        else:
-            self.logger.exception(
-                f"az: {az} or el: {el} is out of range"
-            )
-            raise ValueError
+        (self.antenna_node).sdo[0x2000][1].raw = timestamp
+        (self.antenna_node).sdo[0x2000][2].raw = az
+        (self.antenna_node).sdo[0x2000][3].raw = el
 
     def set_point_mode(self):
         """Commands the ASTT Antenna to point mode"""

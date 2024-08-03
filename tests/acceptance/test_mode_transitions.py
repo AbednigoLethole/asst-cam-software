@@ -48,7 +48,7 @@ def test_antenna_trans_to_stow(cm_manager_connected_to_antnn):
     )
     assert (
         cm_manager_connected_to_antnn.get_antenna_func_state()
-        == FuncState.ESTOP
+        == FuncState.BRAKED
     )
     assert (
         cm_manager_connected_to_antnn.get_antenna_stow_sensor_state()
