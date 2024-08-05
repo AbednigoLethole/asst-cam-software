@@ -22,22 +22,17 @@ To install and run the software using docker follow this commands:
 
     ```docker build -t astt-cam-software . ```
 
-## **Install the dependencies**
+## **Deploying the ASTT CAM Software**
 
-* Install Poetry
+* Deploy the ASTT docker containers
 
-    ``` pip install poetry==1.7.1 ```
+``` make Deploy-astt-cam-software```
 
-* Install dependencies
+## **Removing the ASTT CAM Software deployment**
 
-    ``` poetry config virtualenvs.create false && poetry install ```
+* Teardown the deployment
 
-## **Running the GUI**
-
-* Run the GUI
-
-``` python3 src/astt_gui/app.py ```
-
+``` make Teardown-astt-cam-software ```
 
 ## **Running the unit tests**
 
