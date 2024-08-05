@@ -7,7 +7,6 @@ from flask import Flask, jsonify, render_template, request
 from flask_socketio import SocketIO
 
 from component_managers.astt_comp_manager import ASTTComponentManager
-from component_managers.start_simulator import SimulatorManager
 
 thread = None
 thread_lock = Lock()
@@ -87,43 +86,25 @@ def start_astt_gui():
     ):
         user_pass = request.form["password"]
         cm.clear_all_logs()
-        # Start VCAN network & simulator
-        logger.info("Intitialized button triggered")
-        simulator_manager = SimulatorManager()
-        logger.info("Starting vcan interface")
-        logger.info("Passing user password")
-        success = simulator_manager.start_can_interface(user_pass)
+        cm.connect_to_network()
+        cm.connect_to_plc_node()
+        # Subscribe to AZ and EL change.
+        cm.subscribe_to_az_change()
+        cm.subscribe_to_el_change()
+        cm.subscribe_to_func_state()
+        cm.subscribe_to_mode_command_obj()
+        cm.subscribe_to_antenna_mode()
+        cm.subscribe_to_stow_sensor()
+        # Set point mode function below needs to be removed
+        cm.trigger_transmission()
+        global thread3
+        with thread_lock:
+            if thread3 is None:
+                thread3 = socketio.start_background_task(
+                    states_and_modes_thread, cm
+                )
 
-        # Report incorrect password to user.
-        if success == 0:
-            logger.info("correct password")
-
-            simulator_manager.run_contaier_and_startup_simulator()
-            # Await Simulator to start up
-            time.sleep(2)
-            # Connect to VCAN and Siumlator
-            cm.connect_to_network()
-            cm.connect_to_plc_node()
-            # Subscribe to AZ and EL change.
-            cm.subscribe_to_az_change()
-            cm.subscribe_to_el_change()
-            cm.subscribe_to_func_state()
-            cm.subscribe_to_mode_command_obj()
-            cm.subscribe_to_antenna_mode()
-            cm.subscribe_to_stow_sensor()
-            # Set point mode function below needs to be removed
-            cm.trigger_transmission()
-            global thread3
-            with thread_lock:
-                if thread3 is None:
-                    thread3 = socketio.start_background_task(
-                        states_and_modes_thread, cm
-                    )
-
-            return jsonify("success")
-        if success == 1:
-            logger.warn("Incorrect password entered")
-            return jsonify("Wrong password,Try again!!")
+        return jsonify("success")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:
