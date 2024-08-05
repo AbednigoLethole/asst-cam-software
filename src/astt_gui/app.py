@@ -84,27 +84,30 @@ def start_astt_gui():
         "button" in request.form
         and request.form["button"] == "Initialize"
     ):
-        user_pass = request.form["password"]
-        cm.clear_all_logs()
-        cm.connect_to_network()
-        cm.connect_to_plc_node()
-        # Subscribe to AZ and EL change.
-        cm.subscribe_to_az_change()
-        cm.subscribe_to_el_change()
-        cm.subscribe_to_func_state()
-        cm.subscribe_to_mode_command_obj()
-        cm.subscribe_to_antenna_mode()
-        cm.subscribe_to_stow_sensor()
-        # Set point mode function below needs to be removed
-        cm.trigger_transmission()
-        global thread3
-        with thread_lock:
-            if thread3 is None:
-                thread3 = socketio.start_background_task(
-                    states_and_modes_thread, cm
-                )
+        try:
+            cm.clear_all_logs()
+            cm.connect_to_network()
+            cm.connect_to_plc_node()
+            # Subscribe to AZ and EL change.
+            cm.subscribe_to_az_change()
+            cm.subscribe_to_el_change()
+            cm.subscribe_to_func_state()
+            cm.subscribe_to_mode_command_obj()
+            cm.subscribe_to_antenna_mode()
+            cm.subscribe_to_stow_sensor()
+            # Set point mode function below needs to be removed
+            cm.trigger_transmission()
+            global thread3
+            with thread_lock:
+                if thread3 is None:
+                    thread3 = socketio.start_background_task(
+                        states_and_modes_thread, cm
+                    )
 
-        return jsonify("success")
+            return jsonify("success")
+        except Exception as err:
+            logger.error(f"Error encountered initializing : {err}")
+            return jsonify("failed")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:
