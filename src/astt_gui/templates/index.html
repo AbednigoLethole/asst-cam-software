@@ -267,7 +267,7 @@
                         <div class="container">
                           <div class="row">
                             <div class="col">
-                              <button onclick="openInitModal('')" class="btn btn-primary" title="This button initializes the system, the user must enter a valid password in order for the  the antenna/simulator to be started and subscriptions to sensors are made on the antenna.and the initial values of sensors will be populated above on the states grids above"> <i class='bx bxs-right-arrow'></i> Initialize System</button>
+                              <button class="btn btn-primary" id="Initialize_System" title="This button initializes the system, starts subscriptions to sensors are made on the antenna.and the initial values of sensors will be populated above on the states grids above"> <i class='bx bxs-right-arrow'></i> Initialize System</button>
                             </div>
                             <div class="col">
                               <button class="btn btn-primary" title="This button is used when we want to scan for sources i.e the sun and/or the stars or any other optical source(s)."><span class="bi bi-qr-code"></span> Scan Source/s</button>
@@ -294,7 +294,6 @@
 
                 <script>
                   var intializeCount = 0;
-                  var modalPopped = false;
                   var systemIntialized = false;
   
                   function initializeComplete(message){
@@ -302,59 +301,26 @@
   
   
                   }
-  
-                  // Gets triggered when an init model is closed
-                  function closeInitModal(){
-                    $("#initModal").modal("hide");
-                    modalPopped = false;
-                    console.log(modalPopped);
-            
-                  } 
-  
-                  function openInitModal(message){
-                    if (systemIntialized==true){
-                      initializeComplete('System already Initialized');
-                    }
-                    else{
-  
-                      var modalMessage = document.getElementById("modalMessage");
-                      modalMessage.textContent = message;
-                      $("#initModal").modal("show");
-                      modalPopped = true;
-                      console.log(modalPopped);
-                      
-                    }
-                 
-                  }
+                  // initializeComplete('System already Initialized');
   
                   $(document).ready(function(){  
-                    $('#Submit_Password').click(function(){  
-        
-                      var password = $('#password').val();  
-                      if(password != '') {
+                    $('#Initialize_System').click(function(){  
                         $.ajax({  
                           url:"{{ url_for('start_astt_gui') }}",  
                           method:"POST",  
-                          data: {"button" : "Initialize","password" : password},
+                          data: {"button" : "Initialize"},
                           success:function(data) {
                             if (data == "success"){
-                              closeInitModal();
                               initializeComplete('System Initialized');
                               systemIntialized = true;
                               console.log("Success!!");
                             }
                             else{
                               console.log("Failed");
-                              openInitModal(data);
-                       
                             }
-                    
-                          },
-                       
+                          }
                         });
-                      }
-          
-                    });    
+                    });
                   });
   
                 </script>
@@ -416,36 +382,6 @@
                     </div>
                   </div>
                 </div>
-            
-                <!-- Init Modal -->
-                <div class="modal fade" id="initModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                           <h5 class="modal-title" id="staticBackdropLabel">Enter Password to start the system</h5>
-                                     
-                        </div>
-                        <div class="modal-body">
-                           <form method="POST" action="/">
-                              <div class="row mb-3">
-                                 <label for="inputText" class="col-sm-2 col-form-label">Password</label>
-                                 <div class="col-sm-10">
-                                  <input type="password" id="password" class="form-control" name ="password" required="required">
-                                  <p id="modalMessage"></p>
-                                </div>
-                                 <div class="modal-footer">
-                                    <button type="button" onclick="closeInitModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" id="Submit_Password">Submit Password</button>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-            
-
                             <!-- Track Modal -->
                 <div class="modal fade" id="trackModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">

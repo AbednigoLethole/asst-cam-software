@@ -15,3 +15,6 @@ six
 Werkzeug
 zipp
 sphinx
+flask
+canopen
+astropy

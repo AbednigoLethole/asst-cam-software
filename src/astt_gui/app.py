@@ -7,7 +7,6 @@ from flask import Flask, jsonify, render_template, request
 from flask_socketio import SocketIO
 
 from component_managers.astt_comp_manager import ASTTComponentManager
-from component_managers.start_simulator import SimulatorManager
 
 thread = None
 thread_lock = Lock()
@@ -85,23 +84,8 @@ def start_astt_gui():
         "button" in request.form
         and request.form["button"] == "Initialize"
     ):
-        user_pass = request.form["password"]
-        cm.clear_all_logs()
-        # Start VCAN network & simulator
-        logger.info("Intitialized button triggered")
-        simulator_manager = SimulatorManager()
-        logger.info("Starting vcan interface")
-        logger.info("Passing user password")
-        success = simulator_manager.start_can_interface(user_pass)
-
-        # Report incorrect password to user.
-        if success == 0:
-            logger.info("correct password")
-
-            simulator_manager.run_contaier_and_startup_simulator()
-            # Await Simulator to start up
-            time.sleep(2)
-            # Connect to VCAN and Siumlator
+        try:
+            cm.clear_all_logs()
             cm.connect_to_network()
             cm.connect_to_plc_node()
             # Subscribe to AZ and EL change.
@@ -121,9 +105,9 @@ def start_astt_gui():
                     )
 
             return jsonify("success")
-        if success == 1:
-            logger.warn("Incorrect password entered")
-            return jsonify("Wrong password,Try again!!")
+        except Exception as err:
+            logger.error(f"Error encountered initializing : {err}")
+            return jsonify("failed")
 
     # Trigger condition when Point button is clicked.
     if "azimuth" in request.form and "elevation" in request.form:
@@ -193,4 +177,4 @@ def disconnect():
 
 if __name__ == "__main__":
     print("App started")
-    socketio.run(app)
+    socketio.run(app, allow_unsafe_werkzeug=True)
