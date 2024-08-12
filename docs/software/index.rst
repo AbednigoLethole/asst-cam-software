@@ -10,4 +10,3 @@ These modules communicate with the component manager and are called as required.
    
    Dish Modes<dish_modes>
    Celestial Tracker<sources>
-   Starting the network<start_simulator>

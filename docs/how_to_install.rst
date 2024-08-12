@@ -32,19 +32,3 @@ To install and run the software using docker follow this commands:
 * Run the GUI
 
 ``` python3 src/asst_gui/app.py ```
-
-
-**Running the unit tests**
-
-* Run the test
-
-    ``` python -m unittest discover -v -s tests/unit ```
-**Building the docs**
-
-* To build the docs,first go to the directory where conf.py exists.
-    ```cd docs ```
-
-* Generate the readthedocs pages
-    ```sphinx-build -b html . _build -v ```
-
-* The home page of the docs is found in _build directory,open the index.html with the browser.
