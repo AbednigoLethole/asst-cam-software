@@ -91,6 +91,8 @@ Buttons and Their Functions
 
         Select the source you want to track (e.g., Sun, Intel Satellite).
 
+        You can either use Azimuth speed and Elevation speed or not.
+
         The system will start tracking the chosen source.
 
 **Monitored attributes on the antenna**
