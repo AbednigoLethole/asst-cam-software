@@ -1,4 +1,5 @@
 """Decorator to run functions in the background using threads."""
+
 import threading
 
 

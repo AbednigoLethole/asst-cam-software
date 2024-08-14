@@ -1,4 +1,5 @@
 """Facilitate integration between the GUI and system components."""
+
 import logging
 import time
 from datetime import datetime

@@ -1,4 +1,5 @@
 """Specialization for CanOpen functionality."""
+
 import datetime
 import logging
 import os
