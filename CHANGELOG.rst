@@ -1,3 +1,8 @@
+Version 1.0.1
+*************
+- Updated the ASTT CAM software documentation
+- Added a BSD-3 License
+
 Version 1.0.0
 *************
 - Added the ASTT GUI
