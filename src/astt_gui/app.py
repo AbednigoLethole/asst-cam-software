@@ -1,3 +1,4 @@
+"""Facilitate integration between the GUI and system components."""
 import logging
 import time
 from datetime import datetime
@@ -30,12 +31,13 @@ logging.basicConfig(
 
 
 def get_current_datetime():
+    """Return the current date and time."""
     now = datetime.now()
     return now.strftime("%m/%d/%Y %H:%M:%S")
 
 
 def background_thread(node):
-    """Feeds az & el to the GUI."""
+    """Feed az & el to the GUI."""
     if node is not None:
         while True:
             node.tpdo[1].wait_for_reception()
@@ -54,6 +56,7 @@ def background_thread(node):
 
 
 def states_and_modes_thread(comp_manager):
+    """Continuously send antenna states and modes to the GUI."""
     logger.info("Thread triggered")
     while True:
         func_state = comp_manager.antenna_func_state.name
@@ -74,15 +77,13 @@ def states_and_modes_thread(comp_manager):
 
 @app.route("/", methods=["GET"])
 def index():
+    """Render the index page."""
     return render_template("index.html")
 
 
 @app.route("/", methods=["POST"])
 def start_astt_gui():
-    """This function is designed to respond to user interactions with the GUI.
-    Whenever a POST request is made (e.g., a button click or any request made by the user),
-    this function will be executed to handle the request and update the GUI accordingly.
-    """  # noqa: E501
+    """Handle user interactions with the GUI."""  # noqa: E501
     # You want to stop tracking as soon as you press any other button.
     cm.trackstop = True
     # Trigger condition when Initialize button is clicked.
@@ -152,10 +153,11 @@ def start_astt_gui():
                     background_thread, cm.antenna_node
                 )
 
-    az_speed = request.form.get("az_speed")
-    el_speed = request.form.get("el_speed")
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
+        # Get AZ speed and EL speed from GUI.
+        az_speed = request.form.get("az_speed")
+        el_speed = request.form.get("el_speed")
         global thread2
         with thread_lock:
             if thread is None:

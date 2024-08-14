@@ -1,4 +1,4 @@
-"""Test the pointing function with inputs"""
+"""Test the pointing function with inputs."""
 
 import time
 
@@ -6,7 +6,7 @@ import pytest
 
 
 def set_up_subscriptions(comp_manager):
-    """Set up all Canopen subscriptions"""
+    """Set up all Canopen subscriptions."""
     comp_manager.set_plc_node_to_preoperational()
     comp_manager.subscribe_to_func_state_and_mode()
     comp_manager.subscribe_to_stow_sensor()
@@ -19,7 +19,7 @@ def set_up_subscriptions(comp_manager):
 def test_point_func_rejects_incor_input(
     cm_manager_connected_to_antnn,
 ):
-    """Test pointing with values out of range"""
+    """Test pointing with values out of range."""
     set_up_subscriptions(cm_manager_connected_to_antnn)
     cm_manager_connected_to_antnn.set_point_mode()
     # The antenna takes roughly 30 sec to switch modes
@@ -33,7 +33,7 @@ def test_point_func_rejects_incor_input(
 
 
 def test_point_func_accepts_corr_input(cm_manager_connected_to_antnn):
-    """Test pointing with values in range"""
+    """Test pointing with values in range."""
     # Assume the antenna is in pointing because of the function
     # above sets it.
     # Assert true gets triggered if AZ/EL are accepted

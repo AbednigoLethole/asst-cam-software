@@ -1,4 +1,5 @@
 # noqa: E501
+"""Test the sources functions."""
 import datetime
 import unittest
 from unittest.mock import patch
@@ -9,7 +10,6 @@ from src.component_managers.sources import Sun
 
 
 class TestGetSunAzEl(unittest.TestCase):
-
     def setUp(self):
         self.sun = Sun(lat=-33.9326033333, lon=18.47222, alt=3.6)
 
