@@ -12,6 +12,8 @@ from src.component_managers.dish_modes import Mode
 # pylint: disable=attribute-defined-outside-init
 # pylint: disable=arguments-differ
 # pylint: disable=too-few-public-methods
+# pylint: disable=W0012
+# pylint: disable=duplicate-code
 
 
 # Creating a customized Mocked incoming Object

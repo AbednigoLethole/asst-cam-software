@@ -1,3 +1,6 @@
+# pylint: disable= W0603, W0718, W0602
+
+"""Script to run the ASTT GUI."""
 import logging
 import time
 from datetime import datetime
@@ -9,14 +12,15 @@ from flask_socketio import SocketIO
 from component_managers.astt_comp_manager import ASTTComponentManager
 from component_managers.start_simulator import SimulatorManager
 
-thread = None
-thread_lock = Lock()
-thread2 = None
-thread3 = None
+THREAD = None
+THREAD_LOCK = Lock()
+THREAD2 = None
+THREAD3 = None
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "STT"
 socketio = SocketIO(app, cors_allowed_origins="*")
+
 
 cm = ASTTComponentManager()
 logger = logging.getLogger("ASTT-GUI")
@@ -30,6 +34,7 @@ logging.basicConfig(
 
 
 def get_current_datetime():
+    """Parsing current datetime."""
     now = datetime.now()
     return now.strftime("%m/%d/%Y %H:%M:%S")
 
@@ -54,6 +59,7 @@ def background_thread(node):
 
 
 def states_and_modes_thread(comp_manager):
+    """Emits current state(s) and mode to GUI."""
     logger.info("Thread triggered")
     while True:
         func_state = comp_manager.antenna_func_state.name
@@ -74,12 +80,13 @@ def states_and_modes_thread(comp_manager):
 
 @app.route("/", methods=["GET"])
 def index():
+    """renders to index page."""
     return render_template("index.html")
 
 
 @app.route("/", methods=["POST"])
 def start_astt_gui():
-    # Trigger condition when Initialize button is clicked.
+    """Trigger condition when Initialize button is clicked."""
 
     if (
         "button" in request.form
@@ -102,27 +109,30 @@ def start_astt_gui():
             # Await Simulator to start up
             time.sleep(2)
             # Connect to VCAN and Siumlator
-            cm.connect_to_network()
-            cm.connect_to_plc_node()
+            connect_vcan_network()
+            # cm.connect_to_network()
+            # cm.connect_to_plc_node()
             # Subscribe to AZ and EL change.
-            cm.subscribe_to_az_change()
-            cm.subscribe_to_el_change()
-            cm.subscribe_to_func_state()
-            cm.subscribe_to_mode_command_obj()
-            cm.subscribe_to_antenna_mode()
-            cm.subscribe_to_stow_sensor()
+            start_subscriptions()
+            # cm.subscribe_to_az_change()
+            # cm.subscribe_to_el_change()
+            # cm.subscribe_to_func_state()
+            # cm.subscribe_to_mode_command_obj()
+            # cm.subscribe_to_antenna_mode()
+            # cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
             cm.trigger_transmission()
-            global thread3
-            with thread_lock:
-                if thread3 is None:
-                    thread3 = socketio.start_background_task(
-                        states_and_modes_thread, cm
-                    )
+            global THREAD3
+            start_states_and_modes_thread(THREAD3, cm)
+            # with THREAD_LOCK:
+            #     if THREAD3 is None:
+            #         THREAD3 = socketio.start_background_task(
+            #             states_and_modes_thread, cm
+            #         )
 
             return jsonify("success")
         if success == 1:
-            logger.warn("Incorrect password entered")
+            logger.warning("Incorrect password entered")
             return jsonify("Wrong password,Try again!!")
 
     # Trigger condition when Point button is clicked.
@@ -138,23 +148,25 @@ def start_astt_gui():
             )
 
         except (Exception, ValueError) as err:
-            logger.error(f"Error encountered : {err}")
+            logger.error("Error encountered : %s", err)
 
-        global thread
-        with thread_lock:
-            if thread is None:
-                thread = socketio.start_background_task(
-                    background_thread, cm.antenna_node
-                )
+        global THREAD
+        start_thread(THREAD, cm.antenna_mode)
+        # with THREAD_LOCK:
+        #     if THREAD is None:
+        #         THREAD = socketio.start_background_task(
+        #             background_thread, cm.antenna_node
+        #         )
 
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
-        global thread2
-        with thread_lock:
-            if thread is None:
-                thread2 = socketio.start_background_task(
-                    background_thread, cm.antenna_node
-                )
+        global THREAD2
+        start_thread(THREAD2, cm.antenna_mode)
+        # with THREAD_LOCK:
+        #     if THREAD is None:
+        #         THREAD2 = socketio.start_background_task(
+        #             background_thread, cm.antenna_node
+        #         )
 
         cm.track_sun(1)
     if "modes" in request.form and request.form["modes"] == "Idle":
@@ -169,25 +181,56 @@ def start_astt_gui():
     return render_template("index.html")
 
 
+def connect_vcan_network():
+    """Connection to the vcan and simulator."""
+    cm.connect_to_network()
+    cm.connect_to_plc_node()
+
+
+def start_subscriptions():
+    """Initializing subscriptions from the simulator."""
+    cm.subscribe_to_az_change()
+    cm.subscribe_to_el_change()
+    cm.subscribe_to_func_state()
+    cm.subscribe_to_mode_command_obj()
+    cm.subscribe_to_antenna_mode()
+    cm.subscribe_to_stow_sensor()
+
+
+def start_thread(thread, antenna_node):
+    """Generic function for starting specific thread."""
+    with THREAD_LOCK:
+        if thread is None:
+            thread = socketio.start_background_task(
+                background_thread, antenna_node
+            )
+
+
+def start_states_and_modes_thread(thread, comp_manager):
+    """Generic function for starting states and modes thread."""
+    with THREAD_LOCK:
+        if thread is None:
+            thread = socketio.start_background_task(
+                states_and_modes_thread, comp_manager
+            )
+
+
 def connect():
-    global thread
+    """Decorator for socketio connection."""
+    global THREAD
 
     print("Client connected")
 
-    global thread
-    with thread_lock:
-        if thread is None:
-            thread = socketio.start_background_task(
+    global THREAD
+    with THREAD_LOCK:
+        if THREAD is None:
+            THREAD = socketio.start_background_task(
                 background_thread, cm.antenna_node
             )
 
 
-"""
-Decorator for disconnect.
-"""
-
-
 def disconnect():
+    """Decorator for disconnect."""
     print("Client disconnected", request.sid)
 
 

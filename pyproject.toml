@@ -70,6 +70,13 @@ Sphinx = "^5.1.1"
 sphinx-rtd-theme = "*"
 sphinx-autodoc-typehints = "*"
 
+[tool.mypy.disable_error_code]
+["arg-type"]
+["import-untyped"] 
+["attr-defined"] 
+["call-arg"] 
+ 
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

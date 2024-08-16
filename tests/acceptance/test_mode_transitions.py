@@ -1,5 +1,6 @@
 """Test the mode transitions"""
 
+# pylint: disable=duplicate-code
 import time
 
 from component_managers.astt_comp_manager import (

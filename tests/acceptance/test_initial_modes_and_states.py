@@ -1,6 +1,6 @@
 """Test the initial states and modes."""
 
-# pylint: enable=duplicate-code
+# pylint: disable=duplicate-code
 
 import time
 

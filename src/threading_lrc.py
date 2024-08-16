@@ -1,3 +1,5 @@
+"""Script to run the background thread."""
+
 import threading
 
 
@@ -8,6 +10,7 @@ def background(f):
     you want to run in the background
     """
 
+    # TODO:Introduce Dramatiq to control and monitor background threads.
     def backgrnd_func(*a, **kw):
         threading.Thread(target=f, args=a, kwargs=kw).start()
 

@@ -1,4 +1,5 @@
 """Test for sources in the sky."""
+
 # noqa: E501
 # pylint: disable=invalid-name,unused-argument,too-many-public-methods
 # pylint: disable=attribute-defined-outside-init

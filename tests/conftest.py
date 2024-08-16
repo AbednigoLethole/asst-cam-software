@@ -14,4 +14,4 @@ def cm_manager_connected_to_antnn():
     cm = ASTTComponentManager()
     cm.connect_to_network()
     cm.connect_to_plc_node()
-    return cm 
+    return cm

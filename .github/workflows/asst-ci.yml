@@ -60,13 +60,19 @@ jobs:
           poetry config virtualenvs.create false && poetry install
 
       - name: Check code quality with isort
-        run: isort --check-only --profile black --line-length 70 src/ tests/
+        run: isort --check-only --profile black --line-length 99 src/ tests/
 
       - name: Check code quality with black
-        run: black --exclude .+\.ipynb --check --line-length 70 src/ tests/
+        run: black --exclude .+\.ipynb --check --line-length 99 src/ tests/
 
       - name: Check code quality with flake8
-        run: flake8 --show-source --statistics --max-line-length 70 src/ tests/
+        run: flake8 --show-source --statistics --max-line-length 99 src/ tests/
+
+      - name: Analysing the code with pylint 
+        run: pylint --max-line-length=99 src/ tests/
+
+      - name: Runs mypy 
+        run: mypy src/ tests/
 
   acceptance-test:
     runs-on: ubuntu-20.04
