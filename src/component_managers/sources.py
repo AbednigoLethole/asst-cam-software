@@ -1,4 +1,6 @@
 # noqa: E501
+# mypy: disable_error_code="import-untyped"
+
 import datetime
 
 from astropy import units as u

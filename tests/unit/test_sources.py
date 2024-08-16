@@ -3,6 +3,7 @@
 # noqa: E501
 # pylint: disable=invalid-name,unused-argument,too-many-public-methods
 # pylint: disable=attribute-defined-outside-init
+# mypy: disable_error_code="import-untyped"
 
 import datetime
 import unittest

@@ -1,3 +1,4 @@
+# mypy: disable_error_code="call-arg"
 from subprocess import PIPE, Popen, run
 
 green = "\033[0;32m"
