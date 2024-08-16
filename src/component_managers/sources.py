@@ -2,12 +2,7 @@
 import datetime
 
 from astropy import units as u
-from astropy.coordinates import (
-    AltAz,
-    EarthLocation,
-    SkyCoord,
-    get_sun,
-)
+from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_sun
 from astropy.time import Time
 
 # TODO: Use ASTT GPS Reciever Component Manager.
@@ -25,17 +20,13 @@ class Sun:
         self.alt = alt
 
     def earth_coords(self):
-        earth_coords = EarthLocation(
-            lat=self.lat, lon=self.lon, height=self.alt * u.m
-        )
+        earth_coords = EarthLocation(lat=self.lat, lon=self.lon, height=self.alt * u.m)
         return earth_coords
 
     def get_sun_az_el(self, sun_time):
         """This method outputs the Sun's current Az and El."""
         astropy_time = Time(sun_time, scale="utc")
-        astt_coords = EarthLocation(
-            lat=self.lat, lon=self.lon, height=self.alt * u.m
-        )
+        astt_coords = EarthLocation(lat=self.lat, lon=self.lon, height=self.alt * u.m)
         alt_az = AltAz(obstime=astropy_time, location=astt_coords)
         # TODO: Change get_sun method to a suitable function to
         # find satellites.
@@ -52,14 +43,10 @@ class Sun:
         FUTURE_SECONDS = 10
         while True:
             # Get user for input
-            user_input = input(
-                "Time & date in the format YYYY, MM, DD, HH, MM, SS: "
-            )
+            user_input = input("Time & date in the format YYYY, MM, DD, HH, MM, SS: ")
             # Parse user input
             try:
-                year, month, day, hour, minute, second = map(
-                    int, user_input.split(",")
-                )
+                year, month, day, hour, minute, second = map(int, user_input.split(","))
                 track_time = datetime.datetime(
                     year,
                     month,
@@ -71,14 +58,9 @@ class Sun:
                 ) + datetime.timedelta(seconds=FUTURE_SECONDS)
                 break  # Break out of the loop if input is valid
             except ValueError:
-                print(
-                    "Invalid.Enter the values in the specified format"
-                )
+                print("Invalid.Enter the values in the specified format")
         timestamp = (
-            track_time
-            - datetime.datetime(
-                1970, 1, 1, tzinfo=datetime.timezone.utc
-            )
+            track_time - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
         ).total_seconds()
         tt = Time(track_time, scale="utc")
         aa = AltAz(obstime=tt, location=self.earth_coords())

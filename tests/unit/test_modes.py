@@ -3,9 +3,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.component_managers.astt_comp_manager import (
-    ASTTComponentManager,
-)
+from src.component_managers.astt_comp_manager import ASTTComponentManager
 from src.component_managers.dish_modes import Mode
 
 # pylint: disable=invalid-name,unused-argument,too-many-public-methods
@@ -28,9 +26,7 @@ class TestAntennaModes(unittest.TestCase):
     """TestCase to for Antenna modes."""
 
     @patch("src.component_managers.astt_comp_manager.canopen.Network")
-    @patch(
-        "src.component_managers.astt_comp_manager.canopen.RemoteNode"
-    )
+    @patch("src.component_managers.astt_comp_manager.canopen.RemoteNode")
     def setUp(self, mock_RemoteNode, mock_Network):
         """ASTT CAN Network setup."""
         self.manager = ASTTComponentManager()

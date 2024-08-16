@@ -30,9 +30,7 @@ class TestGetSunAzEl(unittest.TestCase):
 
     def test_get_sun_az_el(self):
         """Test AZ and EL from the sun is as the expected AZ and El"""
-        sun_time = datetime.datetime(
-            2024, 5, 8, 12, 0, 0, tzinfo=datetime.timezone.utc
-        )
+        sun_time = datetime.datetime(2024, 5, 8, 12, 0, 0, tzinfo=datetime.timezone.utc)
         expected_az = 337.11244076091316
         expected_el = 35.546531518065116
         az, el = self.sun.get_sun_az_el(sun_time)
@@ -47,9 +45,7 @@ class TestGetSunAzEl(unittest.TestCase):
         expected_timestam = 1715169610.0
         expected_el = 35.53304352273266
         expected_az = 337.06644428631614
-        timestamp, azimuth, elevation = self.sun.calc_position_sun(
-            track_time
-        )
+        timestamp, azimuth, elevation = self.sun.calc_position_sun(track_time)
         self.assertAlmostEqual(timestamp, expected_timestam, places=5)
         self.assertAlmostEqual(azimuth, expected_az, places=5)
         self.assertAlmostEqual(elevation, expected_el, places=5)

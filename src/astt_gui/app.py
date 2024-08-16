@@ -45,12 +45,8 @@ def background_thread(node):
         while True:
             node.tpdo[1].wait_for_reception()
             node.tpdo[2].wait_for_reception()
-            az = node.tpdo[
-                "Position Feedback.Azimuth(R64) of position"
-            ].raw
-            el = node.tpdo[
-                "Position Feedback.Elevation(R64) of position"
-            ].raw
+            az = node.tpdo["Position Feedback.Azimuth(R64) of position"].raw
+            el = node.tpdo["Position Feedback.Elevation(R64) of position"].raw
             socketio.emit(
                 "updateAZELData",
                 {"az": az, "el": el, "date": get_current_datetime()},
@@ -88,10 +84,7 @@ def index():
 def start_astt_gui():
     """Trigger condition when Initialize button is clicked."""
 
-    if (
-        "button" in request.form
-        and request.form["button"] == "Initialize"
-    ):
+    if "button" in request.form and request.form["button"] == "Initialize":
         user_pass = request.form["password"]
         cm.clear_all_logs()
         # Start VCAN network & simulator
@@ -143,9 +136,7 @@ def start_astt_gui():
         el = request.form["elevation"]
         # Call a method to point to Desired AZ & EL
         try:
-            cm.point_to_coordinates(
-                float(time.time()), float(az), float(el)
-            )
+            cm.point_to_coordinates(float(time.time()), float(az), float(el))
 
         except (Exception, ValueError) as err:
             logger.error("Error encountered : %s", err)
@@ -201,18 +192,14 @@ def start_thread(thread, antenna_node):
     """Generic function for starting specific thread."""
     with THREAD_LOCK:
         if thread is None:
-            thread = socketio.start_background_task(
-                background_thread, antenna_node
-            )
+            thread = socketio.start_background_task(background_thread, antenna_node)
 
 
 def start_states_and_modes_thread(thread, comp_manager):
     """Generic function for starting states and modes thread."""
     with THREAD_LOCK:
         if thread is None:
-            thread = socketio.start_background_task(
-                states_and_modes_thread, comp_manager
-            )
+            thread = socketio.start_background_task(states_and_modes_thread, comp_manager)
 
 
 def connect():
@@ -224,9 +211,7 @@ def connect():
     global THREAD
     with THREAD_LOCK:
         if THREAD is None:
-            THREAD = socketio.start_background_task(
-                background_thread, cm.antenna_node
-            )
+            THREAD = socketio.start_background_task(background_thread, cm.antenna_node)
 
 
 def disconnect():
