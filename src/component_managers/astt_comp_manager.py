@@ -1,3 +1,5 @@
+"""Specialization for CanOpen functionality."""
+
 import datetime
 import logging
 import os
@@ -11,16 +13,30 @@ from .dish_modes import FuncState, Mode, StowPinState
 from .sources import Sun
 
 
+class InitialPosition:
+    """Initial position for timestamp, azimuth, and elevation."""
+
+    def __init__(self, timestamp, azimuth, elevation):
+        """Init method for initial position."""
+        self.azimuth = azimuth
+        self.elevation = elevation
+        self.timestamp = timestamp
+
+
 class ASTTComponentManager:
     def __init__(self):
-        """Init method for the CM ."""
+        """Init method for the CM."""
         self.antenna_node = None
+        self.trackstop = True
         self.antenna_app_state = None
         self.antenna_func_state = FuncState.UNKNOWN
         self.antenna_mode = Mode.UNKNOWN
         self.stow_sensor_state = StowPinState.UNKNOWN
         self.network0 = canopen.Network()
         self.transmission_triggered = False
+        self.current_position = InitialPosition(
+            timestamp=0.0, azimuth=0.0, elevation=0.0
+        )
         self.logger = logging.getLogger("ASTT-COMP-MANAGER")
         logging.basicConfig(
             filename="app_dev.log",
@@ -34,7 +50,7 @@ class ASTTComponentManager:
     # =====================
 
     def connect_to_network(self):
-        """Connects to the CAN0 ."""
+        """Connect to the CAN0."""
         self.logger.debug("Starting VCAN Network")
         (self.network0).connect(channel="can0", bustype="socketcan")
 
@@ -57,20 +73,45 @@ class ASTTComponentManager:
     # Callbacks
     # ========================
 
-    def az_el_change_callback(self, incoming_object):
+    def position_change_callback(self, incoming_object):
         """Transmit PDO callback ."""
+        dt = datetime.datetime.now(datetime.timezone.utc)
+        current_timestamp = datetime.datetime.timestamp(dt)
+        print(
+            f"[{current_timestamp}] Message {incoming_object.name} received:"  # noqa: E501
+        )
         for node_record in incoming_object:
+            if (
+                node_record.name
+                == "Position Feedback.Timestamp(R64) of position"
+            ):
+                timestamp = node_record.raw
+                self.current_position.timestamp = timestamp
             if (
                 node_record.name
                 == "Position Feedback.Azimuth(R64) of position"
             ):
-                pass
+                azimuth = node_record.raw
+                self.current_position.azimuth = azimuth
 
             if (
                 node_record.name
                 == "Position Feedback.Elevation(R64) of position"
             ):
-                pass
+                elevation = node_record.raw
+                self.current_position.elevation = elevation
+                print(
+                    f" Timestamp: {self.current_position.timestamp}, Azimuth {self.current_position.azimuth}, Elevation {self.current_position.elevation}"  # noqa: E501
+                )
+
+    def store_initial_position(self):
+        """Return starting position's of timestamp, azi, and ele."""
+        start_position = (
+            self.current_position.timestamp,
+            self.current_position.azimuth,
+            self.current_position.elevation,
+        )
+        return start_position
 
     # This is helper function to translate int values
     # To enum values
@@ -94,40 +135,42 @@ class ASTTComponentManager:
     def stow_pin_callback(self, incoming_object):
         for node_record in incoming_object:
             st_pin_state = self.gen_mode_state_enums(
-                "StowPinState", node_record.raw
+                "StowPinState", node_record.raw & 0b111
             )
             # Update if the value from simulator has changed
             if st_pin_state != self.stow_sensor_state:
                 self.stow_sensor_state = st_pin_state
                 print(f"stow pin state : {st_pin_state.name} ")
 
-    def antenna_mode_callback(self, incoming_object):
+    def state_mode_callback(self, incoming_object):
         for node_record in incoming_object:
-            ant_mode = self.gen_mode_state_enums(
-                "Mode", node_record.raw
-            )
-            # Update if the value from simulator has changed
-            if ant_mode != self.antenna_mode:
-                self.antenna_mode = ant_mode
-                print(f"antenna mode : {ant_mode.name} ")
+            if "Mode and State Feedback.Mode" == node_record.name:
+                ant_mode = self.gen_mode_state_enums(
+                    "Mode", node_record.raw
+                )
+                # Update if the value from simulator has changed
+                if ant_mode != self.antenna_mode:
+                    self.antenna_mode = ant_mode
+                    print(f"antenna mode : {ant_mode.name} ")
 
-    def func_state_callback(self, incoming_object):
-        """Transmit PDO callback ."""
-        for node_record in incoming_object:
-            func_state = self.gen_mode_state_enums(
-                "FuncState", node_record.raw
-            )
-            # Update if the value from simulator has changed
-            if func_state != self.antenna_func_state:
-                self.antenna_func_state = func_state
-                print(f"func state : {func_state.name} ")
+            elif (
+                "Mode and State Feedback.Functional State"
+                == node_record.name
+            ):
+                func_state = self.gen_mode_state_enums(
+                    "FuncState", node_record.raw
+                )
+                # Update if the value from simulator has changed
+                if func_state != self.antenna_func_state:
+                    self.antenna_func_state = func_state
+                    print(f"func state : {func_state.name} ")
 
     # ========================
     # Subscription functions
     # ========================
 
     def subscribe_to_az_change(self):
-        """CanOpen Subscription to the Azimuth ."""
+        """Canopen Subscription to the Azimuth."""
         self.logger.info("Subscribing to azimuth ")
         (self.antenna_node).tpdo.read()
         # Mapping the Azimuth to tpdo
@@ -145,12 +188,12 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[1].save()
 
         (self.antenna_node).tpdo[1].add_callback(
-            self.az_el_change_callback
+            self.position_change_callback
         )
         self.logger.info("Subscribed to azimuth")
 
     def subscribe_to_el_change(self):
-        """CanOpen Subscription to the Elevation ."""
+        """Canopen Subscription to the Elevation."""
         self.logger.info("Subscribing to elevation ")
         (self.antenna_node).tpdo[2].read()
         # Mapping the Elevation to tpdo
@@ -165,18 +208,41 @@ class ASTTComponentManager:
         (self.antenna_node).tpdo[2].save()
 
         (self.antenna_node).tpdo[2].add_callback(
-            self.az_el_change_callback
+            self.position_change_callback
         )
         self.logger.info("Subscribed to elevation")
 
-    def subscribe_to_func_state(self):
-        """CanOpen Subscription to the functional state ."""
-        self.logger.info("Subscribing to functional state")
+    def subscribe_to_timestamp(self):
+        """Canopen Subscription to the Timestamp."""
+        self.logger.info("Subscribing to timestamp ")
+        (self.antenna_node).tpdo[6].read()
+        # Mapping the Timestamp to tpdo
+        (self.antenna_node).tpdo[6].clear()
+        (self.antenna_node).tpdo[6].add_variable(0x2001, 1)
+        (self.antenna_node).tpdo[6].trans_type = 1
+        (self.antenna_node).tpdo[6].event_timer = 0
+        (self.antenna_node).tpdo[6].enabled = True
+
+        (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
+        print((self.antenna_node).nmt.state)
+        (self.antenna_node).tpdo[6].save()
+
+        (self.antenna_node).tpdo[6].add_callback(
+            self.position_change_callback
+        )
+        self.logger.info("Subscribed to timestamp")
+
+    def subscribe_to_func_state_and_mode(self):
+        """Canopen Subscription to the functional state and mode."""
+        self.logger.info("Subscribing to functional state and mode")
         (self.antenna_node).tpdo[3].read()
         # Mapping the functional state to tpdo
         (self.antenna_node).tpdo[3].clear()
         (self.antenna_node).tpdo[3].add_variable(
             "Mode and State Feedback", "Functional State"
+        )
+        (self.antenna_node).tpdo[3].add_variable(
+            "Mode and State Feedback", "Mode"
         )
         (self.antenna_node).tpdo[3].trans_type = 254
         (self.antenna_node).tpdo[3].event_timer = 5
@@ -186,12 +252,12 @@ class ASTTComponentManager:
         print((self.antenna_node).nmt.state)
         (self.antenna_node).tpdo[3].save()
         (self.antenna_node).tpdo[3].add_callback(
-            self.func_state_callback
+            self.state_mode_callback
         )
-        self.logger.info("Subscribed to functional state")
+        self.logger.info("Subscribed to functional state and mode")
 
     def subscribe_to_stow_sensor(self):
-        """CanOpen Subscription to stow sensors."""
+        """Canopen Subscription to stow sensors."""
         self.logger.info("Subscribing to stow sensor ")
         (self.antenna_node).tpdo[4].read()
         # Mapping the stow sensors to tpdo
@@ -212,30 +278,8 @@ class ASTTComponentManager:
         )
         self.logger.info("Subscribed to stow sensor")
 
-    def subscribe_to_antenna_mode(self):
-        """CanOpen Subscription to antenna mode."""
-        self.logger.info("Subscribing to antenna mode ")
-        (self.antenna_node).tpdo[6].read()
-        # Mapping the stow sensors to tpdo
-        (self.antenna_node).tpdo[6].clear()
-        (self.antenna_node).tpdo[6].add_variable(
-            "Mode and State Feedback", "Mode"
-        )
-        (self.antenna_node).tpdo[6].trans_type = 254
-        (self.antenna_node).tpdo[6].event_timer = 5
-        (self.antenna_node).tpdo[6].enabled = True
-
-        (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
-        print((self.antenna_node).nmt.state)
-        (self.antenna_node).tpdo[6].save()
-
-        (self.antenna_node).tpdo[6].add_callback(
-            self.antenna_mode_callback
-        )
-        self.logger.info("Subscribed to antenna mode")
-
     def subscribe_to_mode_command_obj(self):
-        """CanOpen Subscription to the mode command obj ."""
+        """Canopen Subscription to the mode command obj ."""
         self.logger.info("Subscribing to mode command obj")
         (self.antenna_node).rpdo.read()
         # Mapping the mode command obj to rpdo
@@ -255,31 +299,31 @@ class ASTTComponentManager:
     # ========================
 
     def set_plc_node_to_operational(self):
-        """Changes all the nodes state to OPERATIONAL."""
+        """Change all the nodes state to OPERATIONAL."""
         (self.antenna_node).nmt.state = "OPERATIONAL"
 
     def set_plc_node_to_preoperational(self):
-        """Changes all the nodes state to PRE-OPERATIONAL."""
+        """Change all the nodes state to PRE-OPERATIONAL."""
         (self.antenna_node).nmt.state = "PRE-OPERATIONAL"
 
     def get_plc_state(self):
-        """Returns node state."""
+        """Return node state."""
         self.logger.info("Reading plc state")
         return (self.antenna_node).nmt.state
 
     def is_az_allowed(self, az):
-        """Allows Azimuth of [-127,127]"""
+        """Allow Azimuth of [-127,127]."""
         return True if (az >= -127.0 and az <= 127.0) else False
 
     def is_el_allowed(self, el):
-        """Allows elevation of [-15,92]"""
+        """Allow elevation of [-15,92]."""
         return True if (el >= -15.0 and el <= 92.0) else False
 
     def point_to_coordinates(self, timestamp, az, el):
-        """commands the simulator to point az/el ."""
+        """Commands the simulator to point az/el."""
         self.logger.info(f"Point called with AZ {az} and EL {el} ")
         if self.is_az_allowed(az) and self.is_el_allowed(el):
-            (self.antenna_node).sdo[0x2000][1].raw = timestamp + 2.0
+            (self.antenna_node).sdo[0x2000][1].raw = timestamp
             (self.antenna_node).sdo[0x2000][2].raw = az
             (self.antenna_node).sdo[0x2000][3].raw = el
         else:
@@ -289,22 +333,22 @@ class ASTTComponentManager:
             raise ValueError
 
     def set_point_mode(self):
-        """Commands the ASTT Antenna to point mode"""
+        """Commands the ASTT Antenna to point mode."""
         self.logger.info("Set point mode called!!")
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 1
 
     def set_idle_mode(self):
-        """Commands the ASTT Antenna to idle mode"""
+        """Commands the ASTT Antenna to idle mode."""
         self.logger.info("Set idle mode called!!")
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 0
 
     def set_stow_mode(self):
-        """Commands the ASTT Antenna to stow mode"""
+        """Commands the ASTT Antenna to stow mode."""
         self.logger.info("Set stow mode called!!")
         (self.antenna_node).rpdo[1]["Mode command.Mode"].raw = 2
 
     def trigger_transmission(self):
-        """Triggers the transmission of Az/El ."""
+        """Triggers the transmission of Az/El."""
         self.logger.info("Transmission is triggered")
         self.transmission_triggered = True
         (self.antenna_node).nmt.state = "OPERATIONAL"
@@ -315,40 +359,51 @@ class ASTTComponentManager:
             (self.antenna_mode).tpdo[tpdo_id].stop()
 
     def get_antenna_mode(self):
-        """Returns the antenna mode"""
+        """Return the antenna mode."""
         return self.antenna_mode
 
     def get_antenna_func_state(self):
-        """Returns the antenna functional state"""
+        """Return the antenna functional state."""
         return self.antenna_func_state
 
     def get_antenna_app_state(self):
-        """Returns the antenna application"""
+        """Return the antenna application."""
         return self.antenna_app_state
 
     def get_antenna_stow_sensor_state(self):
-        """Returns the antenna stow sensor state"""
+        """Return the antenna stow sensor state."""
         return self.stow_sensor_state
 
     @background
-    def track_sun(self, duration_time):
-        # Converting the duretion time to seconds
+    def track_sun(self, duration_time, az_speed=None, el_speed=None):
+        """Calculate Sun's Az and El."""
+        # Converting the duration time to seconds
+        start_position = self.store_initial_position()
+        track_start_position = InitialPosition(
+            start_position[0], start_position[1], start_position[2]
+        )
         self.logger.info("Starting to track the sun")
         time_conversion = duration_time * 3600
         count = 1
         sun = Sun(-33.9326033333, 18.47222, 3.6)
-        while count < time_conversion:
+        # Store all the values from the callback on beginning position
+        begin_time = track_start_position.timestamp
+        begin_az = track_start_position.azimuth
+        begin_el = track_start_position.elevation
+        while count < time_conversion and not self.trackstop:
             track_time = datetime.datetime.now(
                 datetime.timezone.utc
             ) + datetime.timedelta(seconds=10)
-            az, el = sun.get_sun_az_el(track_time)
-            ts = (
-                track_time
-                - datetime.datetime(
-                    1970, 1, 1, tzinfo=datetime.timezone.utc
-                )
-            ).total_seconds()
-            self.point_to_coordinates(ts, az=az, el=el)
+            future_timestamp = datetime.datetime.timestamp(track_time)
+            dt = future_timestamp - begin_time
+            if az_speed is not None and el_speed is not None:
+                az_desired = begin_az + (az_speed * dt)
+                el_desired = begin_el + (el_speed * dt)
+            else:
+                az_desired, el_desired = sun.get_sun_az_el(track_time)
+            self.point_to_coordinates(
+                future_timestamp, az=az_desired, el=el_desired
+            )
             if not self.transmission_triggered:
                 self.trigger_transmission()
             else:
@@ -357,7 +412,9 @@ class ASTTComponentManager:
             self.logger.info(
                 "---------------------------------------"
             )
-            self.logger.info("Sun_Az :", str(az), "Sun_El :", str(el))
+            self.logger.info(
+                f"Sun_Az : {az_desired}, Sun_El : {el_desired}"
+            )
             self.logger.info(
                 "---------------------------------------"
             )
@@ -367,7 +424,7 @@ class ASTTComponentManager:
         pass
 
     def clear_all_logs(self):
-        """Clears all the logs in app_dev.log"""
+        """Clear all the logs in app_dev.log."""
         try:
             with open("app_dev.log", "w") as file:
                 file.truncate(0)
@@ -387,7 +444,8 @@ if __name__ == "__main__":
     cm = ASTTComponentManager()
     cm.connect_to_network()
     cm.connect_to_plc_node()
-    cm.subscribe_to_app_state()
+    cm.subscribe_to_func_state_and_mode()
+    cm.subscribe_to_timestamp()
     cm.subscribe_to_az_change()
     cm.subscribe_to_el_change()
     cm.trigger_transmission()

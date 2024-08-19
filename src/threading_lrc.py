@@ -1,11 +1,14 @@
+"""Decorator to run functions in the background using threads."""
+
 import threading
 
 
 def background(f):
     """
-    a threading decorator
-    use @background above the function
-    you want to run in the background
+    A threading decorator.
+
+    Use @background above the function
+    you want to run in the background.
     """
 
     def backgrnd_func(*a, **kw):

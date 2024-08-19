@@ -31,7 +31,7 @@ class Sun:
         return earth_coords
 
     def get_sun_az_el(self, sun_time):
-        """This method outputs the Sun's current Az and El."""
+        """Return the Sun's current Az and El."""
         astropy_time = Time(sun_time, scale="utc")
         astt_coords = EarthLocation(
             lat=self.lat, lon=self.lon, height=self.alt * u.m
@@ -45,7 +45,7 @@ class Sun:
         return (az, el)
 
     def calc_position_sun(self, track_time):
-        """Calculates Sun's Az and El
+        """Calculate Sun's Az and El.
 
         :return: timestamp, azimuth and elevation of the Sun.
         """
@@ -98,12 +98,12 @@ class Satellite1:
 
     def get_sat1_az_el(self):
         # TODO: Work on the logic to get azimuth and elevation.
-        """This method outputs a satellite's current Az and El."""
+        """Return satellite's current Az and El."""
         pass
 
 
 class Satellite2:
-    "Class to get source Az and El using the source name"
+    """Class to get source Az and El using the source name."""
 
     def __init__(self, lat, lon, alt, name):
         self.lat = lat

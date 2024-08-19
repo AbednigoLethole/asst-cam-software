@@ -1,4 +1,4 @@
-"""Test the pointing function"""
+"""Test the pointing function."""
 
 import time
 import unittest

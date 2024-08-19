@@ -1,3 +1,5 @@
+"""Facilitate integration between the GUI and system components."""
+
 import logging
 import time
 from datetime import datetime
@@ -29,12 +31,13 @@ logging.basicConfig(
 
 
 def get_current_datetime():
+    """Return the current date and time."""
     now = datetime.now()
     return now.strftime("%m/%d/%Y %H:%M:%S")
 
 
 def background_thread(node):
-    """Feeds az & el to the GUI."""
+    """Feed az & el to the GUI."""
     if node is not None:
         while True:
             node.tpdo[1].wait_for_reception()
@@ -53,6 +56,7 @@ def background_thread(node):
 
 
 def states_and_modes_thread(comp_manager):
+    """Continuously send antenna states and modes to the GUI."""
     logger.info("Thread triggered")
     while True:
         func_state = comp_manager.antenna_func_state.name
@@ -73,13 +77,16 @@ def states_and_modes_thread(comp_manager):
 
 @app.route("/", methods=["GET"])
 def index():
+    """Render the index page."""
     return render_template("index.html")
 
 
 @app.route("/", methods=["POST"])
 def start_astt_gui():
+    """Handle user interactions with the GUI."""  # noqa: E501
+    # You want to stop tracking as soon as you press any other button.
+    cm.trackstop = True
     # Trigger condition when Initialize button is clicked.
-
     if (
         "button" in request.form
         and request.form["button"] == "Initialize"
@@ -88,12 +95,12 @@ def start_astt_gui():
             cm.clear_all_logs()
             cm.connect_to_network()
             cm.connect_to_plc_node()
-            # Subscribe to AZ and EL change.
+            # Subscribe to change events.
+            cm.subscribe_to_timestamp()
             cm.subscribe_to_az_change()
             cm.subscribe_to_el_change()
-            cm.subscribe_to_func_state()
+            cm.subscribe_to_func_state_and_mode()
             cm.subscribe_to_mode_command_obj()
-            cm.subscribe_to_antenna_mode()
             cm.subscribe_to_stow_sensor()
             # Set point mode function below needs to be removed
             cm.trigger_transmission()
@@ -118,7 +125,7 @@ def start_astt_gui():
         # Call a method to point to Desired AZ & EL
         try:
             cm.point_to_coordinates(
-                float(time.time()), float(az), float(el)
+                float(time.time()) + 5, float(az), float(el)
             )
 
         except (Exception, ValueError) as err:
@@ -133,6 +140,9 @@ def start_astt_gui():
 
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
+        # Get AZ speed and EL speed from GUI.
+        az_speed = request.form.get("az_speed")
+        el_speed = request.form.get("el_speed")
         global thread2
         with thread_lock:
             if thread is None:
@@ -140,7 +150,16 @@ def start_astt_gui():
                     background_thread, cm.antenna_node
                 )
 
-        cm.track_sun(1)
+        cm.trackstop = False
+        if az_speed and el_speed:
+            cm.track_sun(
+                duration_time=1,
+                az_speed=float(az_speed),
+                el_speed=float(el_speed),
+            )
+        else:
+            cm.track_sun(duration_time=1)
+
     if "modes" in request.form and request.form["modes"] == "Idle":
         cm.set_idle_mode()
     if "modes" in request.form and request.form["modes"] == "Stow":
