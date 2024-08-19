@@ -10,6 +10,7 @@ from src.component_managers.astt_comp_manager import ASTTComponentManager
 
 class TestStatesModesGeneratiom(unittest.TestCase):
     """Unit tests for the States and Modes Generation class."""
+
     def setUp(self):
         """Creating Component Manager object."""
         self.manager = ASTTComponentManager()

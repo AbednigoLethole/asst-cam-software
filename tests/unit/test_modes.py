@@ -16,6 +16,7 @@ from src.component_managers.dish_modes import Mode
 
 class MockedIncomingTpdo:
     """Creating a customized Mocked incoming Object."""
+
     def __init__(self, raw, name):
         self.raw = raw
         self.name = name
@@ -23,6 +24,7 @@ class MockedIncomingTpdo:
 
 class TestAntennaModes(unittest.TestCase):
     """Unit tests for testing Antenna Modes class."""
+
     @patch("src.component_managers.astt_comp_manager.canopen.Network")
     @patch("src.component_managers.astt_comp_manager.canopen.RemoteNode")
     def setUp(self, mock_RemoteNode, mock_Network):
