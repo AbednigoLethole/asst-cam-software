@@ -1,4 +1,4 @@
-"""Test the pointing function"""
+"""Test the pointing function."""
 
 # pylint: disable=invalid-name,unused-argument,too-many-public-methods
 # pylint: disable=attribute-defined-outside-init

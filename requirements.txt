@@ -16,3 +16,6 @@ Werkzeug
 zipp
 sphinx
 pytest-cov
+flask
+canopen
+astropy
