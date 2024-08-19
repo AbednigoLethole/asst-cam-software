@@ -45,10 +45,7 @@ def start_astt_gui():
     # You want to stop tracking as soon as you press any other button.
     cm.trackstop = True
     # Trigger condition when Initialize button is clicked.
-    if (
-        "button" in request.form
-        and request.form["button"] == "Initialize"
-    ):
+    if "button" in request.form and request.form["button"] == "Initialize":
         try:
             cm.clear_all_logs()
             # Start up VCAN network and simulator
@@ -61,7 +58,7 @@ def start_astt_gui():
             return jsonify("success")
 
         except Exception as err:
-            logger.error(f"Error encountered initializing : {err}")
+            logger.error("Error encountered initializing : %s", err)
             return jsonify("failed")
 
     # Trigger condition when Point button is clicked.
@@ -73,9 +70,7 @@ def start_astt_gui():
         # Call a method to point to Desired AZ & EL
         try:
             cm.point_to_coordinates(float(time.time()), float(az), float(el))
-            cm.point_to_coordinates(
-                float(time.time()) + 5, float(az), float(el)
-            )
+            cm.point_to_coordinates(float(time.time()) + 5, float(az), float(el))
 
         except (Exception, ValueError) as err:
             logger.error("Error encountered : %s", err)
@@ -126,6 +121,7 @@ def start_subscriptions():
     cm.subscribe_to_func_state_and_mode()
     cm.subscribe_to_mode_command_obj()
     cm.subscribe_to_stow_sensor()
+
 
 def start_thread(thread, antenna_node):
     """Generic function for starting specific thread."""

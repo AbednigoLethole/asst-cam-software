@@ -1,6 +1,8 @@
-"""Test the mode transitions."""
+"""Test the mode transitions"""
 
 # pylint: disable=duplicate-code
+# mypy: disable_error_code="import-untyped"
+
 import time
 
 from component_managers.astt_comp_manager import FuncState, Mode, StowPinState
