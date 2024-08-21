@@ -60,6 +60,7 @@ six="*"
 Werkzeug="*"
 zipp="*"
 astropy="*"
+tomlkit="*"
 
 [tool.poetry.group.docs]
 optional = true
