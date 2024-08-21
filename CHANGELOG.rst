@@ -1,3 +1,8 @@
+Version 1.1.2
+*************
+- Added antenna speed on the GUI.
+- Integrated antenna speed with the component Manager
+
 Version 1.1.1
 *************
 - Addded a docker container for GUI and open the port for it.
