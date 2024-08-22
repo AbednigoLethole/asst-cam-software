@@ -9,8 +9,7 @@ services:
     environment:
       - PYTHONPATH=/app/src
     command: >
-        bash -c "poetry install
-        && python3 src/astt_gui/app.py"
+        bash -c "python3 src/astt_gui/app.py"
 
   astt-antenna-simulator:
     image: astt-cam-software:latest
