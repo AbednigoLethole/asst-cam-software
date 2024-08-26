@@ -1,4 +1,4 @@
-# pylint: disable= W0603, W0718, W0602
+# pylint: disable= W0603, W0718, W0602, E0401
 # mypy: disable_error_code="import-untyped"
 
 """Facilitate integration between the GUI and system components."""
