@@ -1,13 +1,16 @@
 """Tests for AZ/EL limits."""
 
+# pylint: disable=invalid-name,unused-argument,too-many-public-methods
+# pylint: disable=attribute-defined-outside-init
+
 import unittest
 
-from src.component_managers.astt_comp_manager import (
-    ASTTComponentManager,
-)
+from src.component_managers.astt_comp_manager import ASTTComponentManager
 
 
 class TestAzElLimits(unittest.TestCase):
+    """TestCase for AZ and EL limits."""
+
     def setUp(self):
         """Initialize the cm for reuse."""
         self.cm = ASTTComponentManager()

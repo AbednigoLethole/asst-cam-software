@@ -1,3 +1,11 @@
+Unreleased
+**********
+- Added doctrings on classes and methods.
+- Changed constant variables to uppercase as per PEP 8 style guide.
+- Added mypy.ini file to configure mypy.
+- Change max line on our lint configurations from 70 to 99.  
+- Modularized functions on app.py (some to be moved to conftest and utils)
+
 Version 1.1.2
 *************
 - Added antenna speed on the GUI.
@@ -11,7 +19,7 @@ Version 1.1.1
 - Remomed the validation checks for password in app.py
 - Updated the Readthedocs instructions on how to deploy the ASTT-CAM-Software.
 - Updated the readme instructions on how to deploy the ASTT-CAM-Software.
-
+ 
 Version 1.0.1
 *************
 - Updated the ASTT CAM software documentation
