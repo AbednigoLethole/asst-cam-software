@@ -10,4 +10,3 @@ python-format:
 	isort --profile black --line-length 99 src/ tests/
 	black --exclude .+\.ipynb --line-length 99 src/ tests/
 	flake8 --max-line-length 99 src/ tests/
-    pylint --max-line-length=99 src/ tests/
