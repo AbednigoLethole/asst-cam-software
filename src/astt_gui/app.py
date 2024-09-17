@@ -83,7 +83,7 @@ def start_astt_gui():
         global THREAD2
         az_speed = request.form.get("az_speed")
         el_speed = request.form.get("el_speed")
-        start_thread(THREAD2, cm.antenna_mode)
+        start_thread(THREAD2, cm.antenna_node)
 
         cm.trackstop = False
         if az_speed and el_speed:
