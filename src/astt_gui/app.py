@@ -162,7 +162,6 @@ def get_current_datetime():
 
 def background_thread(node):
     """Feed az & el to the GUI."""
-    print(node)
     if node is not None:
         while True:
             node.tpdo[1].wait_for_reception()
