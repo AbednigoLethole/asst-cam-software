@@ -76,7 +76,7 @@ def start_astt_gui():
             logger.error("Error encountered : %s", err)
 
         global THREAD
-        start_thread(THREAD, cm.antenna_mode)
+        start_thread(THREAD, cm.antenna_node)
 
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
@@ -162,6 +162,7 @@ def get_current_datetime():
 
 def background_thread(node):
     """Feed az & el to the GUI."""
+    print(node)
     if node is not None:
         while True:
             node.tpdo[1].wait_for_reception()
