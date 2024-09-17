@@ -5,7 +5,8 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Apt update
-RUN apt-get update -y
+RUN apt-get update -y &&  apt-get install --fix-missing
+
 RUN apt-get install software-properties-common -y
 
 # Getting Lely canopen 

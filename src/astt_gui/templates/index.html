@@ -5,41 +5,9 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Astt Cam Gui</title>
+  <title>ASTT CAM GUI</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-<!--  <style>
-    .btn-container {
-      position: relative;
-      display: inline-block;
-}
-    .btn {
-      width: 190px;
-      text-align: center;
-      cursor: pointer;
-}
-    .tooltip {
-      visibility: hidden;
-      position: absolute;
-      background-color: #000000;
-      white-space: nowrap;
-      color: #f1e5e5;
-      text-align: center;
-      padding: 5px;
-      border-radius: 6px;
-      z-index: 1;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-}
-    .btn-container:hover .tooltip {
-      visibility: visible;
-}
-  </style> -->
-
-  <!-- Favicons -->
-  <link href="static/images/favicon.png" rel="icon">
-  <link href="static/images/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -48,37 +16,13 @@
   <!-- static CSS Files -->
   <link href="static/css/bootstrap.min.css" rel="stylesheet">
   <link href="static/css/bootstrap-icons.css" rel="stylesheet">
-  <link href="static/css/boxicons.min.css" rel="stylesheet">
-  <link href="static/css/quill.snow.css" rel="stylesheet">
-  <link href="static/css/quill.bubble.css" rel="stylesheet">
-  <link href="static/css/remixicon.css" rel="stylesheet">
-  <link href="static/css/dt-style.css" rel="stylesheet">
+  <link href="static/css/style.css" rel="stylesheet">
 
   <!--Graphs Links-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 
-  <!-- Template Main CSS File -->
-  <link href="static/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Jul 27 2023 with Bootstrap v5.3.1
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-  <!--graphs handling script-->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-  <link
-    href="//mincss.com/entireframework.min.css"
-    rel="stylesheet"
-    type="text/css"
-  />
-  <link href="{{url_for('static', filename = 'css/app.css')}}" rel="stylesheet"> -->
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
@@ -231,26 +175,14 @@
                     <div class="col">
                       <h4>Stow-Pin State</h4>
                       <button class="btn btn-secondary" title="This display box is where we display our stow states. i.e when the antenna is about to start pointing, this display box will contantly change as the stow pin is being disengaged and the antenna will start the pointing operation." style="width: 190px;" id="stowState">UNKNOWN</button>
-                      <!--<div class="btn-container">
-                        <button class="btn btn-secondary" id="stowState">UNKNOWN</button>
-                        <span class="tooltip">This is where we display our stow states</span>
-                      </div> -->
                       </div>
                     <div class="col">
                       <h4>Modes state</h4>
                       <button class="btn btn-secondary" title="This display box is where we display our modes states, when the Antenna mode button is triggered, this display box will show different operational modes for the simulator as per operation being executed in simulator. " style="width: 190px;" id="modeState">UNKNOWN</button>
-                      <!-- <div class="btn-container">
-                        <button class="btn btn-secondary" id="modeState">UNKNOWN</button>
-                        <span class="tooltip">This is where we display our modes states</span>
-                      </div> -->
                     </div>
                     <div class="col">
                       <h4>Functional State</h4>
                       <button class="btn btn-secondary" title="This display box is where we display our functional states, which are namely braked, moving, estop, error and unknown. This gives a indication of what the antenna will be doing depending on the operation being executed. For example if the mode is on pointing then this display box will show that the antenna is moving." style="width: 190px;" id="funcState">UNKNOWN</button>
-                      <!--<div class="btn-container">
-                        <button class="btn btn-secondary" id="funcState">UNKNOWN</button>
-                        <span class="tooltip">This is where we display our functional states</span>
-                      </div> -->
                     </div>
                   </div>
                   </div>
@@ -442,30 +374,15 @@
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
-    <!-- <div class="copyright">
-      &copy; Copyright <strong><span>ASTT CAM</span></strong>. All Rights Reserved
-    </div> -->
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
       <!-- Designed by <a href="#">SARAO CAM Team</a> -->
     </div>
   </footer><!-- End Footer -->
-  <!-- Vendor JS Files -->
-  <script src="static/js/apexcharts.min.js"></script>
+  <!-- ASTT CAM JS Files -->
   <script src="static/js/bootstrap.bundle.min.js"></script>
   <script src="static/js/chartjs/chart.umd.js"></script>
-  <script src="static/js/echarts.min.js"></script>
-  <script src="static/js/quill.min.js"></script>
-  <script src="static/js/simple-datatables.js"></script>
-  <script src="static/js/tinymce.min.js"></script>
   <script src="static/js/graphs.js"></script>
   <script src="static/js/states.js"></script>
-
-
-  <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
 
 </body>

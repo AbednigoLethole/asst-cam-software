@@ -76,14 +76,14 @@ def start_astt_gui():
             logger.error("Error encountered : %s", err)
 
         global THREAD
-        start_thread(THREAD, cm.antenna_mode)
+        start_thread(THREAD, cm.antenna_node)
 
     if "sources" in request.form and request.form["sources"] == "sun":
         logger.info("Tracking button triggered")
         global THREAD2
         az_speed = request.form.get("az_speed")
         el_speed = request.form.get("el_speed")
-        start_thread(THREAD2, cm.antenna_mode)
+        start_thread(THREAD2, cm.antenna_node)
 
         cm.trackstop = False
         if az_speed and el_speed:
