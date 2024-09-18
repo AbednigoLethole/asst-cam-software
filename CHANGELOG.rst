@@ -1,10 +1,15 @@
 Unreleased
 **********
+
+Version 1.2.2
+*************
 - Added doctrings on classes and methods.
 - Changed constant variables to uppercase as per PEP 8 style guide.
+- Exteded lint stage 
 - Added mypy.ini file to configure mypy.
 - Change max line on our lint configurations from 70 to 99.  
 - Modularized functions on app.py (some to be moved to conftest and utils)
+- Bug fix on the app.py (failing thread)
 
 Version 1.1.2
 *************
