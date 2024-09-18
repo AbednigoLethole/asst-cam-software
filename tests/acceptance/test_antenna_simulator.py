@@ -1,12 +1,13 @@
 """Test for the Component manager."""
 
+# pylint: disable=invalid-name,unused-argument,too-many-public-methods
+# pylint: disable=attribute-defined-outside-init, pointless-statement
+
 
 def test_antenna_sim_is_available(cm_manager_connected_to_antnn):
     """Test if the simulator is alive through an sdo request."""
     antenna_node = cm_manager_connected_to_antnn.antenna_node
-    antenna_node.sdo["TPDO communication parameter"][
-        "transmission type"
-    ].raw
+    antenna_node.sdo["TPDO communication parameter"]["transmission type"].raw
     assert antenna_node.nmt.state == "INITIALISING"
 
 
